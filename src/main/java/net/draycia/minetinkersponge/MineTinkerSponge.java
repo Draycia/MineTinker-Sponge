@@ -1,6 +1,7 @@
 package net.draycia.minetinkersponge;
 
 import com.google.inject.Inject;
+import net.draycia.minetinkersponge.commands.AddModifierCommand;
 import net.draycia.minetinkersponge.data.DataRegistrar;
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.data.interfaces.*;
@@ -8,6 +9,9 @@ import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.impls.Directing;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.slf4j.Logger;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.HandTypes;
@@ -53,6 +57,15 @@ public class MineTinkerSponge {
         modManager = new ModManager();
 
         modManager.registerModifier(this, new Directing(modManager));
+
+        CommandSpec addModifier = CommandSpec.builder()
+                .description(Text.of("Applies the modifier to the held item (or increments its level)."))
+                .permission("minetinker.commands.addmodifier")
+                .arguments(GenericArguments.string(Text.of("modifier")))
+                .executor(new AddModifierCommand(modManager))
+                .build();
+
+        Sponge.getCommandManager().register(this, addModifier, "addmod", "addmodifier");
     }
 
     @Listener
@@ -64,8 +77,6 @@ public class MineTinkerSponge {
         }
 
         modManager.getModifier("directing").ifPresent(modifier -> {
-            modManager.applyModifier(itemStack, modifier);
-            modManager.applyModifier(itemStack, modifier);
             modManager.applyModifier(itemStack, modifier);
         });
 

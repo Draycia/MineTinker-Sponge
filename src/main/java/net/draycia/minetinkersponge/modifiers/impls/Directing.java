@@ -31,6 +31,7 @@ public class Directing extends Modifier {
 
     @Override
     public int getMaxLevel() {
+        // The actual max level should be 1 but it's set to 3 for testing purposes.
         return 3;
     }
 
