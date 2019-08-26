@@ -17,6 +17,8 @@ import java.util.List;
 
 public class Directing extends Modifier {
 
+    private ModManager modManager;
+
     @Override
     public String getName() {
         return "Directing";
@@ -29,7 +31,7 @@ public class Directing extends Modifier {
 
     @Override
     public int getMaxLevel() {
-        return 1;
+        return 3;
     }
 
     @Override
@@ -42,6 +44,10 @@ public class Directing extends Modifier {
         Sponge.getEventManager().registerListeners(plugin, this);
     }
 
+    public Directing(ModManager modManager) {
+        this.modManager = modManager;
+    }
+
     @Listener
     public void onItemDrop(DropItemEvent.Destruct event) {
         EventContext context = event.getContext();
@@ -49,7 +55,7 @@ public class Directing extends Modifier {
         if (context.containsKey(EventContextKeys.BLOCK_HIT) || context.containsKey(EventContextKeys.SPAWN_TYPE)) {
             event.getCause().first(Player.class).ifPresent(player -> {
                 player.getItemInHand(HandTypes.MAIN_HAND).ifPresent(itemStack -> {
-                    if (ModManager.itemHasModifier(itemStack, this)) {
+                    if (modManager.itemHasModifier(itemStack, this)) {
                         for (Entity entity : event.getEntities()) {
                             if (entity instanceof Item) {
                                 Item item = (Item) entity;

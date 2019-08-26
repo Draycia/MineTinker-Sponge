@@ -52,28 +52,24 @@ public class MineTinkerSponge {
         dataRegistrar = new DataRegistrar(container);
         modManager = new ModManager();
 
-        modManager.registerModifier(this, new Directing());
+        modManager.registerModifier(this, new Directing(modManager));
     }
 
     @Listener
     public void onPlayerJoin(ClientConnectionEvent.Join event, @Root Player player) {
         ItemStack itemStack = ItemStack.of(ItemTypes.DIAMOND_PICKAXE);
 
-        itemStack.offer(itemStack.getOrCreate(IsMineTinkerData.class).get());
-        itemStack.offer(itemStack.getOrCreate(IsMineTinkerToolData.class).get());
-        itemStack.offer(itemStack.getOrCreate(IsMineTinkerArmorData.class).get());
-        itemStack.offer(itemStack.getOrCreate(MineTinkerItemModsData.class).get());
+        if (!modManager.convertItemStack(itemStack)) {
+            logger.warn("Could not convert item!");
+        }
 
-        itemStack.offer(MTKeys.IS_MINETINKER, true);
-        itemStack.offer(MTKeys.IS_MT_TOOL, true);
-
-        HashMap<String, Integer> modifiers = new HashMap<>();
-        modifiers.put("Directing", 1);
-
-        itemStack.offer(MTKeys.ITEM_MODIFIERS, modifiers);
-
-        itemStack.offer(Keys.DISPLAY_NAME, Text.of("Map Test"));
+        modManager.getModifier("directing").ifPresent(modifier -> {
+            modManager.applyModifier(itemStack, modifier);
+            modManager.applyModifier(itemStack, modifier);
+            modManager.applyModifier(itemStack, modifier);
+        });
 
         player.getInventory().offer(itemStack);
+
     }
 }
