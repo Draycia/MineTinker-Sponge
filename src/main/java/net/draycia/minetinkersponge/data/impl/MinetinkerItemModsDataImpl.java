@@ -2,20 +2,16 @@ package net.draycia.minetinkersponge.data.impl;
 
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.data.interfaces.MineTinkerItemModsData;
-import net.draycia.minetinkersponge.data.interfaces.MineTinkerItemModsData;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.DataView;
-import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableListData;
 import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableMappedData;
-import org.spongepowered.api.data.manipulator.mutable.common.AbstractListData;
 import org.spongepowered.api.data.manipulator.mutable.common.AbstractMappedData;
 import org.spongepowered.api.data.merge.MergeFunction;
 import org.spongepowered.api.data.persistence.AbstractDataBuilder;
 import org.spongepowered.api.data.persistence.DataContentUpdater;
 import org.spongepowered.api.data.persistence.InvalidDataException;
-import org.spongepowered.api.data.value.immutable.ImmutableListValue;
 
 import java.util.*;
 

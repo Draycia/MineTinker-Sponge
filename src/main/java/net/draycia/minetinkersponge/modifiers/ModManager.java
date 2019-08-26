@@ -1,6 +1,5 @@
 package net.draycia.minetinkersponge.modifiers;
 
-import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.data.interfaces.IsMineTinkerArmorData;
 import net.draycia.minetinkersponge.data.interfaces.IsMineTinkerData;

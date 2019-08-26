@@ -1,16 +1,11 @@
 package net.draycia.minetinkersponge.data;
 
 import com.google.common.reflect.TypeToken;
-import org.spongepowered.api.CatalogTypes;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Key;
-import org.spongepowered.api.data.value.mutable.ListValue;
 import org.spongepowered.api.data.value.mutable.Value;
-import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.TypeTokens;
 
-import java.security.KeyFactory;
-import java.util.List;
 import java.util.Map;
 
 

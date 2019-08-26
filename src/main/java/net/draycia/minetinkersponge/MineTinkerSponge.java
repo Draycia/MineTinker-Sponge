@@ -3,38 +3,22 @@ package net.draycia.minetinkersponge;
 import com.google.inject.Inject;
 import net.draycia.minetinkersponge.commands.AddModifierCommand;
 import net.draycia.minetinkersponge.data.DataRegistrar;
-import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.*;
 import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.impls.Directing;
-import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
-import org.spongepowered.api.data.key.Key;
-import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.data.type.HandTypes;
-import org.spongepowered.api.entity.Entity;
-import org.spongepowered.api.entity.Item;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.event.cause.EventContext;
-import org.spongepowered.api.event.cause.EventContextKey;
-import org.spongepowered.api.event.cause.EventContextKeys;
-import org.spongepowered.api.event.cause.entity.damage.source.EntityDamageSource;
-import org.spongepowered.api.event.entity.DestructEntityEvent;
 import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.item.inventory.DropItemEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
-
-import java.util.*;
 
 @Plugin(
         id = "minetinker-sponge",
