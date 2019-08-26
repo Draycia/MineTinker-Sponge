@@ -59,21 +59,7 @@ public class ModManager {
             }
 
             incrementModifierLevel(itemStack, modifier);
-
-            Map<String, Integer> itemModifierLevels = getItemModifierLevels(itemStack);
-
-            Text.Builder lore = Text.builder();
-
-            for (Map.Entry<String, Integer> entry : itemModifierLevels.entrySet()) {
-                Optional<Modifier> mod = getModifier(entry.getKey());
-
-                if (mod.isPresent()) {
-                    lore = lore.append(Text.of(mod.get().getName() + " " + StringUtils.toRomanNumerals(entry.getValue())))
-                            .color(TextColors.GRAY);
-                }
-            }
-
-            itemStack.offer(Keys.ITEM_LORE, Collections.singletonList(lore.build()));
+            rewriteItemLore(itemStack);
 
             return true;
         }
@@ -108,6 +94,10 @@ public class ModManager {
             return false;
         }
 
+        if (!itemStack.offer(MTKeys.MINETINKER_XP, 0).isSuccessful()) {
+            return false;
+        }
+
         return true;
     }
 
@@ -129,5 +119,31 @@ public class ModManager {
 
     public Map<String, Integer> getItemModifierLevels(ItemStack itemStack) {
         return itemStack.getOrCreate(MineTinkerItemModsData.class).get().asMap();
+    }
+
+    public void rewriteItemLore(ItemStack itemStack) {
+        Map<String, Integer> itemModifierLevels = getItemModifierLevels(itemStack);
+
+        Text.Builder lore = Text.builder();
+
+        for (Map.Entry<String, Integer> entry : itemModifierLevels.entrySet()) {
+            Optional<Modifier> mod = getModifier(entry.getKey());
+
+            if (mod.isPresent()) {
+                lore = lore.append(Text.of(mod.get().getName() + " " + StringUtils.toRomanNumerals(entry.getValue())))
+                        .color(TextColors.GRAY);
+
+                lore = lore.append(Text.NEW_LINE);
+            }
+        }
+
+        Optional<Integer> experience = itemStack.get(MTKeys.MINETINKER_XP);
+
+        if (experience.isPresent()) {
+            lore = lore.append(Text.of("Item Experience: ")).color(TextColors.GOLD)
+                    .append(Text.of(StringUtils.toRomanNumerals(experience.get())));
+        }
+
+        itemStack.offer(Keys.ITEM_LORE, Collections.singletonList(lore.build()));
     }
 }

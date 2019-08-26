@@ -1,13 +1,7 @@
 package net.draycia.minetinkersponge.data;
 
-import net.draycia.minetinkersponge.data.impl.IsMineTinkerArmorDataImpl;
-import net.draycia.minetinkersponge.data.impl.IsMineTinkerDataImpl;
-import net.draycia.minetinkersponge.data.impl.IsMineTinkerToolDataImpl;
-import net.draycia.minetinkersponge.data.impl.MinetinkerItemModsDataImpl;
-import net.draycia.minetinkersponge.data.interfaces.IsMineTinkerArmorData;
-import net.draycia.minetinkersponge.data.interfaces.IsMineTinkerData;
-import net.draycia.minetinkersponge.data.interfaces.IsMineTinkerToolData;
-import net.draycia.minetinkersponge.data.interfaces.MineTinkerItemModsData;
+import net.draycia.minetinkersponge.data.impl.*;
+import net.draycia.minetinkersponge.data.interfaces.*;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataRegistration;
 import org.spongepowered.api.plugin.PluginContainer;
@@ -55,6 +49,19 @@ public class DataRegistrar {
                 .buildAndRegister(container);
 
         Sponge.getDataManager().registerContentUpdater(IsMineTinkerArmorDataImpl.class, new IsMineTinkerArmorDataImpl.BoolEnabled1To2Updater());
+
+        // MineTinker Item XP
+        DataRegistration.builder()
+                .dataName("Item XP")
+                .manipulatorId("minetinker_xp")
+                .dataClass(MineTinkerItemXPData.class)
+                .dataImplementation(MineTinkerItemXPDataImpl.class)
+                .immutableClass(MineTinkerItemXPData.Immutable.class)
+                .immutableImplementation(MineTinkerItemXPDataImpl.Immutable.class)
+                .builder(new MineTinkerItemXPDataImpl.Builder())
+                .buildAndRegister(container);
+
+        Sponge.getDataManager().registerContentUpdater(MineTinkerItemXPDataImpl.class, new MineTinkerItemXPDataImpl.BoolEnabled1To2Updater());
 
         // List of Modifiers The Item Has
         DataRegistration.builder()
