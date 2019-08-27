@@ -38,11 +38,14 @@ public class MineTinkerSponge {
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
-        dataRegistrar = new DataRegistrar(container);
+        DataRegistrar.registerDataManipulators();
+
         modManager = new ModManager();
 
+        // Register modifiers
         modManager.registerModifier(this, new Directing(modManager));
 
+        // Register commands
         CommandSpec addModifier = CommandSpec.builder()
                 .description(Text.of("Applies the modifier to the held item (or increments its level)."))
                 .permission("minetinker.commands.addmodifier")
@@ -52,9 +55,11 @@ public class MineTinkerSponge {
 
         Sponge.getCommandManager().register(this, addModifier, "addmod", "addmodifier");
 
+        // Register listeners
         Sponge.getEventManager().registerListeners(this, new BlockBreakListener(modManager));
     }
 
+    // Remove in production, merely for testing purposes
     @Listener
     public void onPlayerJoin(ClientConnectionEvent.Join event, @Root Player player) {
         ItemStack itemStack = ItemStack.of(ItemTypes.DIAMOND_PICKAXE);

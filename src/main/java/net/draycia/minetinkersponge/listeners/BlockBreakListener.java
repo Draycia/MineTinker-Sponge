@@ -7,9 +7,6 @@ import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
 import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.filter.cause.Root;
-import org.spongepowered.api.item.inventory.ItemStack;
-
-import java.util.Optional;
 
 public class BlockBreakListener {
 

@@ -3,11 +3,9 @@ package net.draycia.minetinkersponge.data;
 import com.google.common.reflect.TypeToken;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Key;
+import org.spongepowered.api.data.value.mutable.MapValue;
 import org.spongepowered.api.data.value.mutable.Value;
 import org.spongepowered.api.util.TypeTokens;
-
-import java.util.Map;
-
 
 public class MTKeys {
 
@@ -15,11 +13,11 @@ public class MTKeys {
     public static final Key<Value<Boolean>> IS_MT_TOOL;
     public static final Key<Value<Boolean>> IS_MT_ARMOR;
 
-
     public static final Key<Value<Integer>> MINETINKER_LEVEL;
+    public static final Key<Value<Integer>> MINETINKER_SLOTS;
     public static final Key<Value<Integer>> MINETINKER_XP;
 
-    public static final Key<Value<Map<String, Integer>>> ITEM_MODIFIERS;
+    public static final Key<MapValue<String, Integer>> ITEM_MODIFIERS;
 
     static {
         IS_MINETINKER = Key.builder()
@@ -57,8 +55,15 @@ public class MTKeys {
                 .query(DataQuery.of("minetinker.minetinker_xp"))
                 .build();
 
+        MINETINKER_SLOTS = Key.builder()
+                .type(TypeTokens.INTEGER_VALUE_TOKEN)
+                .id("minetinker-sponge")
+                .name("Item Modifier Slots")
+                .query(DataQuery.of("minetinker.minetinker_slots"))
+                .build();
+
         ITEM_MODIFIERS = Key.builder()
-                .type(new TypeToken<Value<Map<String, Integer>>>() {})
+                .type(new TypeToken<MapValue<String, Integer>>() {})
                 .id("minetinker-sponge")
                 .name("Item Modifiers")
                 .query(DataQuery.of("minetinker.item_modifiers"))

@@ -12,20 +12,13 @@ import org.spongepowered.api.data.merge.MergeFunction;
 import org.spongepowered.api.data.persistence.AbstractDataBuilder;
 import org.spongepowered.api.data.persistence.DataContentUpdater;
 import org.spongepowered.api.data.persistence.InvalidDataException;
-import org.spongepowered.api.data.value.immutable.ImmutableValue;
-import org.spongepowered.api.data.value.mutable.Value;
 
 import java.util.Optional;
 
 public class IsMineTinkerArmorDataImpl extends AbstractBooleanData<IsMineTinkerArmorData, IsMineTinkerArmorData.Immutable> implements IsMineTinkerArmorData {
 
     public IsMineTinkerArmorDataImpl(boolean enabled) {
-        super(enabled, MTKeys.IS_MT_ARMOR, false);
-    }
-
-    @Override
-    public Value<Boolean> enabled() {
-        return getValueGetter();
+        super(MTKeys.IS_MT_ARMOR, enabled);
     }
 
     @Override
@@ -75,7 +68,7 @@ public class IsMineTinkerArmorDataImpl extends AbstractBooleanData<IsMineTinkerA
 
     public static class Immutable extends AbstractImmutableBooleanData<IsMineTinkerArmorData.Immutable, IsMineTinkerArmorData> implements IsMineTinkerArmorData.Immutable {
         public Immutable(boolean enabled) {
-            super(enabled, MTKeys.IS_MT_ARMOR, false);
+            super(MTKeys.IS_MT_ARMOR, enabled);
         }
 
         @Override
@@ -91,11 +84,6 @@ public class IsMineTinkerArmorDataImpl extends AbstractBooleanData<IsMineTinkerA
         @Override
         public DataContainer toContainer() {
             return super.toContainer().set(MTKeys.IS_MT_ARMOR.getQuery(), getValue());
-        }
-
-        @Override
-        public ImmutableValue<Boolean> enabled() {
-            return getValueGetter();
         }
     }
 

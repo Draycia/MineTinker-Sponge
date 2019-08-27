@@ -18,7 +18,7 @@ import java.util.*;
 public class MinetinkerItemModsDataImpl extends AbstractMappedData<String, Integer, MineTinkerItemModsData, MineTinkerItemModsData.Immutable> implements MineTinkerItemModsData {
 
     public MinetinkerItemModsDataImpl(Map<String, Integer> map) {
-        super(map, MTKeys.ITEM_MODIFIERS);
+        super(MTKeys.ITEM_MODIFIERS, map);
     }
 
     @Override
@@ -37,6 +37,7 @@ public class MinetinkerItemModsDataImpl extends AbstractMappedData<String, Integ
         return from((DataView) container);
     }
 
+    @SuppressWarnings("unchecked")
     public Optional<MineTinkerItemModsData> from(DataView view) {
         if (view.contains(MTKeys.ITEM_MODIFIERS.getQuery())) {
             setValue((Map<String, Integer>)view.getMap(MTKeys.ITEM_MODIFIERS.getQuery()).get());
@@ -100,7 +101,7 @@ public class MinetinkerItemModsDataImpl extends AbstractMappedData<String, Integ
     public static class Immutable extends AbstractImmutableMappedData<String, Integer, MineTinkerItemModsData.Immutable, MineTinkerItemModsData> implements MineTinkerItemModsData.Immutable {
 
         public Immutable(Map<String, Integer> map) {
-            super(map, MTKeys.ITEM_MODIFIERS);
+            super(MTKeys.ITEM_MODIFIERS, map);
         }
 
         @Override
