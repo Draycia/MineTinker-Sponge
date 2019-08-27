@@ -14,6 +14,9 @@ public class MTKeys {
     public static final Key<Value<Boolean>> IS_MINETINKER;
     public static final Key<Value<Boolean>> IS_MT_TOOL;
     public static final Key<Value<Boolean>> IS_MT_ARMOR;
+
+
+    public static final Key<Value<Integer>> MINETINKER_LEVEL;
     public static final Key<Value<Integer>> MINETINKER_XP;
 
     public static final Key<Value<Map<String, Integer>>> ITEM_MODIFIERS;
@@ -38,6 +41,13 @@ public class MTKeys {
                 .id("minetinker-sponge")
                 .name("Is MineTinker Armor")
                 .query(DataQuery.of("minetinker.is_armor"))
+                .build();
+
+        MINETINKER_LEVEL = Key.builder()
+                .type(TypeTokens.INTEGER_VALUE_TOKEN)
+                .id("minetinker-sponge")
+                .name("Item Level")
+                .query(DataQuery.of("minetinker.minetinker_level"))
                 .build();
 
         MINETINKER_XP = Key.builder()

@@ -3,6 +3,7 @@ package net.draycia.minetinkersponge;
 import com.google.inject.Inject;
 import net.draycia.minetinkersponge.commands.AddModifierCommand;
 import net.draycia.minetinkersponge.data.DataRegistrar;
+import net.draycia.minetinkersponge.listeners.BlockBreakListener;
 import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.impls.Directing;
 import org.slf4j.Logger;
@@ -50,6 +51,8 @@ public class MineTinkerSponge {
                 .build();
 
         Sponge.getCommandManager().register(this, addModifier, "addmod", "addmodifier");
+
+        Sponge.getEventManager().registerListeners(this, new BlockBreakListener(modManager));
     }
 
     @Listener

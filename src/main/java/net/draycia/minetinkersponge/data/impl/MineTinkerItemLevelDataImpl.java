@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.data.impl;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.MineTinkerItemXPData;
+import net.draycia.minetinkersponge.data.interfaces.MineTinkerItemLevelData;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
@@ -18,31 +18,31 @@ import org.spongepowered.api.data.value.mutable.Value;
 
 import java.util.Optional;
 
-public class MineTinkerItemXPDataImpl extends AbstractSingleData<Integer, MineTinkerItemXPData, MineTinkerItemXPData.Immutable> implements MineTinkerItemXPData {
+public class MineTinkerItemLevelDataImpl extends AbstractSingleData<Integer, MineTinkerItemLevelData, MineTinkerItemLevelData.Immutable> implements MineTinkerItemLevelData {
     
-    public MineTinkerItemXPDataImpl(int value) {
-        super(MTKeys.MINETINKER_XP, value);
+    public MineTinkerItemLevelDataImpl(int value) {
+        super(MTKeys.MINETINKER_LEVEL, value);
     }
 
     @Override
-    public Optional<MineTinkerItemXPData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<MineTinkerItemXPDataImpl> data_ = dataHolder.get(MineTinkerItemXPDataImpl.class);
+    public Optional<MineTinkerItemLevelData> fill(DataHolder dataHolder, MergeFunction overlap) {
+        Optional<MineTinkerItemLevelDataImpl> data_ = dataHolder.get(MineTinkerItemLevelDataImpl.class);
         if (data_.isPresent()) {
-            MineTinkerItemXPDataImpl data = data_.get();
-            MineTinkerItemXPDataImpl finalData = overlap.merge(this, data);
+            MineTinkerItemLevelDataImpl data = data_.get();
+            MineTinkerItemLevelDataImpl finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
     }
 
     @Override
-    public Optional<MineTinkerItemXPData> from(DataContainer container) {
+    public Optional<MineTinkerItemLevelData> from(DataContainer container) {
         return from((DataView) container);
     }
 
-    public Optional<MineTinkerItemXPData> from(DataView view) {
+    public Optional<MineTinkerItemLevelData> from(DataView view) {
         if (view.contains(MTKeys.IS_MINETINKER.getQuery())) {
-            setValue(view.getInt(MTKeys.MINETINKER_XP.getQuery()).get());
+            setValue(view.getInt(MTKeys.MINETINKER_LEVEL.getQuery()).get());
             return Optional.of(this);
         } else {
             return Optional.empty();
@@ -50,13 +50,13 @@ public class MineTinkerItemXPDataImpl extends AbstractSingleData<Integer, MineTi
     }
 
     @Override
-    public MineTinkerItemXPDataImpl copy() {
-        return new MineTinkerItemXPDataImpl(getValue());
+    public MineTinkerItemLevelDataImpl copy() {
+        return new MineTinkerItemLevelDataImpl(getValue());
     }
 
     @Override
     protected Value<Integer> getValueGetter() {
-        return Sponge.getRegistry().getValueFactory().createValue(MTKeys.MINETINKER_XP, getValue());
+        return Sponge.getRegistry().getValueFactory().createValue(MTKeys.MINETINKER_LEVEL, getValue());
     }
 
     @Override
@@ -74,19 +74,19 @@ public class MineTinkerItemXPDataImpl extends AbstractSingleData<Integer, MineTi
         return super.toContainer().set(MTKeys.IS_MINETINKER.getQuery(), getValue());
     }
 
-    public static class Immutable extends AbstractImmutableSingleData<Integer, MineTinkerItemXPData.Immutable, MineTinkerItemXPData> implements MineTinkerItemXPData.Immutable {
+    public static class Immutable extends AbstractImmutableSingleData<Integer, MineTinkerItemLevelData.Immutable, MineTinkerItemLevelData> implements MineTinkerItemLevelData.Immutable {
         public Immutable(int value) {
-            super(MTKeys.MINETINKER_XP, value);
+            super(MTKeys.MINETINKER_LEVEL, value);
         }
 
         @Override
         protected ImmutableValue<?> getValueGetter() {
-            return Sponge.getRegistry().getValueFactory().createValue(MTKeys.MINETINKER_XP, getValue()).asImmutable();
+            return Sponge.getRegistry().getValueFactory().createValue(MTKeys.MINETINKER_LEVEL, getValue()).asImmutable();
         }
 
         @Override
-        public MineTinkerItemXPDataImpl asMutable() {
-            return new MineTinkerItemXPDataImpl(getValue());
+        public MineTinkerItemLevelDataImpl asMutable() {
+            return new MineTinkerItemLevelDataImpl(getValue());
         }
 
         @Override
@@ -96,27 +96,27 @@ public class MineTinkerItemXPDataImpl extends AbstractSingleData<Integer, MineTi
 
         @Override
         public DataContainer toContainer() {
-            return super.toContainer().set(MTKeys.MINETINKER_XP.getQuery(), getValue());
+            return super.toContainer().set(MTKeys.MINETINKER_LEVEL.getQuery(), getValue());
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<MineTinkerItemXPData> implements MineTinkerItemXPData.Builder {
+    public static class Builder extends AbstractDataBuilder<MineTinkerItemLevelData> implements MineTinkerItemLevelData.Builder {
         public Builder() {
-            super(MineTinkerItemXPData.class, 2);
+            super(MineTinkerItemLevelData.class, 2);
         }
 
         @Override
-        public MineTinkerItemXPDataImpl create() {
-            return new MineTinkerItemXPDataImpl(0);
+        public MineTinkerItemLevelDataImpl create() {
+            return new MineTinkerItemLevelDataImpl(0);
         }
 
         @Override
-        public Optional<MineTinkerItemXPData> createFrom(DataHolder dataHolder) {
+        public Optional<MineTinkerItemLevelData> createFrom(DataHolder dataHolder) {
             return create().fill(dataHolder);
         }
 
         @Override
-        protected Optional<MineTinkerItemXPData> buildContent(DataView container) throws InvalidDataException {
+        protected Optional<MineTinkerItemLevelData> buildContent(DataView container) throws InvalidDataException {
             return create().from(container);
         }
     }
@@ -135,7 +135,7 @@ public class MineTinkerItemXPDataImpl extends AbstractSingleData<Integer, MineTi
 
         @Override
         public DataView update(DataView content) {
-            return content.set(DataQuery.of('.', "minetinker.minetinker_xp"), content.get(DataQuery.of('.', "minetinker.minetinker_xp"))).remove(DataQuery.of('.', "minetinker.minetinker_xp"));
+            return content.set(DataQuery.of('.', "minetinker.minetinker_level"), content.get(DataQuery.of('.', "minetinker.minetinker_level"))).remove(DataQuery.of('.', "minetinker.minetinker_level"));
         }
     }
 

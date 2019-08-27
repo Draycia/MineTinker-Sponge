@@ -50,6 +50,19 @@ public class DataRegistrar {
 
         Sponge.getDataManager().registerContentUpdater(IsMineTinkerArmorDataImpl.class, new IsMineTinkerArmorDataImpl.BoolEnabled1To2Updater());
 
+        // MineTinker Item Level
+        DataRegistration.builder()
+                .dataName("Item Level")
+                .manipulatorId("minetinker_level")
+                .dataClass(MineTinkerItemLevelData.class)
+                .dataImplementation(MineTinkerItemLevelDataImpl.class)
+                .immutableClass(MineTinkerItemLevelData.Immutable.class)
+                .immutableImplementation(MineTinkerItemLevelDataImpl.Immutable.class)
+                .builder(new MineTinkerItemLevelDataImpl.Builder())
+                .buildAndRegister(container);
+
+        Sponge.getDataManager().registerContentUpdater(MineTinkerItemLevelDataImpl.class, new MineTinkerItemLevelDataImpl.Int1To2Updater());
+
         // MineTinker Item XP
         DataRegistration.builder()
                 .dataName("Item XP")
@@ -61,7 +74,7 @@ public class DataRegistrar {
                 .builder(new MineTinkerItemXPDataImpl.Builder())
                 .buildAndRegister(container);
 
-        Sponge.getDataManager().registerContentUpdater(MineTinkerItemXPDataImpl.class, new MineTinkerItemXPDataImpl.BoolEnabled1To2Updater());
+        Sponge.getDataManager().registerContentUpdater(MineTinkerItemXPDataImpl.class, new MineTinkerItemXPDataImpl.Int1To2Updater());
 
         // List of Modifiers The Item Has
         DataRegistration.builder()

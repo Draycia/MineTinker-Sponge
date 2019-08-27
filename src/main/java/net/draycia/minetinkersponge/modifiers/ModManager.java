@@ -1,20 +1,15 @@
 package net.draycia.minetinkersponge.modifiers;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.IsMineTinkerArmorData;
-import net.draycia.minetinkersponge.data.interfaces.IsMineTinkerData;
-import net.draycia.minetinkersponge.data.interfaces.IsMineTinkerToolData;
-import net.draycia.minetinkersponge.data.interfaces.MineTinkerItemModsData;
+import net.draycia.minetinkersponge.data.interfaces.*;
 import net.draycia.minetinkersponge.utils.StringUtils;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class ModManager {
 
@@ -84,6 +79,14 @@ public class ModManager {
             System.out.println("Cannot offer MineTinkerItemModsData!");
         }
 
+        if (!itemStack.offer(itemStack.getOrCreate(MineTinkerItemLevelData.class).get()).isSuccessful()) {
+            System.out.println("Cannot offer MineTinkerItemLevelData!");
+        }
+
+        if (!itemStack.offer(itemStack.getOrCreate(MineTinkerItemXPData.class).get()).isSuccessful()) {
+            System.out.println("Cannot offer MineTinkerItemXPData!");
+        }
+
         if (!itemStack.offer(MTKeys.IS_MINETINKER, true).isSuccessful()) {
             System.out.println("Cannot offer MTKeys.IS_MINETINKER!");
             return false;
@@ -95,6 +98,12 @@ public class ModManager {
         }
 
         if (!itemStack.offer(MTKeys.MINETINKER_XP, 0).isSuccessful()) {
+            System.out.println("Cannot offer MTKeys.MINETINKER_XP!");
+            return false;
+        }
+
+        if (!itemStack.offer(MTKeys.MINETINKER_LEVEL, 1).isSuccessful()) {
+            System.out.println("Cannot offer MTKeys.MINETINKER_LEVEL!");
             return false;
         }
 
@@ -124,26 +133,82 @@ public class ModManager {
     public void rewriteItemLore(ItemStack itemStack) {
         Map<String, Integer> itemModifierLevels = getItemModifierLevels(itemStack);
 
-        Text.Builder lore = Text.builder();
+        ArrayList<Text> lore = new ArrayList<>();
 
         for (Map.Entry<String, Integer> entry : itemModifierLevels.entrySet()) {
             Optional<Modifier> mod = getModifier(entry.getKey());
 
             if (mod.isPresent()) {
-                lore = lore.append(Text.of(mod.get().getName() + " " + StringUtils.toRomanNumerals(entry.getValue())))
-                        .color(TextColors.GRAY);
-
-                lore = lore.append(Text.NEW_LINE);
+                lore.add(Text.builder().append(Text.of(mod.get().getName() + " " + StringUtils.toRomanNumerals(entry.getValue())))
+                        .color(TextColors.GRAY).build());
             }
+        }
+
+        Optional<Integer> level = itemStack.get(MTKeys.MINETINKER_LEVEL);
+
+        if (level.isPresent()) {
+            lore.add(Text.builder()
+                    .append(Text.builder().append(Text.of("Item Level: ")).color(TextColors.GOLD).build())
+                    .append(Text.builder().append(Text.of(level.get())).color(TextColors.WHITE).build())
+                    .build());
         }
 
         Optional<Integer> experience = itemStack.get(MTKeys.MINETINKER_XP);
 
         if (experience.isPresent()) {
-            lore = lore.append(Text.of("Item Experience: ")).color(TextColors.GOLD)
-                    .append(Text.of(StringUtils.toRomanNumerals(experience.get())));
+            double required = getExperienceRequiredToLevel(itemStack);
+
+            lore.add(Text.builder()
+                    .append(Text.builder().append(Text.of("Item XP: ")).color(TextColors.GOLD).build())
+                    .append(Text.builder().append(Text.of(experience.get())).color(TextColors.WHITE).build())
+                    .append(Text.builder().append(Text.of(" / ")).color(TextColors.WHITE).build())
+                    .append(Text.builder().append(Text.of(String.valueOf(required).split("\\.")[0])).color(TextColors.WHITE).build())
+                    .build());
         }
 
-        itemStack.offer(Keys.ITEM_LORE, Collections.singletonList(lore.build()));
+        itemStack.offer(Keys.ITEM_LORE, lore);
+    }
+
+    public void addExperience(ItemStack itemStack, int experience) {
+        Optional<Integer> current = itemStack.get(MTKeys.MINETINKER_XP);
+
+        if (current.isPresent()) {
+            if (current.get() >= getExperienceRequiredToLevel(itemStack)) {
+                itemStack.offer(MTKeys.MINETINKER_XP, 0);
+                incrementItemLevel(itemStack);
+            } else {
+                itemStack.offer(MTKeys.MINETINKER_XP, current.get() + experience);
+            }
+        } else {
+            itemStack.offer(MTKeys.MINETINKER_XP, experience);
+        }
+
+        rewriteItemLore(itemStack);
+    }
+
+    public void incrementItemLevel(ItemStack itemStack) {
+        Optional<Integer> level = itemStack.get(MTKeys.MINETINKER_LEVEL);
+
+        if (level.isPresent()) {
+            itemStack.offer(MTKeys.MINETINKER_LEVEL, level.get() + 1);
+        } else {
+            itemStack.offer(MTKeys.MINETINKER_LEVEL, 1);
+        }
+
+        incrementItemModifierSlots(itemStack);
+    }
+
+    public void incrementItemModifierSlots(ItemStack itemStack) {
+
+    }
+
+    public double getExperienceRequiredToLevel(ItemStack itemStack) {
+        Optional<Integer> level = itemStack.get(MTKeys.MINETINKER_LEVEL);
+
+        if (level.isPresent()) {
+            return 100 * (Math.pow(2, level.get() - 1));
+        }
+
+        return 0;
     }
 }
