@@ -165,6 +165,9 @@ public class ModManager {
             System.out.println("Cannot offer MTKeys.MINETINKER_SLOTS!");
         }
 
+        itemStack.offer(Keys.HIDE_ENCHANTMENTS, true);
+        itemStack.offer(Keys.UNBREAKABLE, true);
+
         rewriteItemLore(itemStack);
     }
 
