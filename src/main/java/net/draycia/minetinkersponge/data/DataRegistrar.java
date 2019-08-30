@@ -12,8 +12,8 @@ public class DataRegistrar {
 
         // MineTinker Compatible Items
         DataRegistration.builder()
-                .dataName("Is MineTinker")
-                .manipulatorId("is_minetinker")
+                .name("Is MineTinker")
+                .id("is_minetinker")
                 .dataClass(IsMineTinkerData.class)
                 .dataImplementation(IsMineTinkerDataImpl.class)
                 .immutableClass(IsMineTinkerData.Immutable.class)
@@ -25,8 +25,8 @@ public class DataRegistrar {
 
         // MineTinker Compatible Tools
         DataRegistration.builder()
-                .dataName("Is MineTinker Tool")
-                .manipulatorId("is_tool")
+                .name("Is MineTinker Tool")
+                .id("is_tool")
                 .dataClass(IsMineTinkerToolData.class)
                 .dataImplementation(IsMineTinkerToolDataImpl.class)
                 .immutableClass(IsMineTinkerToolData.Immutable.class)
@@ -38,8 +38,8 @@ public class DataRegistrar {
 
         // MineTinker Compatible Armor
         DataRegistration.builder()
-                .dataName("Is MineTinker Armor")
-                .manipulatorId("is_armor")
+                .name("Is MineTinker Armor")
+                .id("is_armor")
                 .dataClass(IsMineTinkerArmorData.class)
                 .dataImplementation(IsMineTinkerArmorDataImpl.class)
                 .immutableClass(IsMineTinkerArmorData.Immutable.class)
@@ -51,8 +51,8 @@ public class DataRegistrar {
 
         // MineTinker Item Level
         DataRegistration.builder()
-                .dataName("Item Level")
-                .manipulatorId("minetinker_level")
+                .name("Item Level")
+                .id("minetinker_level")
                 .dataClass(MineTinkerItemLevelData.class)
                 .dataImplementation(MineTinkerItemLevelDataImpl.class)
                 .immutableClass(MineTinkerItemLevelData.Immutable.class)
@@ -64,8 +64,8 @@ public class DataRegistrar {
 
         // MineTinker Item XP
         DataRegistration.builder()
-                .dataName("Item XP")
-                .manipulatorId("minetinker_xp")
+                .name("Item XP")
+                .id("minetinker_xp")
                 .dataClass(MineTinkerItemXPData.class)
                 .dataImplementation(MineTinkerItemXPDataImpl.class)
                 .immutableClass(MineTinkerItemXPData.Immutable.class)
@@ -77,8 +77,8 @@ public class DataRegistrar {
 
         // MineTinker Item XP
         DataRegistration.builder()
-                .dataName("Item Modifier Slots")
-                .manipulatorId("minetinker_slots")
+                .name("Item Modifier Slots")
+                .id("minetinker_slots")
                 .dataClass(MineTinkerItemSlotData.class)
                 .dataImplementation(MineTinkerItemSlotDataImpl.class)
                 .immutableClass(MineTinkerItemSlotData.Immutable.class)
@@ -88,10 +88,23 @@ public class DataRegistrar {
 
         Sponge.getDataManager().registerContentUpdater(MineTinkerItemSlotDataImpl.class, new MineTinkerItemSlotDataImpl.Int1To2Updater());
 
+        // MineTinker Modifier ID
+        DataRegistration.builder()
+                .name("Modifier ID")
+                .id("modifier_id")
+                .dataClass(MineTinkerModifierIDData.class)
+                .dataImplementation(MineTinkerModifierIDDataImpl.class)
+                .immutableClass(MineTinkerModifierIDData.Immutable.class)
+                .immutableImplementation(MineTinkerModifierIDDataImpl.Immutable.class)
+                .builder(new MineTinkerModifierIDDataImpl.Builder())
+                .build();
+
+        Sponge.getDataManager().registerContentUpdater(MineTinkerModifierIDDataImpl.class, new MineTinkerModifierIDDataImpl.String1To2Updater());
+
         // List of Modifiers The Item Has
         DataRegistration.builder()
-                .dataName("MineTinker Modifiers")
-                .manipulatorId("mt_modifiers")
+                .name("MineTinker Modifiers")
+                .id("mt_modifiers")
                 .dataClass(MineTinkerItemModsData.class)
                 .dataImplementation(MinetinkerItemModsDataImpl.class)
                 .immutableClass(MineTinkerItemModsData.Immutable.class)

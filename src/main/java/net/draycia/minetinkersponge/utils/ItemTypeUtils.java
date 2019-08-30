@@ -13,6 +13,8 @@ public class ItemTypeUtils {
     private static ArrayList<ItemType> shovelTypes = new ArrayList<>();
     private static ArrayList<ItemType> pickaxeTypes = new ArrayList<>();
 
+    private static ArrayList<ItemType> allTypes = new ArrayList<>();
+
     static {
         axeTypes.add(ItemTypes.WOODEN_AXE);
         axeTypes.add(ItemTypes.IRON_AXE);
@@ -38,6 +40,12 @@ public class ItemTypeUtils {
         pickaxeTypes.add(ItemTypes.IRON_PICKAXE);
         pickaxeTypes.add(ItemTypes.GOLDEN_PICKAXE);
         pickaxeTypes.add(ItemTypes.DIAMOND_PICKAXE);
+
+        allTypes.addAll(axeTypes);
+        allTypes.addAll(hoeTypes);
+        allTypes.addAll(swordTypes);
+        allTypes.addAll(shovelTypes);
+        allTypes.addAll(pickaxeTypes);
     }
 
     public static ArrayList<ItemType> getAxeTypes() {
@@ -58,6 +66,10 @@ public class ItemTypeUtils {
 
     public static ArrayList<ItemType> getPickaxeTypes() {
         return pickaxeTypes;
+    }
+
+    public static ArrayList<ItemType> getAllTypes() {
+        return allTypes;
     }
 
 }

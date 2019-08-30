@@ -17,6 +17,8 @@ public class MTKeys {
     public static final Key<Value<Integer>> MINETINKER_SLOTS;
     public static final Key<Value<Integer>> MINETINKER_XP;
 
+    public static final Key<Value<String>> MODIFIER_ID;
+
     public static final Key<MapValue<String, Integer>> ITEM_MODIFIERS;
 
     static {
@@ -60,6 +62,13 @@ public class MTKeys {
                 .id("minetinker-sponge")
                 .name("Item Modifier Slots")
                 .query(DataQuery.of("minetinker.minetinker_slots"))
+                .build();
+
+        MODIFIER_ID = Key.builder()
+                .type(TypeTokens.STRING_VALUE_TOKEN)
+                .id("minetinker-sponge")
+                .name("Modifier Item ID")
+                .query(DataQuery.of("minetinker.modifier_id"))
                 .build();
 
         ITEM_MODIFIERS = Key.builder()

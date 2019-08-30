@@ -2,8 +2,11 @@ package net.draycia.minetinkersponge.modifiers;
 
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.data.interfaces.*;
+import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import net.draycia.minetinkersponge.utils.StringUtils;
 import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.item.enchantment.Enchantment;
+import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -48,11 +51,27 @@ public class ModManager {
                 return false;
             }
 
+            if (getItemModifierSlots(itemStack) < 1) {
+                return false;
+            }
+
             if (getModifierLevel(itemStack, modifier) >= modifier.getMaxLevel()) {
                 return false;
             }
 
-            incrementModifierLevel(itemStack, modifier);
+            for (EnchantmentType type : modifier.getAppliedEnchantments()) {
+                Optional<List<Enchantment>> enchantments = itemStack.get(Keys.ITEM_ENCHANTMENTS);
+                int level = getModifierLevel(itemStack, modifier);
+
+                if (enchantments.isPresent()) {
+                    List<Enchantment> enchantmentList = enchantments.get();
+                    enchantmentList.add(Enchantment.builder().type(type).level(level).build());
+                    itemStack.offer(Keys.ITEM_ENCHANTMENTS, enchantmentList);
+                }
+            }
+
+            setModifierLevel(itemStack, modifier, getModifierLevel(itemStack, modifier) - 1);
+            setItemModifierSlots(itemStack, getItemModifierSlots(itemStack) - 1);
             rewriteItemLore(itemStack);
 
             return true;
@@ -61,7 +80,43 @@ public class ModManager {
         return false;
     }
 
-    public boolean convertItemStack(ItemStack itemStack) {
+    public boolean applyModifier(ItemStack itemStack, Modifier modifier, int amount) {
+        System.out.println(amount);
+        if (modifier.getCompatibleItems() != null && !modifier.getCompatibleItems().contains(itemStack.getType())) {
+            return false;
+        }
+
+        if (getItemModifierSlots(itemStack) < amount) {
+            return false;
+        }
+
+        if (getModifierLevel(itemStack, modifier) + amount > modifier.getMaxLevel()) {
+            return false;
+        }
+
+        for (EnchantmentType type : modifier.getAppliedEnchantments()) {
+            Optional<List<Enchantment>> enchantments = itemStack.get(Keys.ITEM_ENCHANTMENTS);
+            int level = getModifierLevel(itemStack, modifier) + amount;
+
+            if (enchantments.isPresent()) {
+                List<Enchantment> enchantmentList = enchantments.get();
+                enchantmentList.add(Enchantment.builder().type(type).level(level).build());
+                itemStack.offer(Keys.ITEM_ENCHANTMENTS, enchantmentList);
+            }
+        }
+
+        setModifierLevel(itemStack, modifier, getModifierLevel(itemStack, modifier) + amount);
+        setItemModifierSlots(itemStack, getItemModifierSlots(itemStack) - amount);
+        rewriteItemLore(itemStack);
+
+        return true;
+    }
+
+    public void convertItemStack(ItemStack itemStack) {
+        if (!ItemTypeUtils.getAllTypes().contains(itemStack.getType())) {
+            return;
+        }
+
         if (!itemStack.offer(itemStack.getOrCreate(IsMineTinkerData.class).get()).isSuccessful()) {
             System.out.println("Cannot offer IsMineTinkerData!");
         }
@@ -92,50 +147,47 @@ public class ModManager {
 
         if (!itemStack.offer(MTKeys.IS_MINETINKER, true).isSuccessful()) {
             System.out.println("Cannot offer MTKeys.IS_MINETINKER!");
-            return false;
         }
 
         if (!itemStack.offer(MTKeys.IS_MT_TOOL, true).isSuccessful()) {
             System.out.println("Cannot offer MTKeys.IS_MT_TOOL!");
-            return false;
         }
 
         if (!itemStack.offer(MTKeys.MINETINKER_XP, 0).isSuccessful()) {
             System.out.println("Cannot offer MTKeys.MINETINKER_XP!");
-            return false;
         }
 
         if (!itemStack.offer(MTKeys.MINETINKER_LEVEL, 1).isSuccessful()) {
             System.out.println("Cannot offer MTKeys.MINETINKER_LEVEL!");
-            return false;
         }
 
         if (!itemStack.offer(MTKeys.MINETINKER_SLOTS, 1).isSuccessful()) {
             System.out.println("Cannot offer MTKeys.MINETINKER_SLOTS!");
-            return false;
         }
 
-        return true;
+        rewriteItemLore(itemStack);
     }
 
     public int getModifierLevel(ItemStack itemStack, Modifier modifier) {
         return getItemModifierLevels(itemStack).getOrDefault(modifier.getKey(), 0);
     }
 
-    public void incrementModifierLevel(ItemStack itemStack, Modifier modifier) {
+    public void setModifierLevel(ItemStack itemStack, Modifier modifier, int amount) {
+        System.out.println("Setting level to " + amount);
         Map<String, Integer> itemModifierLevels = getItemModifierLevels(itemStack);
 
-        if (itemModifierLevels.get(modifier.getKey()) != null) {
-            itemModifierLevels.put(modifier.getKey(), itemModifierLevels.get(modifier.getKey()) + 1);
-        } else {
-            itemModifierLevels.put(modifier.getKey(), 1);
+        if (itemModifierLevels == null) {
+            System.out.println("It's null?");
+            return;
         }
+
+        itemModifierLevels.put(modifier.getKey(), amount);
 
         itemStack.offer(MTKeys.ITEM_MODIFIERS, itemModifierLevels);
     }
 
     public Map<String, Integer> getItemModifierLevels(ItemStack itemStack) {
-        return itemStack.getOrCreate(MineTinkerItemModsData.class).get().asMap();
+        return itemStack.get(MTKeys.ITEM_MODIFIERS).orElse(Collections.emptyMap());
     }
 
     public void rewriteItemLore(ItemStack itemStack) {
@@ -147,6 +199,8 @@ public class ModManager {
             Optional<Modifier> mod = getModifier(entry.getKey());
 
             if (mod.isPresent()) {
+                System.out.println("Showing lore for modifier: " + mod.get().getName());
+
                 lore.add(Text.builder().append(Text.of(mod.get().getName() + " " + StringUtils.toRomanNumerals(entry.getValue())))
                         .color(TextColors.GRAY).build());
             }
@@ -223,6 +277,14 @@ public class ModManager {
         } else {
             itemStack.offer(MTKeys.MINETINKER_SLOTS, 1);
         }
+    }
+
+    public void setItemModifierSlots(ItemStack itemStack, int level) {
+        itemStack.offer(MTKeys.MINETINKER_SLOTS, level);
+    }
+
+    public int getItemModifierSlots(ItemStack itemStack) {
+        return itemStack.get(MTKeys.MINETINKER_SLOTS).orElse(0);
     }
 
     public double getExperienceRequiredToLevel(ItemStack itemStack) {

@@ -12,6 +12,8 @@ import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.item.inventory.DropItemEvent;
 import org.spongepowered.api.item.ItemType;
+import org.spongepowered.api.item.ItemTypes;
+import org.spongepowered.api.item.inventory.ItemStack;
 
 import java.util.List;
 
@@ -31,8 +33,12 @@ public class Directing extends Modifier {
 
     @Override
     public int getMaxLevel() {
-        // The actual max level should be 1 but it's set to 3 for testing purposes.
         return 3;
+    }
+
+    @Override
+    public ItemType getModifierItemType() {
+        return ItemTypes.COMPASS;
     }
 
     @Override
