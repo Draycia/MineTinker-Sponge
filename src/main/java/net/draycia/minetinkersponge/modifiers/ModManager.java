@@ -81,7 +81,6 @@ public class ModManager {
     }
 
     public boolean applyModifier(ItemStack itemStack, Modifier modifier, int amount) {
-        System.out.println(amount);
         if (modifier.getCompatibleItems() != null && !modifier.getCompatibleItems().contains(itemStack.getType())) {
             return false;
         }
@@ -176,11 +175,9 @@ public class ModManager {
     }
 
     public void setModifierLevel(ItemStack itemStack, Modifier modifier, int amount) {
-        System.out.println("Setting level to " + amount);
         Map<String, Integer> itemModifierLevels = getItemModifierLevels(itemStack);
 
         if (itemModifierLevels == null) {
-            System.out.println("It's null?");
             return;
         }
 
@@ -202,8 +199,6 @@ public class ModManager {
             Optional<Modifier> mod = getModifier(entry.getKey());
 
             if (mod.isPresent()) {
-                System.out.println("Showing lore for modifier: " + mod.get().getName());
-
                 lore.add(Text.builder().append(Text.of(mod.get().getName() + " " + StringUtils.toRomanNumerals(entry.getValue())))
                         .color(TextColors.GRAY).build());
             }
