@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.modifiers.impls;
 
-import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.utils.CompositeUnmodifiableList;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
@@ -11,36 +11,31 @@ import org.spongepowered.api.item.enchantment.EnchantmentTypes;
 import java.util.Collections;
 import java.util.List;
 
-public class Sharpness extends Modifier {
-
-    private ModManager modManager;
+public class DepthStrider extends Modifier {
 
     @Override
     public String getName() {
-        return "Sharpness";
+        return "Depth Strider";
     }
 
     @Override
     public int getMaxLevel() {
-        return 5;
+        return 3;
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.FLINT;
+        return ItemTypes.WATERLILY;
     }
 
     @Override
     public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getSwordTypes();
-    }
-
-    public Sharpness(ModManager modManager) {
-        this.modManager = modManager;
+        return ItemTypeUtils.getBootTypes();
     }
 
     @Override
     public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.SHARPNESS);
+        return Collections.singletonList(EnchantmentTypes.DEPTH_STRIDER);
     }
+
 }

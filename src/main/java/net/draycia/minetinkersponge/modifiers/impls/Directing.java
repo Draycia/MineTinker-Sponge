@@ -27,11 +27,6 @@ public class Directing extends Modifier {
     }
 
     @Override
-    public String getKey() {
-        return "directing";
-    }
-
-    @Override
     public int getMaxLevel() {
         return 3;
     }

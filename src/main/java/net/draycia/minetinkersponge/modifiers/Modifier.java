@@ -12,13 +12,15 @@ import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public abstract class Modifier {
 
     public abstract String getName();
-    public abstract String getKey();
     public abstract int getMaxLevel();
+
+    public String getKey() {
+        return getName().replace(" ", "-").replace("'", "").toLowerCase();
+    }
 
     /**
      * A list of {@link ItemType ItemTypes} that the modifier can be applied to.
