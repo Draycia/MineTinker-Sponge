@@ -38,9 +38,10 @@ public abstract class Modifier {
      * Called when the modifier is applied to an item
      * @param itemStack The item the modifier is being applied to
      * @param level The new level of the modifier
+     * @return The new item stack after the modifier is applied and changes are made.
      */
-    public void onModifierApplication(ItemStack itemStack, int level) {
-
+    public ItemStack onModifierApplication(ItemStack itemStack, int level) {
+        return itemStack;
     }
 
     /**

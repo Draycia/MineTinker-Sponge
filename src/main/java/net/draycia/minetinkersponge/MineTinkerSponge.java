@@ -31,13 +31,12 @@ public class MineTinkerSponge {
 
         modManager = new ModManager();
 
-        // Register modifiers
+        // Enchantment Modifiers
         modManager.registerModifier(this, new AquaAffinity());
         modManager.registerModifier(this, new BaneOfArthropods());
         modManager.registerModifier(this, new BindingCurse());
         modManager.registerModifier(this, new BlastProtection());
         modManager.registerModifier(this, new DepthStrider());
-        modManager.registerModifier(this, new Directing(modManager));
         modManager.registerModifier(this, new Efficiency());
         modManager.registerModifier(this, new FeatherFalling());
         modManager.registerModifier(this, new LuckOfTheSea());
@@ -55,6 +54,14 @@ public class MineTinkerSponge {
         modManager.registerModifier(this, new Thorns());
         modManager.registerModifier(this, new Unbreaking());
         modManager.registerModifier(this, new VanishingCurse());
+
+        // Custom Modifiers
+        modManager.registerModifier(this, new Directing(modManager));
+
+        // Upgrade Modifiers
+        modManager.registerModifier(this, new IronUpgrade(modManager));
+        modManager.registerModifier(this, new GoldUpgrade(modManager));
+        modManager.registerModifier(this, new DiamondUpgrade(modManager));
 
         // Register commands
         CommandSpec addModifier = CommandSpec.builder()

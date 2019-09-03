@@ -3,6 +3,7 @@ package net.draycia.minetinkersponge.listeners;
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.modifiers.ModifierApplicationResult;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.filter.cause.First;
@@ -61,8 +62,10 @@ public class AnvilListener {
             amount = slots;
         }
 
-        if (modManager.applyModifier(left, modifier, false, amount)) {
-            event.getResult().setCustom(left.createSnapshot());
+        ModifierApplicationResult result = modManager.applyModifier(left, modifier, false, amount);
+
+        if (result.wasSuccess()) {
+            event.getResult().setCustom(result.getItemStack().createSnapshot());
             event.getResult().setValid(true);
         }
     }
@@ -127,9 +130,15 @@ public class AnvilListener {
                 amount = slots;
             }
 
-            if (modifier.isPresent() && modManager.applyModifier(left, modifier.get(), false, amount)) {
+            if (!modifier.isPresent()) {
+                return;
+            }
+
+            ModifierApplicationResult applicationResult = modManager.applyModifier(left, modifier.get(), false, amount);
+
+            if (applicationResult.wasSuccess()) {
                 event.getCursorTransaction().setValid(true);
-                event.getCursorTransaction().setCustom(left.createSnapshot());
+                event.getCursorTransaction().setCustom(applicationResult.getItemStack().createSnapshot());
 
                 boolean isSecond = false;
 
