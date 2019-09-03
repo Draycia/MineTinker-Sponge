@@ -35,6 +35,15 @@ public abstract class Modifier {
     public abstract ItemType getModifierItemType();
 
     /**
+     * Called when the modifier is applied to an item
+     * @param itemStack The item the modifier is being applied to
+     * @param level The new level of the modifier
+     */
+    public void onModifierApplication(ItemStack itemStack, int level) {
+
+    }
+
+    /**
      * Called when the {@link ModManager} successfully registers the modifier.
      * This should be used for registering event listeners instead of in the constructor.
      * @param plugin The instance of the plugin that owns the modifier that's being registered.

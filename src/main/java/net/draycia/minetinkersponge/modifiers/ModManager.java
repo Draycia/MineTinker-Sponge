@@ -78,7 +78,9 @@ public class ModManager {
                 return false;
             }
 
-            if (getModifierLevel(itemStack, modifier) >= modifier.getMaxLevel()) {
+            int targetLevel = getModifierLevel(itemStack, modifier) + 1;
+
+            if (targetLevel > modifier.getMaxLevel()) {
                 return false;
             }
 
@@ -103,6 +105,8 @@ public class ModManager {
 
             rewriteItemLore(itemStack);
 
+            modifier.onModifierApplication(itemStack, targetLevel);
+
             return true;
         }
 
@@ -125,7 +129,9 @@ public class ModManager {
             return false;
         }
 
-        if (getModifierLevel(itemStack, modifier) + amount > modifier.getMaxLevel()) {
+        int targetLevel = getModifierLevel(itemStack, modifier) + amount;
+
+        if (targetLevel > modifier.getMaxLevel()) {
             return false;
         }
 
@@ -147,6 +153,8 @@ public class ModManager {
         }
 
         rewriteItemLore(itemStack);
+
+        modifier.onModifierApplication(itemStack, targetLevel);
 
         return true;
     }
