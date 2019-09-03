@@ -29,7 +29,7 @@ public abstract class Modifier {
     public abstract List<ItemType> getCompatibleItems();
 
     /**
-     * @return The item type used for creattion of the modifier item.
+     * @return The item type used for creation of the modifier item.
      */
     public abstract ItemType getModifierItemType();
 
