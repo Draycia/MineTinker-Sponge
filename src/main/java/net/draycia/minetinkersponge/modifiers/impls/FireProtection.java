@@ -35,7 +35,7 @@ public class FireProtection extends Modifier {
 
     @Override
     public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getArmorTypes();
+        return new CompositeUnmodifiableList<>(ItemTypeUtils.getArmorTypes(), ItemTypeUtils.getMiscArmorTypes());
     }
 
     @Override

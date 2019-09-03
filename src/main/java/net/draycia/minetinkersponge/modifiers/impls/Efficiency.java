@@ -35,12 +35,7 @@ public class Efficiency extends Modifier {
 
     @Override
     public List<ItemType> getCompatibleItems() {
-        // Lol
-        return new CompositeUnmodifiableList<>(
-                new CompositeUnmodifiableList<>(
-                        ItemTypeUtils.getPickaxeTypes(),
-                        ItemTypeUtils.getAxeTypes()),
-                        ItemTypeUtils.getShovelTypes());
+        return ItemTypeUtils.getToolTypes();
     }
 
     @Override

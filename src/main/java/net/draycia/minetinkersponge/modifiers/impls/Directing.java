@@ -2,6 +2,8 @@ package net.draycia.minetinkersponge.modifiers.impls;
 
 import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.utils.CompositeUnmodifiableList;
+import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.Entity;
@@ -43,7 +45,7 @@ public class Directing extends Modifier {
 
     @Override
     public List<ItemType> getCompatibleItems() {
-        return null; // Null = all, empty list = nothing
+        return new CompositeUnmodifiableList<>(ItemTypeUtils.getToolTypes(), ItemTypeUtils.getWeaponTypes());
     }
 
     @Override

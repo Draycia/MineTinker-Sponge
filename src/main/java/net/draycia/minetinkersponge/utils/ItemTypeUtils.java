@@ -4,18 +4,22 @@ import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class ItemTypeUtils {
 
     private static ArrayList<ItemType> axeTypes = new ArrayList<>();
-    private static ArrayList<ItemType> hoeTypes = new ArrayList<>();
     private static ArrayList<ItemType> swordTypes = new ArrayList<>();
+    private static ArrayList<ItemType> bowTypes = new ArrayList<>(Collections.singletonList(ItemTypes.BOW));
+
+    private static ArrayList<ItemType> weaponTypes = new ArrayList<>();
+
+    private static ArrayList<ItemType> hoeTypes = new ArrayList<>();
     private static ArrayList<ItemType> shovelTypes = new ArrayList<>();
     private static ArrayList<ItemType> pickaxeTypes = new ArrayList<>();
 
-    private static ArrayList<ItemType> bowTypes = new ArrayList<>(Collections.singletonList(ItemTypes.BOW));
+    private static ArrayList<ItemType> toolTypes = new ArrayList<>();
+
     private static ArrayList<ItemType> fishingRodTypes = new ArrayList<>(Collections.singleton(ItemTypes.FISHING_ROD));
 
     private static ArrayList<ItemType> bootTypes = new ArrayList<>();
@@ -81,6 +85,15 @@ public class ItemTypeUtils {
         miscArmorTypes.add(ItemTypes.ELYTRA);
         miscArmorTypes.add(ItemTypes.PUMPKIN);
         miscArmorTypes.add(ItemTypes.LIT_PUMPKIN);
+
+        weaponTypes.addAll(axeTypes);
+        weaponTypes.addAll(swordTypes);
+        weaponTypes.addAll(bowTypes);
+
+        toolTypes.addAll(pickaxeTypes);
+        toolTypes.addAll(allTypes);
+        toolTypes.addAll(hoeTypes);
+        toolTypes.addAll(shovelTypes);
 
         armorTypes.addAll(bootTypes);
         armorTypes.addAll(leggingTypes);
@@ -154,6 +167,14 @@ public class ItemTypeUtils {
 
     public static ArrayList<ItemType> getArmorTypes() {
         return armorTypes;
+    }
+
+    public static ArrayList<ItemType> getToolTypes() {
+        return toolTypes;
+    }
+
+    public static ArrayList<ItemType> getWeaponTypes() {
+        return weaponTypes;
     }
 
     public static ArrayList<ItemType> getAllTypes() {

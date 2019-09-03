@@ -1,6 +1,7 @@
 package net.draycia.minetinkersponge.modifiers.impls;
 
 import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.utils.CompositeUnmodifiableList;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
@@ -34,7 +35,7 @@ public class Protection extends Modifier {
 
     @Override
     public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getArmorTypes();
+        return new CompositeUnmodifiableList<>(ItemTypeUtils.getArmorTypes(), ItemTypeUtils.getMiscArmorTypes());
     }
 
     @Override
