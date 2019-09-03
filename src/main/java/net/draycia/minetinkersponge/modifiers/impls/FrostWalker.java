@@ -11,16 +11,16 @@ import org.spongepowered.api.item.enchantment.EnchantmentTypes;
 import java.util.Collections;
 import java.util.List;
 
-public class BindingCurse extends Modifier {
+public class FrostWalker extends Modifier {
 
     @Override
     public String getName() {
-        return "Curse of Binding";
+        return "Frost Walker";
     }
-    
+
     @Override
     public int getMaxLevel() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -30,17 +30,17 @@ public class BindingCurse extends Modifier {
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.COAL;
+        return ItemTypes.ICE;
     }
 
     @Override
     public List<ItemType> getCompatibleItems() {
-        return new CompositeUnmodifiableList<>(ItemTypeUtils.getArmorTypes(), ItemTypeUtils.getMiscArmorTypes());
+        return ItemTypeUtils.getBootTypes();
     }
 
     @Override
     public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.BINDING_CURSE);
+        return Collections.singletonList(EnchantmentTypes.FROST_WALKER);
     }
 
 }

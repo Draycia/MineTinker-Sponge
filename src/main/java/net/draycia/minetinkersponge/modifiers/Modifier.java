@@ -17,6 +17,7 @@ public abstract class Modifier {
 
     public abstract String getName();
     public abstract int getMaxLevel();
+    public abstract int getLevelWeight();
 
     public String getKey() {
         return getName().replace(" ", "-").replace("'", "").toLowerCase();

@@ -33,7 +33,11 @@ public class AddModifierCommand implements CommandExecutor {
             Optional<ItemStack> mainItem = player.getItemInHand(HandTypes.MAIN_HAND);
 
             if (mainItem.isPresent() && modifier.isPresent()) {
-                modManager.applyModifier(mainItem.get(), modifier.get());
+                if (args.getOne("amount").isPresent()) {
+                    modManager.applyModifier(mainItem.get(), modifier.get(), true, (int)args.getOne("amount").get());
+                } else {
+                    modManager.applyModifier(mainItem.get(), modifier.get(), true);
+                }
             }
         });
 

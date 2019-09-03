@@ -11,13 +11,13 @@ import org.spongepowered.api.item.enchantment.EnchantmentTypes;
 import java.util.Collections;
 import java.util.List;
 
-public class BindingCurse extends Modifier {
+public class Flame extends Modifier {
 
     @Override
     public String getName() {
-        return "Curse of Binding";
+        return "Flame";
     }
-    
+
     @Override
     public int getMaxLevel() {
         return 1;
@@ -30,17 +30,17 @@ public class BindingCurse extends Modifier {
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.COAL;
+        return ItemTypes.BLAZE_ROD;
     }
 
     @Override
     public List<ItemType> getCompatibleItems() {
-        return new CompositeUnmodifiableList<>(ItemTypeUtils.getArmorTypes(), ItemTypeUtils.getMiscArmorTypes());
+        return ItemTypeUtils.getBowTypes();
     }
 
     @Override
     public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.BINDING_CURSE);
+        return Collections.singletonList(EnchantmentTypes.FLAME);
     }
 
 }

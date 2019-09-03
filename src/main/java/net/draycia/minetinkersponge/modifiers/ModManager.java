@@ -17,6 +17,12 @@ public class ModManager {
 
     private HashMap<String, Modifier> modifiers = new HashMap<>();
 
+    /**
+     * Registers the modifier and adds it to MineTinker's internal modifier map
+     * @param plugin The plugin that's registering the modifier
+     * @param modifier The modifier instance to register
+     * @return If the registration was a success. My return false if a modifier with the key already exists.
+     */
     public boolean registerModifier(Object plugin, Modifier modifier) {
          if (modifiers.containsKey(modifier.getKey())) {
              return false;
@@ -29,10 +35,21 @@ public class ModManager {
          return true;
     }
 
+    /**
+     * Gets the modifier with the matching key
+     * @param key The key of the modifier
+     * @return The modifier
+     */
     public Optional<Modifier> getModifier(String key) {
         return Optional.ofNullable(modifiers.get(key));
     }
 
+    /**
+     *
+     * @param itemStack
+     * @param modifier
+     * @return
+     */
     public boolean itemHasModifier(ItemStack itemStack, Modifier modifier) {
         if (itemStack.get(MTKeys.IS_MINETINKER).isPresent()) {
             Optional<Map<String, Integer>> modifiers = itemStack.get(MTKeys.ITEM_MODIFIERS);
@@ -44,14 +61,20 @@ public class ModManager {
 
         return false;
     }
-    
-    public boolean applyModifier(ItemStack itemStack, Modifier modifier) {
+
+    /**
+     *
+     * @param itemStack
+     * @param modifier
+     * @return
+     */
+    public boolean applyModifier(ItemStack itemStack, Modifier modifier, boolean ignoreSlots) {
         if (itemStack.get(MTKeys.IS_MINETINKER).isPresent()) {
             if (modifier.getCompatibleItems() != null && !modifier.getCompatibleItems().contains(itemStack.getType())) {
                 return false;
             }
 
-            if (getItemModifierSlots(itemStack) < 1) {
+            if (!ignoreSlots && getItemModifierSlots(itemStack) < 1) {
                 return false;
             }
 
@@ -60,10 +83,12 @@ public class ModManager {
             }
 
             for (EnchantmentType type : modifier.getAppliedEnchantments()) {
+                System.out.println("This is called");
                 Optional<List<Enchantment>> enchantments = itemStack.get(Keys.ITEM_ENCHANTMENTS);
                 int level = getModifierLevel(itemStack, modifier);
 
                 if (enchantments.isPresent()) {
+                    System.out.println("This is also called");
                     List<Enchantment> enchantmentList = enchantments.get();
                     enchantmentList.add(Enchantment.builder().type(type).level(level).build());
                     itemStack.offer(Keys.ITEM_ENCHANTMENTS, enchantmentList);
@@ -71,7 +96,11 @@ public class ModManager {
             }
 
             setModifierLevel(itemStack, modifier, getModifierLevel(itemStack, modifier) - 1);
-            setItemModifierSlots(itemStack, getItemModifierSlots(itemStack) - 1);
+
+            if (!ignoreSlots) {
+                setItemModifierSlots(itemStack, getItemModifierSlots(itemStack) - 1);
+            }
+
             rewriteItemLore(itemStack);
 
             return true;
@@ -80,12 +109,19 @@ public class ModManager {
         return false;
     }
 
-    public boolean applyModifier(ItemStack itemStack, Modifier modifier, int amount) {
+    /**
+     *
+     * @param itemStack
+     * @param modifier
+     * @param amount
+     * @return
+     */
+    public boolean applyModifier(ItemStack itemStack, Modifier modifier, boolean ignoreSlots, int amount) {
         if (modifier.getCompatibleItems() != null && !modifier.getCompatibleItems().contains(itemStack.getType())) {
             return false;
         }
 
-        if (getItemModifierSlots(itemStack) < amount) {
+        if (!ignoreSlots && getItemModifierSlots(itemStack) < amount) {
             return false;
         }
 
@@ -105,12 +141,20 @@ public class ModManager {
         }
 
         setModifierLevel(itemStack, modifier, getModifierLevel(itemStack, modifier) + amount);
-        setItemModifierSlots(itemStack, getItemModifierSlots(itemStack) - amount);
+
+        if (!ignoreSlots) {
+            setItemModifierSlots(itemStack, getItemModifierSlots(itemStack) - amount);
+        }
+
         rewriteItemLore(itemStack);
 
         return true;
     }
 
+    /**
+     *
+     * @param itemStack
+     */
     public void convertItemStack(ItemStack itemStack) {
         if (!ItemTypeUtils.getAllTypes().contains(itemStack.getType())) {
             return;
@@ -170,10 +214,22 @@ public class ModManager {
         rewriteItemLore(itemStack);
     }
 
+    /**
+     *
+     * @param itemStack
+     * @param modifier
+     * @return
+     */
     public int getModifierLevel(ItemStack itemStack, Modifier modifier) {
         return getItemModifierLevels(itemStack).getOrDefault(modifier.getKey(), 0);
     }
 
+    /**
+     *
+     * @param itemStack
+     * @param modifier
+     * @param amount
+     */
     public void setModifierLevel(ItemStack itemStack, Modifier modifier, int amount) {
         Map<String, Integer> itemModifierLevels = getItemModifierLevels(itemStack);
 
@@ -186,23 +242,43 @@ public class ModManager {
         itemStack.offer(MTKeys.ITEM_MODIFIERS, itemModifierLevels);
     }
 
+    /**
+     *
+     * @param itemStack
+     * @return
+     */
     public Map<String, Integer> getItemModifierLevels(ItemStack itemStack) {
         return itemStack.get(MTKeys.ITEM_MODIFIERS).orElse(Collections.emptyMap());
     }
 
+    /**
+     *
+     * @param itemStack
+     */
     public void rewriteItemLore(ItemStack itemStack) {
         Map<String, Integer> itemModifierLevels = getItemModifierLevels(itemStack);
 
         ArrayList<Text> lore = new ArrayList<>();
 
+        long itemLevel = 0;
+
         for (Map.Entry<String, Integer> entry : itemModifierLevels.entrySet()) {
             Optional<Modifier> mod = getModifier(entry.getKey());
 
             if (mod.isPresent()) {
-                lore.add(Text.builder().append(Text.of(mod.get().getName() + " " + StringUtils.toRomanNumerals(entry.getValue())))
+                Modifier modifier = mod.get();
+
+                itemLevel += modifier.getLevelWeight() * entry.getValue();
+
+                lore.add(Text.builder().append(Text.of(modifier.getName() + " " + StringUtils.toRomanNumerals(entry.getValue())))
                         .color(TextColors.GRAY).build());
             }
         }
+
+        lore.add(Text.builder()
+                .append(Text.builder().append(Text.of("Effective Level: ")).color(TextColors.GOLD).build())
+                .append(Text.builder().append(Text.of(itemLevel)).color(TextColors.WHITE).build())
+                .build());
 
         Optional<Integer> level = itemStack.get(MTKeys.MINETINKER_LEVEL);
 
@@ -238,6 +314,11 @@ public class ModManager {
         itemStack.offer(Keys.ITEM_LORE, lore);
     }
 
+    /**
+     *
+     * @param itemStack
+     * @param experience
+     */
     public void addExperience(ItemStack itemStack, int experience) {
         Optional<Integer> current = itemStack.get(MTKeys.MINETINKER_XP);
 
@@ -255,6 +336,10 @@ public class ModManager {
         rewriteItemLore(itemStack);
     }
 
+    /**
+     *
+     * @param itemStack
+     */
     public void incrementItemLevel(ItemStack itemStack) {
         Optional<Integer> level = itemStack.get(MTKeys.MINETINKER_LEVEL);
 
@@ -267,6 +352,10 @@ public class ModManager {
         incrementItemModifierSlots(itemStack);
     }
 
+    /**
+     *
+     * @param itemStack
+     */
     public void incrementItemModifierSlots(ItemStack itemStack) {
         Optional<Integer> slots = itemStack.get(MTKeys.MINETINKER_SLOTS);
 
@@ -277,14 +366,29 @@ public class ModManager {
         }
     }
 
+    /**
+     *
+     * @param itemStack
+     * @param level
+     */
     public void setItemModifierSlots(ItemStack itemStack, int level) {
         itemStack.offer(MTKeys.MINETINKER_SLOTS, level);
     }
 
+    /**
+     *
+     * @param itemStack
+     * @return
+     */
     public int getItemModifierSlots(ItemStack itemStack) {
         return itemStack.get(MTKeys.MINETINKER_SLOTS).orElse(0);
     }
 
+    /**
+     *
+     * @param itemStack
+     * @return
+     */
     public double getExperienceRequiredToLevel(ItemStack itemStack) {
         Optional<Integer> level = itemStack.get(MTKeys.MINETINKER_LEVEL);
 

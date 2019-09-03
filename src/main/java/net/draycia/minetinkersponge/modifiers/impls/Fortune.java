@@ -11,16 +11,16 @@ import org.spongepowered.api.item.enchantment.EnchantmentTypes;
 import java.util.Collections;
 import java.util.List;
 
-public class BindingCurse extends Modifier {
+public class Fortune extends Modifier {
 
     @Override
     public String getName() {
-        return "Curse of Binding";
+        return "Fortune";
     }
-    
+
     @Override
     public int getMaxLevel() {
-        return 1;
+        return 3;
     }
 
     @Override
@@ -30,17 +30,22 @@ public class BindingCurse extends Modifier {
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.COAL;
+        return ItemTypes.RABBIT_FOOT;
     }
 
     @Override
     public List<ItemType> getCompatibleItems() {
-        return new CompositeUnmodifiableList<>(ItemTypeUtils.getArmorTypes(), ItemTypeUtils.getMiscArmorTypes());
+        // Lol
+        return new CompositeUnmodifiableList<>(
+                new CompositeUnmodifiableList<>(
+                        ItemTypeUtils.getPickaxeTypes(),
+                        ItemTypeUtils.getAxeTypes()),
+                        ItemTypeUtils.getShovelTypes());
     }
 
     @Override
     public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.BINDING_CURSE);
+        return Collections.singletonList(EnchantmentTypes.FORTUNE);
     }
 
 }

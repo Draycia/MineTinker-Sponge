@@ -28,7 +28,12 @@ public class Directing extends Modifier {
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return 1;
+    }
+
+    @Override
+    public int getLevelWeight() {
+        return 1;
     }
 
     @Override
