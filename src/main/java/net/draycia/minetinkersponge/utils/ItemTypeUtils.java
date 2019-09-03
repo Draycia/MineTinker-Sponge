@@ -4,6 +4,8 @@ import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class ItemTypeUtils {
 
@@ -12,6 +14,8 @@ public class ItemTypeUtils {
     private static ArrayList<ItemType> swordTypes = new ArrayList<>();
     private static ArrayList<ItemType> shovelTypes = new ArrayList<>();
     private static ArrayList<ItemType> pickaxeTypes = new ArrayList<>();
+
+    private static ArrayList<ItemType> bowTypes = new ArrayList<>(Collections.singletonList(ItemTypes.BOW));
 
     private static ArrayList<ItemType> bootTypes = new ArrayList<>();
     private static ArrayList<ItemType> leggingTypes = new ArrayList<>();
@@ -94,6 +98,8 @@ public class ItemTypeUtils {
         allTypes.addAll(helmetTypes);
 
         allTypes.addAll(miscArmorTypes);
+
+        allTypes.add(ItemTypes.BOW);
     }
 
     public static ArrayList<ItemType> getAxeTypes() {
@@ -106,6 +112,10 @@ public class ItemTypeUtils {
 
     public static ArrayList<ItemType> getSwordTypes() {
         return swordTypes;
+    }
+
+    public static ArrayList<ItemType> getBowTypes() {
+        return bowTypes;
     }
 
     public static ArrayList<ItemType> getShovelTypes() {
