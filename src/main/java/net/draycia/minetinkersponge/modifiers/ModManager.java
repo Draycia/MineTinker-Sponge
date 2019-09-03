@@ -85,12 +85,10 @@ public class ModManager {
             }
 
             for (EnchantmentType type : modifier.getAppliedEnchantments()) {
-                System.out.println("This is called");
                 Optional<List<Enchantment>> enchantments = itemStack.get(Keys.ITEM_ENCHANTMENTS);
                 int level = getModifierLevel(itemStack, modifier);
 
                 if (enchantments.isPresent()) {
-                    System.out.println("This is also called");
                     List<Enchantment> enchantmentList = enchantments.get();
                     enchantmentList.add(Enchantment.builder().type(type).level(level).build());
                     itemStack.offer(Keys.ITEM_ENCHANTMENTS, enchantmentList);
