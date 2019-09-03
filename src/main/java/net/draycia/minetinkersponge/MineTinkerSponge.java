@@ -8,15 +8,7 @@ import net.draycia.minetinkersponge.listeners.AnvilListener;
 import net.draycia.minetinkersponge.listeners.BlockBreakListener;
 import net.draycia.minetinkersponge.listeners.DamageListener;
 import net.draycia.minetinkersponge.modifiers.ModManager;
-import net.draycia.minetinkersponge.modifiers.impls.AquaAffinity;
-import net.draycia.minetinkersponge.modifiers.impls.BaneOfArthropods;
-import net.draycia.minetinkersponge.modifiers.impls.BindingCurse;
-import net.draycia.minetinkersponge.modifiers.impls.BlastProtection;
-import net.draycia.minetinkersponge.modifiers.impls.DepthStrider;
-import net.draycia.minetinkersponge.modifiers.impls.Directing;
-import net.draycia.minetinkersponge.modifiers.impls.Efficiency;
-import net.draycia.minetinkersponge.modifiers.impls.FeatherFalling;
-import net.draycia.minetinkersponge.modifiers.impls.Sharpness;
+import net.draycia.minetinkersponge.modifiers.impls.*;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -48,7 +40,21 @@ public class MineTinkerSponge {
         modManager.registerModifier(this, new Directing(modManager));
         modManager.registerModifier(this, new Efficiency());
         modManager.registerModifier(this, new FeatherFalling());
+        modManager.registerModifier(this, new LuckOfTheSea());
+        modManager.registerModifier(this, new Lure());
+        modManager.registerModifier(this, new Mending());
+        modManager.registerModifier(this, new Power());
+        modManager.registerModifier(this, new ProjectileProtection());
+        modManager.registerModifier(this, new Protection());
+        modManager.registerModifier(this, new Punch());
+        modManager.registerModifier(this, new Respiration());
         modManager.registerModifier(this, new Sharpness());
+        modManager.registerModifier(this, new SilkTouch());
+        modManager.registerModifier(this, new Smite());
+        modManager.registerModifier(this, new Sweeping());
+        modManager.registerModifier(this, new Thorns());
+        modManager.registerModifier(this, new Unbreaking());
+        modManager.registerModifier(this, new VanishingCurse());
 
         // Register commands
         CommandSpec addModifier = CommandSpec.builder()

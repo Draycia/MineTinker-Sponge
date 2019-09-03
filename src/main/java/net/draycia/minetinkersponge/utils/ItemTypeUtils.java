@@ -16,6 +16,7 @@ public class ItemTypeUtils {
     private static ArrayList<ItemType> pickaxeTypes = new ArrayList<>();
 
     private static ArrayList<ItemType> bowTypes = new ArrayList<>(Collections.singletonList(ItemTypes.BOW));
+    private static ArrayList<ItemType> fishingRodTypes = new ArrayList<>(Collections.singleton(ItemTypes.FISHING_ROD));
 
     private static ArrayList<ItemType> bootTypes = new ArrayList<>();
     private static ArrayList<ItemType> leggingTypes = new ArrayList<>();
@@ -100,6 +101,7 @@ public class ItemTypeUtils {
         allTypes.addAll(miscArmorTypes);
 
         allTypes.add(ItemTypes.BOW);
+        allTypes.add(ItemTypes.FISHING_ROD);
     }
 
     public static ArrayList<ItemType> getAxeTypes() {
@@ -116,6 +118,10 @@ public class ItemTypeUtils {
 
     public static ArrayList<ItemType> getBowTypes() {
         return bowTypes;
+    }
+
+    public static ArrayList<ItemType> getFishingRodTypes() {
+        return fishingRodTypes;
     }
 
     public static ArrayList<ItemType> getShovelTypes() {
