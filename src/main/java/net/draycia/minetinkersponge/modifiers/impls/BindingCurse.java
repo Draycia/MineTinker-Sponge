@@ -24,6 +24,11 @@ public class BindingCurse extends Modifier {
     }
 
     @Override
+    public int getLevelWeight() {
+        return 1;
+    }
+
+    @Override
     public ItemType getModifierItemType() {
         return ItemTypes.COAL;
     }

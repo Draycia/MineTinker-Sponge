@@ -1,6 +1,5 @@
 package net.draycia.minetinkersponge.modifiers.impls;
 
-import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.item.ItemType;
@@ -13,8 +12,6 @@ import java.util.List;
 
 public class Sharpness extends Modifier {
 
-    private ModManager modManager;
-
     @Override
     public String getName() {
         return "Sharpness";
@@ -26,6 +23,11 @@ public class Sharpness extends Modifier {
     }
 
     @Override
+    public int getLevelWeight() {
+        return 1;
+    }
+
+    @Override
     public ItemType getModifierItemType() {
         return ItemTypes.FLINT;
     }
@@ -33,10 +35,6 @@ public class Sharpness extends Modifier {
     @Override
     public List<ItemType> getCompatibleItems() {
         return ItemTypeUtils.getSwordTypes();
-    }
-
-    public Sharpness(ModManager modManager) {
-        this.modManager = modManager;
     }
 
     @Override

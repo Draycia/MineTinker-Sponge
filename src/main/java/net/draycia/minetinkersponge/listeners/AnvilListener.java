@@ -61,7 +61,7 @@ public class AnvilListener {
             amount = slots;
         }
 
-        if (modManager.applyModifier(left, modifier, amount)) {
+        if (modManager.applyModifier(left, modifier, false, amount)) {
             event.getResult().setCustom(left.createSnapshot());
             event.getResult().setValid(true);
         }
@@ -127,7 +127,7 @@ public class AnvilListener {
                 amount = slots;
             }
 
-            if (modifier.isPresent() && modManager.applyModifier(left, modifier.get(), amount)) {
+            if (modifier.isPresent() && modManager.applyModifier(left, modifier.get(), false, amount)) {
                 event.getCursorTransaction().setValid(true);
                 event.getCursorTransaction().setCustom(left.createSnapshot());
 
