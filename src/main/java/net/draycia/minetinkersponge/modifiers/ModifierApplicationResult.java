@@ -12,11 +12,6 @@ public class ModifierApplicationResult {
         this.wasSuccess = wasSuccess;
     }
 
-    ModifierApplicationResult(boolean wasSuccess) {
-        this.wasSuccess = wasSuccess;
-        itemStack = null;
-    }
-
     public boolean wasSuccess() {
         return wasSuccess;
     }

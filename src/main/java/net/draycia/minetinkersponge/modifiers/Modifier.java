@@ -34,6 +34,14 @@ public abstract class Modifier {
      */
     public abstract ItemType getModifierItemType();
 
+
+    /**
+     * @return The list of modifiers that this one is incompatible with.
+     */
+    public List<Class<? extends Modifier>> getIncompatibleModifiers() {
+        return Collections.emptyList();
+    }
+
     /**
      * Called when the modifier is applied to an item
      * @param itemStack The item the modifier is being applied to
