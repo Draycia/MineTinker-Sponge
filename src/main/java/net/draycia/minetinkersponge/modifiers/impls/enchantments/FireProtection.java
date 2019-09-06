@@ -8,10 +8,23 @@ import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.enchantment.EnchantmentTypes;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class FireProtection extends Modifier {
+
+    private static List<Class<? extends Modifier>> incompatibleTypes = new ArrayList<>();
+
+    static {
+        incompatibleTypes.add(Protection.class);
+        incompatibleTypes.add(ProjectileProtection.class);
+    }
+
+    @Override
+    public List<Class<? extends Modifier>> getIncompatibleModifiers() {
+        return incompatibleTypes;
+    }
 
     @Override
     public String getName() {
