@@ -79,59 +79,6 @@ public class ModManager {
      *
      * @param itemStack
      * @param modifier
-     * @return
-     */
-    public ModifierApplicationResult applyModifier(ItemStack itemStack, Modifier modifier, boolean ignoreSlots) {
-        if (modifier.getCompatibleItems() != null && !modifier.getCompatibleItems().contains(itemStack.getType())) {
-            return new ModifierApplicationResult(null, false);
-        }
-
-        if (!ignoreSlots && getItemModifierSlots(itemStack) < 1) {
-            return new ModifierApplicationResult(null, false);
-        }
-
-        int targetLevel = getModifierLevel(itemStack, modifier) + 1;
-
-        if (targetLevel > modifier.getMaxLevel()) {
-            return new ModifierApplicationResult(null, false);
-        }
-        
-        for (Modifier appliedModifier : getItemAppliedModifiers(itemStack)) {
-            for (Class<? extends Modifier> modClass : modifier.getIncompatibleModifiers()) {
-                if (appliedModifier.getClass() == modClass) {
-                    return new ModifierApplicationResult(null, false);
-                }
-            }
-        }
-
-        for (EnchantmentType type : modifier.getAppliedEnchantments()) {
-            Optional<List<Enchantment>> enchantments = itemStack.get(Keys.ITEM_ENCHANTMENTS);
-            int level = getModifierLevel(itemStack, modifier);
-
-            if (enchantments.isPresent()) {
-                List<Enchantment> enchantmentList = enchantments.get();
-                enchantmentList.add(Enchantment.builder().type(type).level(level).build());
-                itemStack.offer(Keys.ITEM_ENCHANTMENTS, enchantmentList);
-            }
-        }
-
-        setModifierLevel(itemStack, modifier, getModifierLevel(itemStack, modifier) - 1);
-
-        if (!ignoreSlots) {
-            setItemModifierSlots(itemStack, getItemModifierSlots(itemStack) - 1);
-        }
-
-        rewriteItemLore(itemStack);
-
-        ItemStack newItem = modifier.onModifierApplication(itemStack, targetLevel);
-
-        return new ModifierApplicationResult(newItem, true);
-    }
-
-    /**
-     *
-     * @param itemStack
-     * @param modifier
      * @param amount
      * @return
      */
