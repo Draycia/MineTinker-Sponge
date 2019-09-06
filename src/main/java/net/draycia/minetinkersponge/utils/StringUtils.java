@@ -30,7 +30,7 @@ public class StringUtils {
 
     public static String toRomanNumerals(int number) {
         if (number <= 0) {
-            return "nulla"; //Roman Numbers do not have a zero (need to switch to arabic numerals)
+            return "Nulla"; //Roman Numbers do not have a zero, "nulla" was often used instead (meaning "nothing")
         }
 
         int floorKey =  map.floorKey(number);

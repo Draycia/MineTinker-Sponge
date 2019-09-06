@@ -1,14 +1,16 @@
 package net.draycia.minetinkersponge;
 
-import net.draycia.minetinkersponge.commands.AddModifierCommand;
-import net.draycia.minetinkersponge.commands.ConvertItemCommand;
-import net.draycia.minetinkersponge.commands.GiveModifierItemCommand;
+import net.draycia.minetinkersponge.commands.*;
 import net.draycia.minetinkersponge.data.DataRegistrar;
 import net.draycia.minetinkersponge.listeners.AnvilListener;
 import net.draycia.minetinkersponge.listeners.BlockBreakListener;
 import net.draycia.minetinkersponge.listeners.DamageListener;
 import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.impls.*;
+import net.draycia.minetinkersponge.modifiers.impls.enchantments.*;
+import net.draycia.minetinkersponge.modifiers.impls.upgrades.DiamondUpgrade;
+import net.draycia.minetinkersponge.modifiers.impls.upgrades.GoldUpgrade;
+import net.draycia.minetinkersponge.modifiers.impls.upgrades.IronUpgrade;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -90,6 +92,22 @@ public class MineTinkerSponge {
                 .build();
 
         Sponge.getCommandManager().register(this, giveModifierItem, "givemod", "givemodifier");
+
+        CommandSpec addLevel = CommandSpec.builder()
+                .description(Text.of("Increases the level of the item."))
+                .permission("minetinker.commands.addlevel")
+                .executor(new AddLevelCommand(modManager))
+                .build();
+
+        Sponge.getCommandManager().register(this, addLevel, "addlevel");
+
+        CommandSpec addSlots = CommandSpec.builder()
+                .description(Text.of("Increases the modifier slots of the item.."))
+                .permission("minetinker.commands.givemodifieritem")
+                .executor(new AddSlotsCommand(modManager))
+                .build();
+
+        Sponge.getCommandManager().register(this, addSlots, "addslots");
 
         // Register listeners
         Sponge.getEventManager().registerListeners(this, new BlockBreakListener(modManager));
