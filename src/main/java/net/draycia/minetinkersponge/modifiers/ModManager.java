@@ -83,17 +83,25 @@ public class ModManager {
      */
     public ModifierApplicationResult applyModifier(ItemStack itemStack, Modifier modifier, boolean ignoreSlots) {
         if (modifier.getCompatibleItems() != null && !modifier.getCompatibleItems().contains(itemStack.getType())) {
-            return new ModifierApplicationResult(false);
+            return new ModifierApplicationResult(null, false);
         }
 
         if (!ignoreSlots && getItemModifierSlots(itemStack) < 1) {
-            return new ModifierApplicationResult(false);
+            return new ModifierApplicationResult(null, false);
         }
 
         int targetLevel = getModifierLevel(itemStack, modifier) + 1;
 
         if (targetLevel > modifier.getMaxLevel()) {
-            return new ModifierApplicationResult(false);
+            return new ModifierApplicationResult(null, false);
+        }
+        
+        for (Modifier appliedModifier : getItemAppliedModifiers(itemStack)) {
+            for (Class<? extends Modifier> modClass : modifier.getIncompatibleModifiers()) {
+                if (appliedModifier.getClass() == modClass) {
+                    return new ModifierApplicationResult(null, false);
+                }
+            }
         }
 
         for (EnchantmentType type : modifier.getAppliedEnchantments()) {
@@ -129,17 +137,25 @@ public class ModManager {
      */
     public ModifierApplicationResult applyModifier(ItemStack itemStack, Modifier modifier, boolean ignoreSlots, int amount) {
         if (modifier.getCompatibleItems() != null && !modifier.getCompatibleItems().contains(itemStack.getType())) {
-            return new ModifierApplicationResult(false);
+            return new ModifierApplicationResult(null, false);
         }
 
         if (!ignoreSlots && getItemModifierSlots(itemStack) < amount) {
-            return new ModifierApplicationResult(false);
+            return new ModifierApplicationResult(null, false);
         }
 
         int targetLevel = getModifierLevel(itemStack, modifier) + amount;
 
         if (targetLevel > modifier.getMaxLevel()) {
-            return new ModifierApplicationResult(false);
+            return new ModifierApplicationResult(null, false);
+        }
+
+        for (Modifier appliedModifier : getItemAppliedModifiers(itemStack)) {
+            for (Class<? extends Modifier> modClass : modifier.getIncompatibleModifiers()) {
+                if (appliedModifier.getClass() == modClass) {
+                    return new ModifierApplicationResult(null, false);
+                }
+            }
         }
 
         for (EnchantmentType type : modifier.getAppliedEnchantments()) {
@@ -264,6 +280,16 @@ public class ModManager {
      */
     public Map<String, Integer> getItemModifierLevels(ItemStack itemStack) {
         return itemStack.get(MTKeys.ITEM_MODIFIERS).orElse(Collections.emptyMap());
+    }
+
+    public List<Modifier> getItemAppliedModifiers(ItemStack itemStack) {
+        ArrayList<Modifier> modifiers = new ArrayList<>();
+
+        for (Map.Entry<String, Integer> entry : getItemModifierLevels(itemStack).entrySet()) {
+            modifiers.add(getModifier(entry.getKey()).orElseThrow(NullPointerException::new));
+        }
+
+        return modifiers;
     }
 
     /**
