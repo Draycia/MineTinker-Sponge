@@ -13,6 +13,8 @@ import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.InventoryArchetypes;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.inventory.query.QueryOperation;
+import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
 import org.spongepowered.api.item.inventory.slot.InputSlot;
 import org.spongepowered.api.item.inventory.slot.OutputSlot;
 
@@ -46,7 +48,13 @@ public class AnvilListener {
             return;
         }
 
-        Modifier modifier = modManager.getModifier(modifierId.get()).get();
+        Optional<Modifier> optionalModifier = modManager.getModifier(modifierId.get());
+
+        if (!optionalModifier.isPresent()) {
+            return;
+        }
+
+        Modifier modifier = optionalModifier.get();
 
         ItemStack left = event.getLeft().createStack();
         ItemStack right = event.getRight().createStack();
@@ -54,13 +62,7 @@ public class AnvilListener {
         int slots = modManager.getItemModifierSlots(left);
         int quantity = right.getQuantity();
 
-        int amount;
-
-        if (slots >= quantity) {
-            amount = quantity;
-        } else {
-            amount = slots;
-        }
+        int amount = Math.min(slots, quantity);
 
         ModifierApplicationResult result = modManager.applyModifier(left, modifier, false, amount);
 
@@ -76,7 +78,7 @@ public class AnvilListener {
             return;
         }
 
-        Inventory input = event.getTargetInventory().query(InputSlot.class);
+        Inventory input = event.getTargetInventory().query(QueryOperationTypes.INVENTORY_TYPE.of(InputSlot.class));
 
         ItemStack left = null;
         ItemStack right = null;
@@ -94,7 +96,7 @@ public class AnvilListener {
             }
         }
 
-        Inventory output = event.getTargetInventory().query(OutputSlot.class);
+        Inventory output = event.getTargetInventory().query(QueryOperationTypes.INVENTORY_TYPE.of(OutputSlot.class));
 
         Optional<ItemStack> outputItem = output.peek();
 
@@ -122,13 +124,7 @@ public class AnvilListener {
             int slots = modManager.getItemModifierSlots(left);
             int quantity = right.getQuantity();
 
-            int amount;
-
-            if (slots >= quantity) {
-                amount = quantity;
-            } else {
-                amount = slots;
-            }
+            int amount = Math.min(slots, quantity);
 
             if (!modifier.isPresent()) {
                 return;

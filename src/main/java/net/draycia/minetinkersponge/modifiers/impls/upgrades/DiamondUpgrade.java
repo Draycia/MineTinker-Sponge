@@ -2,8 +2,6 @@ package net.draycia.minetinkersponge.modifiers.impls.upgrades;
 
 import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
-import net.draycia.minetinkersponge.utils.ItemTypeUtils;
-import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;

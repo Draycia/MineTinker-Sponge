@@ -15,7 +15,6 @@ import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.item.inventory.DropItemEvent;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
-import org.spongepowered.api.item.inventory.ItemStack;
 
 import java.util.List;
 

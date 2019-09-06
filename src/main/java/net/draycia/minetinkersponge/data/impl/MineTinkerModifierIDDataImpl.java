@@ -2,15 +2,12 @@ package net.draycia.minetinkersponge.data.impl;
 
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.data.interfaces.MineTinkerModifierIDData;
-import net.draycia.minetinkersponge.data.interfaces.MineTinkerModifierIDData;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.DataView;
-import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableBooleanData;
 import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableSingleData;
-import org.spongepowered.api.data.manipulator.mutable.common.AbstractBooleanData;
 import org.spongepowered.api.data.manipulator.mutable.common.AbstractSingleData;
 import org.spongepowered.api.data.merge.MergeFunction;
 import org.spongepowered.api.data.persistence.AbstractDataBuilder;
