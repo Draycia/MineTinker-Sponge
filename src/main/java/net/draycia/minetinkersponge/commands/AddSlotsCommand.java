@@ -28,7 +28,10 @@ public class AddSlotsCommand implements CommandExecutor {
         Player player = (Player)src;
 
         Optional<ItemStack> mainItem = player.getItemInHand(HandTypes.MAIN_HAND);
-        mainItem.ifPresent(itemStack -> modManager.incrementItemModifierSlots(itemStack));
+        mainItem.ifPresent(itemStack -> {
+            modManager.incrementItemModifierSlots(itemStack);
+            modManager.rewriteItemLore(itemStack);
+        });
 
         return CommandResult.success();
     }
