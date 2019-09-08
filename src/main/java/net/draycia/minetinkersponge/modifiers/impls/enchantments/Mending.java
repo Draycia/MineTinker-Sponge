@@ -13,11 +13,7 @@ import java.util.List;
 
 public class Mending extends Modifier {
 
-    private static List<Class<? extends Modifier>> incompatibleTypes = new ArrayList<>();
-
-    static {
-        incompatibleTypes.add(Infinity.class);
-    }
+    private static List<Class<? extends Modifier>> incompatibleTypes = Collections.singletonList(Infinity.class);
 
     @Override
     public List<Class<? extends Modifier>> getIncompatibleModifiers() {

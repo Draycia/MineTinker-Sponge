@@ -42,6 +42,7 @@ public class SilkTouch extends Modifier {
                         ItemTypeUtils.getAxeTypes()),
                         ItemTypeUtils.getShovelTypes());
     }
+
     @Override
     public List<EnchantmentType> getAppliedEnchantments() {
         return Collections.singletonList(EnchantmentTypes.SILK_TOUCH);
