@@ -8,6 +8,7 @@ import net.draycia.minetinkersponge.listeners.DamageListener;
 import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.impls.*;
 import net.draycia.minetinkersponge.modifiers.impls.enchantments.*;
+import net.draycia.minetinkersponge.modifiers.impls.potioneffects.Poisonous;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.DiamondUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.GoldUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.IronUpgrade;
@@ -59,6 +60,7 @@ public class MineTinkerSponge {
 
         // Custom Modifiers
         modManager.registerModifier(this, new Directing(modManager));
+        modManager.registerModifier(this, new Poisonous(modManager));
 
         // Upgrade Modifiers
         modManager.registerModifier(this, new IronUpgrade(modManager));
