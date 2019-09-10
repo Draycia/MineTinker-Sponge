@@ -24,12 +24,15 @@ public class ModManager {
      * @return If the registration was a success. My return false if a modifier with the key already exists.
      */
     public boolean registerModifier(Object plugin, Modifier modifier) {
+        // Only allow one modifier to have the same key, first come first serve.
          if (modifiers.containsKey(modifier.getKey())) {
              return false;
          }
 
          modifiers.put(modifier.getKey(), modifier);
 
+         // Allow the modifier to register event listeners etc when successfully registered.
+         // Passes in the plugin instance the method caller supplies.
          modifier.onModifierRegister(plugin);
 
          return true;
@@ -83,28 +86,33 @@ public class ModManager {
      * @return
      */
     public ModifierApplicationResult applyModifier(ItemStack itemStack, Modifier modifier, boolean ignoreSlots, int amount) {
+        // Check if the modifier is compatible with the item
         if (modifier.getCompatibleItems() != null && !modifier.getCompatibleItems().contains(itemStack.getType())) {
-            return new ModifierApplicationResult(null, false);
+            return new ModifierApplicationResult(null);
         }
 
+        // Check if the item has enough modifier slots
         if (!ignoreSlots && getItemModifierSlots(itemStack) < amount) {
-            return new ModifierApplicationResult(null, false);
+            return new ModifierApplicationResult(null);
         }
 
+        // Ensure the modifier level doesn't exceed the modifier's level cap
         int targetLevel = getModifierLevel(itemStack, modifier) + amount;
 
         if (targetLevel > modifier.getMaxLevel()) {
-            return new ModifierApplicationResult(null, false);
+            return new ModifierApplicationResult(null);
         }
 
+        // Check if the item has any modifiers that are incompatible with the one being applied
         for (Modifier appliedModifier : getItemAppliedModifiers(itemStack)) {
             for (Class<? extends Modifier> modClass : modifier.getIncompatibleModifiers()) {
                 if (appliedModifier.getClass() == modClass) {
-                    return new ModifierApplicationResult(null, false);
+                    return new ModifierApplicationResult(null);
                 }
             }
         }
 
+        // If the modifier applies any enchantments to the item, do so
         for (EnchantmentType type : modifier.getAppliedEnchantments()) {
             Optional<List<Enchantment>> enchantments = itemStack.get(Keys.ITEM_ENCHANTMENTS);
             int level = getModifierLevel(itemStack, modifier) + amount;
@@ -116,17 +124,21 @@ public class ModManager {
             }
         }
 
+        // Sets the level of the modifier on the item
         setModifierLevel(itemStack, modifier, getModifierLevel(itemStack, modifier) + amount);
 
+        // Modifies the item's modifier slots
         if (!ignoreSlots) {
             setItemModifierSlots(itemStack, getItemModifierSlots(itemStack) - amount);
         }
 
+        // And update its lore
         rewriteItemLore(itemStack);
 
+        // Toss back the result of the item
         ItemStack newItem = modifier.onModifierApplication(itemStack, targetLevel);
 
-        return new ModifierApplicationResult(newItem, true);
+        return new ModifierApplicationResult(newItem);
     }
 
     /**
@@ -138,53 +150,19 @@ public class ModManager {
             return;
         }
 
-        if (!itemStack.offer(itemStack.getOrCreate(ItemCompatibleData.class).get()).isSuccessful()) {
-            System.out.println("Cannot offer IsMineTinkerData!");
-        }
+        itemStack.offer(itemStack.getOrCreate(ItemCompatibleData.class).get());
+        itemStack.offer(itemStack.getOrCreate(ToolCompatibleData.class).get());
+        itemStack.offer(itemStack.getOrCreate(ArmorCompatibleData.class).get());
+        itemStack.offer(itemStack.getOrCreate(ItemModifierListData.class).get());
+        itemStack.offer(itemStack.getOrCreate(ModifierSlotData.class).get());
+        itemStack.offer(itemStack.getOrCreate(ItemExperienceData.class).get());
+        itemStack.offer(itemStack.getOrCreate(ItemLevelData.class).get());
 
-        if (!itemStack.offer(itemStack.getOrCreate(ToolCompatibleData.class).get()).isSuccessful()) {
-            System.out.println("Cannot offer IsMineTinkerToolData!");
-        }
-
-        if (!itemStack.offer(itemStack.getOrCreate(ArmorCompatibleData.class).get()).isSuccessful()) {
-            System.out.println("Cannot offer IsMineTinkerArmorData!");
-        }
-
-        if (!itemStack.offer(itemStack.getOrCreate(ItemModifierListData.class).get()).isSuccessful()) {
-            System.out.println("Cannot offer MineTinkerItemModsData!");
-        }
-
-        if (!itemStack.offer(itemStack.getOrCreate(ModifierSlotData.class).get()).isSuccessful()) {
-            System.out.println("Cannot offer MineTinkerItemIntegerData!");
-        }
-
-        if (!itemStack.offer(itemStack.getOrCreate(ItemExperienceData.class).get()).isSuccessful()) {
-            System.out.println("Cannot offer MineTinkerItemXPData!");
-        }
-
-        if (!itemStack.offer(itemStack.getOrCreate(ItemLevelData.class).get()).isSuccessful()) {
-            System.out.println("Cannot offer MineTinkerItemLevelData!");
-        }
-
-        if (!itemStack.offer(MTKeys.IS_MINETINKER, true).isSuccessful()) {
-            System.out.println("Cannot offer MTKeys.IS_MINETINKER!");
-        }
-
-        if (!itemStack.offer(MTKeys.IS_MT_TOOL, true).isSuccessful()) {
-            System.out.println("Cannot offer MTKeys.IS_MT_TOOL!");
-        }
-
-        if (!itemStack.offer(MTKeys.MINETINKER_XP, 0).isSuccessful()) {
-            System.out.println("Cannot offer MTKeys.MINETINKER_XP!");
-        }
-
-        if (!itemStack.offer(MTKeys.MINETINKER_LEVEL, 1).isSuccessful()) {
-            System.out.println("Cannot offer MTKeys.MINETINKER_LEVEL!");
-        }
-
-        if (!itemStack.offer(MTKeys.MINETINKER_SLOTS, 1).isSuccessful()) {
-            System.out.println("Cannot offer MTKeys.MINETINKER_SLOTS!");
-        }
+        itemStack.offer(MTKeys.IS_MINETINKER, true);
+        itemStack.offer(MTKeys.IS_MT_TOOL, true);
+        itemStack.offer(MTKeys.MINETINKER_XP, 0);
+        itemStack.offer(MTKeys.MINETINKER_LEVEL, 1);
+        itemStack.offer(MTKeys.MINETINKER_SLOTS, 1);
 
         itemStack.offer(Keys.HIDE_ENCHANTMENTS, true);
         itemStack.offer(Keys.UNBREAKABLE, true);

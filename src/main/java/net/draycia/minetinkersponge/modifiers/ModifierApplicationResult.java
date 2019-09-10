@@ -7,9 +7,9 @@ public class ModifierApplicationResult {
     private ItemStack itemStack;
     private boolean wasSuccess;
 
-    ModifierApplicationResult(ItemStack itemStack, boolean wasSuccess) {
+    ModifierApplicationResult(ItemStack itemStack) {
         this.itemStack = itemStack;
-        this.wasSuccess = wasSuccess;
+        this.wasSuccess = itemStack != null;
     }
 
     public boolean wasSuccess() {
