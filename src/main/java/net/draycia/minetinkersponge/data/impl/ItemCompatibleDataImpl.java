@@ -1,6 +1,6 @@
 package net.draycia.minetinkersponge.data.impl;
 
-import net.draycia.minetinkersponge.data.interfaces.IsMineTinkerData;
+import net.draycia.minetinkersponge.data.interfaces.ItemCompatibleData;
 import net.draycia.minetinkersponge.data.MTKeys;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
@@ -15,29 +15,29 @@ import org.spongepowered.api.data.persistence.InvalidDataException;
 
 import java.util.Optional;
 
-public class IsMineTinkerDataImpl extends AbstractBooleanData<IsMineTinkerData, IsMineTinkerData.Immutable> implements IsMineTinkerData {
+public class ItemCompatibleDataImpl extends AbstractBooleanData<ItemCompatibleData, ItemCompatibleData.Immutable> implements ItemCompatibleData {
     
-    public IsMineTinkerDataImpl(boolean enabled) {
+    public ItemCompatibleDataImpl(boolean enabled) {
         super(MTKeys.IS_MINETINKER, enabled);
     }
 
     @Override
-    public Optional<IsMineTinkerData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<IsMineTinkerDataImpl> data_ = dataHolder.get(IsMineTinkerDataImpl.class);
+    public Optional<ItemCompatibleData> fill(DataHolder dataHolder, MergeFunction overlap) {
+        Optional<ItemCompatibleDataImpl> data_ = dataHolder.get(ItemCompatibleDataImpl.class);
         if (data_.isPresent()) {
-            IsMineTinkerDataImpl data = data_.get();
-            IsMineTinkerDataImpl finalData = overlap.merge(this, data);
+            ItemCompatibleDataImpl data = data_.get();
+            ItemCompatibleDataImpl finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
     }
 
     @Override
-    public Optional<IsMineTinkerData> from(DataContainer container) {
+    public Optional<ItemCompatibleData> from(DataContainer container) {
         return from((DataView) container);
     }
 
-    public Optional<IsMineTinkerData> from(DataView view) {
+    public Optional<ItemCompatibleData> from(DataView view) {
         if (view.contains(MTKeys.IS_MINETINKER.getQuery())) {
             setValue(view.getBoolean(MTKeys.IS_MINETINKER.getQuery()).get());
             return Optional.of(this);
@@ -47,8 +47,8 @@ public class IsMineTinkerDataImpl extends AbstractBooleanData<IsMineTinkerData, 
     }
 
     @Override
-    public IsMineTinkerDataImpl copy() {
-        return new IsMineTinkerDataImpl(getValue());
+    public ItemCompatibleDataImpl copy() {
+        return new ItemCompatibleDataImpl(getValue());
     }
 
     @Override
@@ -66,14 +66,14 @@ public class IsMineTinkerDataImpl extends AbstractBooleanData<IsMineTinkerData, 
         return super.toContainer().set(MTKeys.IS_MINETINKER.getQuery(), getValue());
     }
 
-    public static class Immutable extends AbstractImmutableBooleanData<IsMineTinkerData.Immutable, IsMineTinkerData> implements IsMineTinkerData.Immutable {
+    public static class Immutable extends AbstractImmutableBooleanData<ItemCompatibleData.Immutable, ItemCompatibleData> implements ItemCompatibleData.Immutable {
         public Immutable(boolean enabled) {
             super(MTKeys.IS_MINETINKER, enabled);
         }
 
         @Override
-        public IsMineTinkerDataImpl asMutable() {
-            return new IsMineTinkerDataImpl(getValue());
+        public ItemCompatibleDataImpl asMutable() {
+            return new ItemCompatibleDataImpl(getValue());
         }
 
         @Override
@@ -87,23 +87,23 @@ public class IsMineTinkerDataImpl extends AbstractBooleanData<IsMineTinkerData, 
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<IsMineTinkerData> implements IsMineTinkerData.Builder {
+    public static class Builder extends AbstractDataBuilder<ItemCompatibleData> implements ItemCompatibleData.Builder {
         public Builder() {
-            super(IsMineTinkerData.class, 2);
+            super(ItemCompatibleData.class, 2);
         }
 
         @Override
-        public IsMineTinkerDataImpl create() {
-            return new IsMineTinkerDataImpl(false);
+        public ItemCompatibleDataImpl create() {
+            return new ItemCompatibleDataImpl(false);
         }
 
         @Override
-        public Optional<IsMineTinkerData> createFrom(DataHolder dataHolder) {
+        public Optional<ItemCompatibleData> createFrom(DataHolder dataHolder) {
             return create().fill(dataHolder);
         }
 
         @Override
-        protected Optional<IsMineTinkerData> buildContent(DataView container) throws InvalidDataException {
+        protected Optional<ItemCompatibleData> buildContent(DataView container) throws InvalidDataException {
             return create().from(container);
         }
     }

@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.data.impl;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.MineTinkerModifierIDData;
+import net.draycia.minetinkersponge.data.interfaces.ModifierIdentifierData;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
@@ -18,9 +18,9 @@ import org.spongepowered.api.data.value.mutable.Value;
 
 import java.util.Optional;
 
-public class MineTinkerModifierIDDataImpl extends AbstractSingleData<String, MineTinkerModifierIDData, MineTinkerModifierIDData.Immutable> implements MineTinkerModifierIDData {
+public class ModifierIdentifierDataImpl extends AbstractSingleData<String, ModifierIdentifierData, ModifierIdentifierData.Immutable> implements ModifierIdentifierData {
 
-    public MineTinkerModifierIDDataImpl(String data) {
+    public ModifierIdentifierDataImpl(String data) {
         super(MTKeys.MODIFIER_ID, data);
     }
 
@@ -30,22 +30,22 @@ public class MineTinkerModifierIDDataImpl extends AbstractSingleData<String, Min
     }
 
     @Override
-    public Optional<MineTinkerModifierIDData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<MineTinkerModifierIDDataImpl> data_ = dataHolder.get(MineTinkerModifierIDDataImpl.class);
+    public Optional<ModifierIdentifierData> fill(DataHolder dataHolder, MergeFunction overlap) {
+        Optional<ModifierIdentifierDataImpl> data_ = dataHolder.get(ModifierIdentifierDataImpl.class);
         if (data_.isPresent()) {
-            MineTinkerModifierIDDataImpl data = data_.get();
-            MineTinkerModifierIDDataImpl finalData = overlap.merge(this, data);
+            ModifierIdentifierDataImpl data = data_.get();
+            ModifierIdentifierDataImpl finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
     }
 
     @Override
-    public Optional<MineTinkerModifierIDData> from(DataContainer container) {
+    public Optional<ModifierIdentifierData> from(DataContainer container) {
         return from((DataView) container);
     }
 
-    public Optional<MineTinkerModifierIDData> from(DataView view) {
+    public Optional<ModifierIdentifierData> from(DataView view) {
         if (view.contains(MTKeys.MODIFIER_ID.getQuery())) {
             setValue(view.getString(MTKeys.MODIFIER_ID.getQuery()).get());
             return Optional.of(this);
@@ -55,8 +55,8 @@ public class MineTinkerModifierIDDataImpl extends AbstractSingleData<String, Min
     }
 
     @Override
-    public MineTinkerModifierIDDataImpl copy() {
-        return new MineTinkerModifierIDDataImpl(getValue());
+    public ModifierIdentifierDataImpl copy() {
+        return new ModifierIdentifierDataImpl(getValue());
     }
 
     @Override
@@ -74,7 +74,7 @@ public class MineTinkerModifierIDDataImpl extends AbstractSingleData<String, Min
         return super.toContainer().set(MTKeys.MODIFIER_ID.getQuery(), getValue());
     }
 
-    public static class Immutable extends AbstractImmutableSingleData<String, MineTinkerModifierIDData.Immutable, MineTinkerModifierIDData> implements MineTinkerModifierIDData.Immutable {
+    public static class Immutable extends AbstractImmutableSingleData<String, ModifierIdentifierData.Immutable, ModifierIdentifierData> implements ModifierIdentifierData.Immutable {
         public Immutable(String data) {
             super(MTKeys.MODIFIER_ID, data);
         }
@@ -85,8 +85,8 @@ public class MineTinkerModifierIDDataImpl extends AbstractSingleData<String, Min
         }
 
         @Override
-        public MineTinkerModifierIDDataImpl asMutable() {
-            return new MineTinkerModifierIDDataImpl(getValue());
+        public ModifierIdentifierDataImpl asMutable() {
+            return new ModifierIdentifierDataImpl(getValue());
         }
 
         @Override
@@ -100,23 +100,23 @@ public class MineTinkerModifierIDDataImpl extends AbstractSingleData<String, Min
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<MineTinkerModifierIDData> implements MineTinkerModifierIDData.Builder {
+    public static class Builder extends AbstractDataBuilder<ModifierIdentifierData> implements ModifierIdentifierData.Builder {
         public Builder() {
-            super(MineTinkerModifierIDData.class, 2);
+            super(ModifierIdentifierData.class, 2);
         }
 
         @Override
-        public MineTinkerModifierIDDataImpl create() {
-            return new MineTinkerModifierIDDataImpl("");
+        public ModifierIdentifierDataImpl create() {
+            return new ModifierIdentifierDataImpl("");
         }
 
         @Override
-        public Optional<MineTinkerModifierIDData> createFrom(DataHolder dataHolder) {
+        public Optional<ModifierIdentifierData> createFrom(DataHolder dataHolder) {
             return create().fill(dataHolder);
         }
 
         @Override
-        protected Optional<MineTinkerModifierIDData> buildContent(DataView container) throws InvalidDataException {
+        protected Optional<ModifierIdentifierData> buildContent(DataView container) throws InvalidDataException {
             return create().from(container);
         }
     }

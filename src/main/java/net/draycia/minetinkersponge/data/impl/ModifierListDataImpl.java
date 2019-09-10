@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.data.impl;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.MineTinkerItemModsData;
+import net.draycia.minetinkersponge.data.interfaces.ItemModifierListData;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataQuery;
@@ -15,30 +15,30 @@ import org.spongepowered.api.data.persistence.InvalidDataException;
 
 import java.util.*;
 
-public class MinetinkerItemModsDataImpl extends AbstractMappedData<String, Integer, MineTinkerItemModsData, MineTinkerItemModsData.Immutable> implements MineTinkerItemModsData {
+public class ModifierListDataImpl extends AbstractMappedData<String, Integer, ItemModifierListData, ItemModifierListData.Immutable> implements ItemModifierListData {
 
-    public MinetinkerItemModsDataImpl(Map<String, Integer> map) {
+    public ModifierListDataImpl(Map<String, Integer> map) {
         super(MTKeys.ITEM_MODIFIERS, map);
     }
 
     @Override
-    public Optional<MineTinkerItemModsData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<MinetinkerItemModsDataImpl> data_ = dataHolder.get(MinetinkerItemModsDataImpl.class);
+    public Optional<ItemModifierListData> fill(DataHolder dataHolder, MergeFunction overlap) {
+        Optional<ModifierListDataImpl> data_ = dataHolder.get(ModifierListDataImpl.class);
         if (data_.isPresent()) {
-            MinetinkerItemModsDataImpl data = data_.get();
-            MinetinkerItemModsDataImpl finalData = overlap.merge(this, data);
+            ModifierListDataImpl data = data_.get();
+            ModifierListDataImpl finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
     }
 
     @Override
-    public Optional<MineTinkerItemModsData> from(DataContainer container) {
+    public Optional<ItemModifierListData> from(DataContainer container) {
         return from((DataView) container);
     }
 
     @SuppressWarnings("unchecked")
-    public Optional<MineTinkerItemModsData> from(DataView view) {
+    public Optional<ItemModifierListData> from(DataView view) {
         if (view.contains(MTKeys.ITEM_MODIFIERS.getQuery())) {
             setValue((Map<String, Integer>)view.getMap(MTKeys.ITEM_MODIFIERS.getQuery()).get());
             return Optional.of(this);
@@ -48,8 +48,8 @@ public class MinetinkerItemModsDataImpl extends AbstractMappedData<String, Integ
     }
 
     @Override
-    public MinetinkerItemModsDataImpl copy() {
-        return new MinetinkerItemModsDataImpl(getValue());
+    public ModifierListDataImpl copy() {
+        return new ModifierListDataImpl(getValue());
     }
 
     @Override
@@ -78,35 +78,35 @@ public class MinetinkerItemModsDataImpl extends AbstractMappedData<String, Integ
     }
 
     @Override
-    public MineTinkerItemModsData put(String key, Integer value) {
+    public ItemModifierListData put(String key, Integer value) {
         getValue().put(key, value);
 
         return this;
     }
 
     @Override
-    public MineTinkerItemModsData putAll(Map<? extends String, ? extends Integer> map) {
+    public ItemModifierListData putAll(Map<? extends String, ? extends Integer> map) {
         getValue().putAll(map);
 
         return this;
     }
 
     @Override
-    public MineTinkerItemModsData remove(String key) {
+    public ItemModifierListData remove(String key) {
         getValue().remove(key);
 
         return this;
     }
 
-    public static class Immutable extends AbstractImmutableMappedData<String, Integer, MineTinkerItemModsData.Immutable, MineTinkerItemModsData> implements MineTinkerItemModsData.Immutable {
+    public static class Immutable extends AbstractImmutableMappedData<String, Integer, ItemModifierListData.Immutable, ItemModifierListData> implements ItemModifierListData.Immutable {
 
         public Immutable(Map<String, Integer> map) {
             super(MTKeys.ITEM_MODIFIERS, map);
         }
 
         @Override
-        public MinetinkerItemModsDataImpl asMutable() {
-            return new MinetinkerItemModsDataImpl(getValue());
+        public ModifierListDataImpl asMutable() {
+            return new ModifierListDataImpl(getValue());
         }
 
         @Override
@@ -120,23 +120,23 @@ public class MinetinkerItemModsDataImpl extends AbstractMappedData<String, Integ
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<MineTinkerItemModsData> implements MineTinkerItemModsData.Builder {
+    public static class Builder extends AbstractDataBuilder<ItemModifierListData> implements ItemModifierListData.Builder {
         public Builder() {
-            super(MineTinkerItemModsData.class, 2);
+            super(ItemModifierListData.class, 2);
         }
 
         @Override
-        public MinetinkerItemModsDataImpl create() {
-            return new MinetinkerItemModsDataImpl(new HashMap<>());
+        public ModifierListDataImpl create() {
+            return new ModifierListDataImpl(new HashMap<>());
         }
 
         @Override
-        public Optional<MineTinkerItemModsData> createFrom(DataHolder dataHolder) {
+        public Optional<ItemModifierListData> createFrom(DataHolder dataHolder) {
             return create().fill(dataHolder);
         }
 
         @Override
-        protected Optional<MineTinkerItemModsData> buildContent(DataView container) throws InvalidDataException {
+        protected Optional<ItemModifierListData> buildContent(DataView container) throws InvalidDataException {
             return create().from(container);
         }
 

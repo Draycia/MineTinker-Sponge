@@ -138,31 +138,31 @@ public class ModManager {
             return;
         }
 
-        if (!itemStack.offer(itemStack.getOrCreate(IsMineTinkerData.class).get()).isSuccessful()) {
+        if (!itemStack.offer(itemStack.getOrCreate(ItemCompatibleData.class).get()).isSuccessful()) {
             System.out.println("Cannot offer IsMineTinkerData!");
         }
 
-        if (!itemStack.offer(itemStack.getOrCreate(IsMineTinkerToolData.class).get()).isSuccessful()) {
+        if (!itemStack.offer(itemStack.getOrCreate(ToolCompatibleData.class).get()).isSuccessful()) {
             System.out.println("Cannot offer IsMineTinkerToolData!");
         }
 
-        if (!itemStack.offer(itemStack.getOrCreate(IsMineTinkerArmorData.class).get()).isSuccessful()) {
+        if (!itemStack.offer(itemStack.getOrCreate(ArmorCompatibleData.class).get()).isSuccessful()) {
             System.out.println("Cannot offer IsMineTinkerArmorData!");
         }
 
-        if (!itemStack.offer(itemStack.getOrCreate(MineTinkerItemModsData.class).get()).isSuccessful()) {
+        if (!itemStack.offer(itemStack.getOrCreate(ItemModifierListData.class).get()).isSuccessful()) {
             System.out.println("Cannot offer MineTinkerItemModsData!");
         }
 
-        if (!itemStack.offer(itemStack.getOrCreate(MineTinkerItemSlotData.class).get()).isSuccessful()) {
+        if (!itemStack.offer(itemStack.getOrCreate(ModifierSlotData.class).get()).isSuccessful()) {
             System.out.println("Cannot offer MineTinkerItemIntegerData!");
         }
 
-        if (!itemStack.offer(itemStack.getOrCreate(MineTinkerItemXPData.class).get()).isSuccessful()) {
+        if (!itemStack.offer(itemStack.getOrCreate(ItemExperienceData.class).get()).isSuccessful()) {
             System.out.println("Cannot offer MineTinkerItemXPData!");
         }
 
-        if (!itemStack.offer(itemStack.getOrCreate(MineTinkerItemLevelData.class).get()).isSuccessful()) {
+        if (!itemStack.offer(itemStack.getOrCreate(ItemLevelData.class).get()).isSuccessful()) {
             System.out.println("Cannot offer MineTinkerItemLevelData!");
         }
 

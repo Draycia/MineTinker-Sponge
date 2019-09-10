@@ -1,6 +1,6 @@
 package net.draycia.minetinkersponge.data.impl;
 
-import net.draycia.minetinkersponge.data.interfaces.IsMineTinkerArmorData;
+import net.draycia.minetinkersponge.data.interfaces.ArmorCompatibleData;
 import net.draycia.minetinkersponge.data.MTKeys;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
@@ -15,29 +15,29 @@ import org.spongepowered.api.data.persistence.InvalidDataException;
 
 import java.util.Optional;
 
-public class IsMineTinkerArmorDataImpl extends AbstractBooleanData<IsMineTinkerArmorData, IsMineTinkerArmorData.Immutable> implements IsMineTinkerArmorData {
+public class ArmorCompatibleDataImpl extends AbstractBooleanData<ArmorCompatibleData, ArmorCompatibleData.Immutable> implements ArmorCompatibleData {
 
-    public IsMineTinkerArmorDataImpl(boolean enabled) {
+    public ArmorCompatibleDataImpl(boolean enabled) {
         super(MTKeys.IS_MT_ARMOR, enabled);
     }
 
     @Override
-    public Optional<IsMineTinkerArmorData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<IsMineTinkerArmorDataImpl> data_ = dataHolder.get(IsMineTinkerArmorDataImpl.class);
+    public Optional<ArmorCompatibleData> fill(DataHolder dataHolder, MergeFunction overlap) {
+        Optional<ArmorCompatibleDataImpl> data_ = dataHolder.get(ArmorCompatibleDataImpl.class);
         if (data_.isPresent()) {
-            IsMineTinkerArmorDataImpl data = data_.get();
-            IsMineTinkerArmorDataImpl finalData = overlap.merge(this, data);
+            ArmorCompatibleDataImpl data = data_.get();
+            ArmorCompatibleDataImpl finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
     }
 
     @Override
-    public Optional<IsMineTinkerArmorData> from(DataContainer container) {
+    public Optional<ArmorCompatibleData> from(DataContainer container) {
         return from((DataView) container);
     }
 
-    public Optional<IsMineTinkerArmorData> from(DataView view) {
+    public Optional<ArmorCompatibleData> from(DataView view) {
         if (view.contains(MTKeys.IS_MT_ARMOR.getQuery())) {
             setValue(view.getBoolean(MTKeys.IS_MT_ARMOR.getQuery()).get());
             return Optional.of(this);
@@ -47,8 +47,8 @@ public class IsMineTinkerArmorDataImpl extends AbstractBooleanData<IsMineTinkerA
     }
 
     @Override
-    public IsMineTinkerArmorDataImpl copy() {
-        return new IsMineTinkerArmorDataImpl(getValue());
+    public ArmorCompatibleDataImpl copy() {
+        return new ArmorCompatibleDataImpl(getValue());
     }
 
     @Override
@@ -66,14 +66,14 @@ public class IsMineTinkerArmorDataImpl extends AbstractBooleanData<IsMineTinkerA
         return super.toContainer().set(MTKeys.IS_MT_ARMOR.getQuery(), getValue());
     }
 
-    public static class Immutable extends AbstractImmutableBooleanData<IsMineTinkerArmorData.Immutable, IsMineTinkerArmorData> implements IsMineTinkerArmorData.Immutable {
+    public static class Immutable extends AbstractImmutableBooleanData<ArmorCompatibleData.Immutable, ArmorCompatibleData> implements ArmorCompatibleData.Immutable {
         public Immutable(boolean enabled) {
             super(MTKeys.IS_MT_ARMOR, enabled);
         }
 
         @Override
-        public IsMineTinkerArmorDataImpl asMutable() {
-            return new IsMineTinkerArmorDataImpl(getValue());
+        public ArmorCompatibleDataImpl asMutable() {
+            return new ArmorCompatibleDataImpl(getValue());
         }
 
         @Override
@@ -87,23 +87,23 @@ public class IsMineTinkerArmorDataImpl extends AbstractBooleanData<IsMineTinkerA
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<IsMineTinkerArmorData> implements IsMineTinkerArmorData.Builder {
+    public static class Builder extends AbstractDataBuilder<ArmorCompatibleData> implements ArmorCompatibleData.Builder {
         public Builder() {
-            super(IsMineTinkerArmorData.class, 2);
+            super(ArmorCompatibleData.class, 2);
         }
 
         @Override
-        public IsMineTinkerArmorDataImpl create() {
-            return new IsMineTinkerArmorDataImpl(false);
+        public ArmorCompatibleDataImpl create() {
+            return new ArmorCompatibleDataImpl(false);
         }
 
         @Override
-        public Optional<IsMineTinkerArmorData> createFrom(DataHolder dataHolder) {
+        public Optional<ArmorCompatibleData> createFrom(DataHolder dataHolder) {
             return create().fill(dataHolder);
         }
 
         @Override
-        protected Optional<IsMineTinkerArmorData> buildContent(DataView container) throws InvalidDataException {
+        protected Optional<ArmorCompatibleData> buildContent(DataView container) throws InvalidDataException {
             return create().from(container);
         }
     }

@@ -1,6 +1,6 @@
 package net.draycia.minetinkersponge.data.impl;
 
-import net.draycia.minetinkersponge.data.interfaces.IsMineTinkerToolData;
+import net.draycia.minetinkersponge.data.interfaces.ToolCompatibleData;
 import net.draycia.minetinkersponge.data.MTKeys;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
@@ -15,29 +15,29 @@ import org.spongepowered.api.data.persistence.InvalidDataException;
 
 import java.util.Optional;
 
-public class IsMineTinkerToolDataImpl extends AbstractBooleanData<IsMineTinkerToolData, IsMineTinkerToolData.Immutable> implements IsMineTinkerToolData {
+public class ToolCompatibleDataImpl extends AbstractBooleanData<ToolCompatibleData, ToolCompatibleData.Immutable> implements ToolCompatibleData {
 
-    public IsMineTinkerToolDataImpl(boolean enabled) {
+    public ToolCompatibleDataImpl(boolean enabled) {
         super(MTKeys.IS_MT_TOOL, enabled);
     }
 
     @Override
-    public Optional<IsMineTinkerToolData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<IsMineTinkerToolDataImpl> data_ = dataHolder.get(IsMineTinkerToolDataImpl.class);
+    public Optional<ToolCompatibleData> fill(DataHolder dataHolder, MergeFunction overlap) {
+        Optional<ToolCompatibleDataImpl> data_ = dataHolder.get(ToolCompatibleDataImpl.class);
         if (data_.isPresent()) {
-            IsMineTinkerToolDataImpl data = data_.get();
-            IsMineTinkerToolDataImpl finalData = overlap.merge(this, data);
+            ToolCompatibleDataImpl data = data_.get();
+            ToolCompatibleDataImpl finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
     }
 
     @Override
-    public Optional<IsMineTinkerToolData> from(DataContainer container) {
+    public Optional<ToolCompatibleData> from(DataContainer container) {
         return from((DataView) container);
     }
 
-    public Optional<IsMineTinkerToolData> from(DataView view) {
+    public Optional<ToolCompatibleData> from(DataView view) {
         if (view.contains(MTKeys.IS_MT_TOOL.getQuery())) {
             setValue(view.getBoolean(MTKeys.IS_MT_TOOL.getQuery()).get());
             return Optional.of(this);
@@ -47,8 +47,8 @@ public class IsMineTinkerToolDataImpl extends AbstractBooleanData<IsMineTinkerTo
     }
 
     @Override
-    public IsMineTinkerToolDataImpl copy() {
-        return new IsMineTinkerToolDataImpl(getValue());
+    public ToolCompatibleDataImpl copy() {
+        return new ToolCompatibleDataImpl(getValue());
     }
 
     @Override
@@ -66,14 +66,14 @@ public class IsMineTinkerToolDataImpl extends AbstractBooleanData<IsMineTinkerTo
         return super.toContainer().set(MTKeys.IS_MT_TOOL.getQuery(), getValue());
     }
 
-    public static class Immutable extends AbstractImmutableBooleanData<IsMineTinkerToolData.Immutable, IsMineTinkerToolData> implements IsMineTinkerToolData.Immutable {
+    public static class Immutable extends AbstractImmutableBooleanData<ToolCompatibleData.Immutable, ToolCompatibleData> implements ToolCompatibleData.Immutable {
         public Immutable(boolean enabled) {
             super(MTKeys.IS_MT_TOOL, enabled);
         }
 
         @Override
-        public IsMineTinkerToolDataImpl asMutable() {
-            return new IsMineTinkerToolDataImpl(getValue());
+        public ToolCompatibleDataImpl asMutable() {
+            return new ToolCompatibleDataImpl(getValue());
         }
 
         @Override
@@ -87,23 +87,23 @@ public class IsMineTinkerToolDataImpl extends AbstractBooleanData<IsMineTinkerTo
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<IsMineTinkerToolData> implements IsMineTinkerToolData.Builder {
+    public static class Builder extends AbstractDataBuilder<ToolCompatibleData> implements ToolCompatibleData.Builder {
         public Builder() {
-            super(IsMineTinkerToolData.class, 2);
+            super(ToolCompatibleData.class, 2);
         }
 
         @Override
-        public IsMineTinkerToolDataImpl create() {
-            return new IsMineTinkerToolDataImpl(false);
+        public ToolCompatibleDataImpl create() {
+            return new ToolCompatibleDataImpl(false);
         }
 
         @Override
-        public Optional<IsMineTinkerToolData> createFrom(DataHolder dataHolder) {
+        public Optional<ToolCompatibleData> createFrom(DataHolder dataHolder) {
             return create().fill(dataHolder);
         }
 
         @Override
-        protected Optional<IsMineTinkerToolData> buildContent(DataView container) throws InvalidDataException {
+        protected Optional<ToolCompatibleData> buildContent(DataView container) throws InvalidDataException {
             return create().from(container);
         }
     }

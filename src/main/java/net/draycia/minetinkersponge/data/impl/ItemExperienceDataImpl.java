@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.data.impl;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.MineTinkerItemXPData;
+import net.draycia.minetinkersponge.data.interfaces.ItemExperienceData;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
@@ -18,29 +18,29 @@ import org.spongepowered.api.data.value.mutable.Value;
 
 import java.util.Optional;
 
-public class MineTinkerItemXPDataImpl extends AbstractSingleData<Integer, MineTinkerItemXPData, MineTinkerItemXPData.Immutable> implements MineTinkerItemXPData {
+public class ItemExperienceDataImpl extends AbstractSingleData<Integer, ItemExperienceData, ItemExperienceData.Immutable> implements ItemExperienceData {
     
-    public MineTinkerItemXPDataImpl(int value) {
+    public ItemExperienceDataImpl(int value) {
         super(MTKeys.MINETINKER_XP, value);
     }
 
     @Override
-    public Optional<MineTinkerItemXPData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<MineTinkerItemXPDataImpl> data_ = dataHolder.get(MineTinkerItemXPDataImpl.class);
+    public Optional<ItemExperienceData> fill(DataHolder dataHolder, MergeFunction overlap) {
+        Optional<ItemExperienceDataImpl> data_ = dataHolder.get(ItemExperienceDataImpl.class);
         if (data_.isPresent()) {
-            MineTinkerItemXPDataImpl data = data_.get();
-            MineTinkerItemXPDataImpl finalData = overlap.merge(this, data);
+            ItemExperienceDataImpl data = data_.get();
+            ItemExperienceDataImpl finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
     }
 
     @Override
-    public Optional<MineTinkerItemXPData> from(DataContainer container) {
+    public Optional<ItemExperienceData> from(DataContainer container) {
         return from((DataView) container);
     }
 
-    public Optional<MineTinkerItemXPData> from(DataView view) {
+    public Optional<ItemExperienceData> from(DataView view) {
         if (view.contains(MTKeys.IS_MINETINKER.getQuery())) {
             setValue(view.getInt(MTKeys.MINETINKER_XP.getQuery()).get());
             return Optional.of(this);
@@ -50,8 +50,8 @@ public class MineTinkerItemXPDataImpl extends AbstractSingleData<Integer, MineTi
     }
 
     @Override
-    public MineTinkerItemXPDataImpl copy() {
-        return new MineTinkerItemXPDataImpl(getValue());
+    public ItemExperienceDataImpl copy() {
+        return new ItemExperienceDataImpl(getValue());
     }
 
     @Override
@@ -74,7 +74,7 @@ public class MineTinkerItemXPDataImpl extends AbstractSingleData<Integer, MineTi
         return super.toContainer().set(MTKeys.IS_MINETINKER.getQuery(), getValue());
     }
 
-    public static class Immutable extends AbstractImmutableSingleData<Integer, MineTinkerItemXPData.Immutable, MineTinkerItemXPData> implements MineTinkerItemXPData.Immutable {
+    public static class Immutable extends AbstractImmutableSingleData<Integer, ItemExperienceData.Immutable, ItemExperienceData> implements ItemExperienceData.Immutable {
         public Immutable(int value) {
             super(MTKeys.MINETINKER_XP, value);
         }
@@ -85,8 +85,8 @@ public class MineTinkerItemXPDataImpl extends AbstractSingleData<Integer, MineTi
         }
 
         @Override
-        public MineTinkerItemXPDataImpl asMutable() {
-            return new MineTinkerItemXPDataImpl(getValue());
+        public ItemExperienceDataImpl asMutable() {
+            return new ItemExperienceDataImpl(getValue());
         }
 
         @Override
@@ -100,23 +100,23 @@ public class MineTinkerItemXPDataImpl extends AbstractSingleData<Integer, MineTi
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<MineTinkerItemXPData> implements MineTinkerItemXPData.Builder {
+    public static class Builder extends AbstractDataBuilder<ItemExperienceData> implements ItemExperienceData.Builder {
         public Builder() {
-            super(MineTinkerItemXPData.class, 2);
+            super(ItemExperienceData.class, 2);
         }
 
         @Override
-        public MineTinkerItemXPDataImpl create() {
-            return new MineTinkerItemXPDataImpl(0);
+        public ItemExperienceDataImpl create() {
+            return new ItemExperienceDataImpl(0);
         }
 
         @Override
-        public Optional<MineTinkerItemXPData> createFrom(DataHolder dataHolder) {
+        public Optional<ItemExperienceData> createFrom(DataHolder dataHolder) {
             return create().fill(dataHolder);
         }
 
         @Override
-        protected Optional<MineTinkerItemXPData> buildContent(DataView container) throws InvalidDataException {
+        protected Optional<ItemExperienceData> buildContent(DataView container) throws InvalidDataException {
             return create().from(container);
         }
     }

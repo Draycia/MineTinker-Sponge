@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.data.impl;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.MineTinkerItemLevelData;
+import net.draycia.minetinkersponge.data.interfaces.ItemLevelData;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
@@ -18,29 +18,29 @@ import org.spongepowered.api.data.value.mutable.Value;
 
 import java.util.Optional;
 
-public class MineTinkerItemLevelDataImpl extends AbstractSingleData<Integer, MineTinkerItemLevelData, MineTinkerItemLevelData.Immutable> implements MineTinkerItemLevelData {
+public class ItemLevelDataImpl extends AbstractSingleData<Integer, ItemLevelData, ItemLevelData.Immutable> implements ItemLevelData {
     
-    public MineTinkerItemLevelDataImpl(int value) {
+    public ItemLevelDataImpl(int value) {
         super(MTKeys.MINETINKER_LEVEL, value);
     }
 
     @Override
-    public Optional<MineTinkerItemLevelData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<MineTinkerItemLevelDataImpl> data_ = dataHolder.get(MineTinkerItemLevelDataImpl.class);
+    public Optional<ItemLevelData> fill(DataHolder dataHolder, MergeFunction overlap) {
+        Optional<ItemLevelDataImpl> data_ = dataHolder.get(ItemLevelDataImpl.class);
         if (data_.isPresent()) {
-            MineTinkerItemLevelDataImpl data = data_.get();
-            MineTinkerItemLevelDataImpl finalData = overlap.merge(this, data);
+            ItemLevelDataImpl data = data_.get();
+            ItemLevelDataImpl finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
     }
 
     @Override
-    public Optional<MineTinkerItemLevelData> from(DataContainer container) {
+    public Optional<ItemLevelData> from(DataContainer container) {
         return from((DataView) container);
     }
 
-    public Optional<MineTinkerItemLevelData> from(DataView view) {
+    public Optional<ItemLevelData> from(DataView view) {
         if (view.contains(MTKeys.IS_MINETINKER.getQuery())) {
             setValue(view.getInt(MTKeys.MINETINKER_LEVEL.getQuery()).get());
             return Optional.of(this);
@@ -50,8 +50,8 @@ public class MineTinkerItemLevelDataImpl extends AbstractSingleData<Integer, Min
     }
 
     @Override
-    public MineTinkerItemLevelDataImpl copy() {
-        return new MineTinkerItemLevelDataImpl(getValue());
+    public ItemLevelDataImpl copy() {
+        return new ItemLevelDataImpl(getValue());
     }
 
     @Override
@@ -74,7 +74,7 @@ public class MineTinkerItemLevelDataImpl extends AbstractSingleData<Integer, Min
         return super.toContainer().set(MTKeys.IS_MINETINKER.getQuery(), getValue());
     }
 
-    public static class Immutable extends AbstractImmutableSingleData<Integer, MineTinkerItemLevelData.Immutable, MineTinkerItemLevelData> implements MineTinkerItemLevelData.Immutable {
+    public static class Immutable extends AbstractImmutableSingleData<Integer, ItemLevelData.Immutable, ItemLevelData> implements ItemLevelData.Immutable {
         public Immutable(int value) {
             super(MTKeys.MINETINKER_LEVEL, value);
         }
@@ -85,8 +85,8 @@ public class MineTinkerItemLevelDataImpl extends AbstractSingleData<Integer, Min
         }
 
         @Override
-        public MineTinkerItemLevelDataImpl asMutable() {
-            return new MineTinkerItemLevelDataImpl(getValue());
+        public ItemLevelDataImpl asMutable() {
+            return new ItemLevelDataImpl(getValue());
         }
 
         @Override
@@ -100,23 +100,23 @@ public class MineTinkerItemLevelDataImpl extends AbstractSingleData<Integer, Min
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<MineTinkerItemLevelData> implements MineTinkerItemLevelData.Builder {
+    public static class Builder extends AbstractDataBuilder<ItemLevelData> implements ItemLevelData.Builder {
         public Builder() {
-            super(MineTinkerItemLevelData.class, 2);
+            super(ItemLevelData.class, 2);
         }
 
         @Override
-        public MineTinkerItemLevelDataImpl create() {
-            return new MineTinkerItemLevelDataImpl(0);
+        public ItemLevelDataImpl create() {
+            return new ItemLevelDataImpl(0);
         }
 
         @Override
-        public Optional<MineTinkerItemLevelData> createFrom(DataHolder dataHolder) {
+        public Optional<ItemLevelData> createFrom(DataHolder dataHolder) {
             return create().fill(dataHolder);
         }
 
         @Override
-        protected Optional<MineTinkerItemLevelData> buildContent(DataView container) throws InvalidDataException {
+        protected Optional<ItemLevelData> buildContent(DataView container) throws InvalidDataException {
             return create().from(container);
         }
     }

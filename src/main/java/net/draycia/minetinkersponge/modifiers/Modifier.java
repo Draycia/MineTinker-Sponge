@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.modifiers;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.MineTinkerModifierIDData;
+import net.draycia.minetinkersponge.data.interfaces.ModifierIdentifierData;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
@@ -74,7 +74,7 @@ public abstract class Modifier {
                 .quantity(amount)
                 .build();
 
-        itemStack.offer(itemStack.getOrCreate(MineTinkerModifierIDData.class).get());
+        itemStack.offer(itemStack.getOrCreate(ModifierIdentifierData.class).get());
         itemStack.offer(MTKeys.MODIFIER_ID, getKey());
 
         itemStack.offer(Keys.DISPLAY_NAME, Text.of(getName() + " Modifier"));

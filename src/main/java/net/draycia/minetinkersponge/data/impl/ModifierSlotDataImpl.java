@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.data.impl;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.MineTinkerItemSlotData;
+import net.draycia.minetinkersponge.data.interfaces.ModifierSlotData;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
@@ -18,29 +18,29 @@ import org.spongepowered.api.data.value.mutable.Value;
 
 import java.util.Optional;
 
-public class MineTinkerItemSlotDataImpl extends AbstractSingleData<Integer, MineTinkerItemSlotData, MineTinkerItemSlotData.Immutable> implements MineTinkerItemSlotData {
+public class ModifierSlotDataImpl extends AbstractSingleData<Integer, ModifierSlotData, ModifierSlotData.Immutable> implements ModifierSlotData {
 
-    public MineTinkerItemSlotDataImpl(int value) {
+    public ModifierSlotDataImpl(int value) {
         super(MTKeys.MINETINKER_SLOTS, value);
     }
 
     @Override
-    public Optional<MineTinkerItemSlotData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<MineTinkerItemSlotDataImpl> data_ = dataHolder.get(MineTinkerItemSlotDataImpl.class);
+    public Optional<ModifierSlotData> fill(DataHolder dataHolder, MergeFunction overlap) {
+        Optional<ModifierSlotDataImpl> data_ = dataHolder.get(ModifierSlotDataImpl.class);
         if (data_.isPresent()) {
-            MineTinkerItemSlotDataImpl data = data_.get();
-            MineTinkerItemSlotDataImpl finalData = overlap.merge(this, data);
+            ModifierSlotDataImpl data = data_.get();
+            ModifierSlotDataImpl finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
     }
 
     @Override
-    public Optional<MineTinkerItemSlotData> from(DataContainer container) {
+    public Optional<ModifierSlotData> from(DataContainer container) {
         return from((DataView) container);
     }
 
-    public Optional<MineTinkerItemSlotData> from(DataView view) {
+    public Optional<ModifierSlotData> from(DataView view) {
         if (view.contains(MTKeys.IS_MINETINKER.getQuery())) {
             setValue(view.getInt(MTKeys.MINETINKER_SLOTS.getQuery()).get());
             return Optional.of(this);
@@ -50,8 +50,8 @@ public class MineTinkerItemSlotDataImpl extends AbstractSingleData<Integer, Mine
     }
 
     @Override
-    public MineTinkerItemSlotDataImpl copy() {
-        return new MineTinkerItemSlotDataImpl(getValue());
+    public ModifierSlotDataImpl copy() {
+        return new ModifierSlotDataImpl(getValue());
     }
 
     @Override
@@ -74,7 +74,7 @@ public class MineTinkerItemSlotDataImpl extends AbstractSingleData<Integer, Mine
         return super.toContainer().set(MTKeys.IS_MINETINKER.getQuery(), getValue());
     }
 
-    public static class Immutable extends AbstractImmutableSingleData<Integer, MineTinkerItemSlotData.Immutable, MineTinkerItemSlotData> implements MineTinkerItemSlotData.Immutable {
+    public static class Immutable extends AbstractImmutableSingleData<Integer, ModifierSlotData.Immutable, ModifierSlotData> implements ModifierSlotData.Immutable {
         public Immutable(int value) {
             super(MTKeys.MINETINKER_SLOTS, value);
         }
@@ -85,8 +85,8 @@ public class MineTinkerItemSlotDataImpl extends AbstractSingleData<Integer, Mine
         }
 
         @Override
-        public MineTinkerItemSlotDataImpl asMutable() {
-            return new MineTinkerItemSlotDataImpl(getValue());
+        public ModifierSlotDataImpl asMutable() {
+            return new ModifierSlotDataImpl(getValue());
         }
 
         @Override
@@ -100,23 +100,23 @@ public class MineTinkerItemSlotDataImpl extends AbstractSingleData<Integer, Mine
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<MineTinkerItemSlotData> implements MineTinkerItemSlotData.Builder {
+    public static class Builder extends AbstractDataBuilder<ModifierSlotData> implements ModifierSlotData.Builder {
         public Builder() {
-            super(MineTinkerItemSlotData.class, 2);
+            super(ModifierSlotData.class, 2);
         }
 
         @Override
-        public MineTinkerItemSlotDataImpl create() {
-            return new MineTinkerItemSlotDataImpl(0);
+        public ModifierSlotDataImpl create() {
+            return new ModifierSlotDataImpl(0);
         }
 
         @Override
-        public Optional<MineTinkerItemSlotData> createFrom(DataHolder dataHolder) {
+        public Optional<ModifierSlotData> createFrom(DataHolder dataHolder) {
             return create().fill(dataHolder);
         }
 
         @Override
-        protected Optional<MineTinkerItemSlotData> buildContent(DataView container) throws InvalidDataException {
+        protected Optional<ModifierSlotData> buildContent(DataView container) throws InvalidDataException {
             return create().from(container);
         }
     }
