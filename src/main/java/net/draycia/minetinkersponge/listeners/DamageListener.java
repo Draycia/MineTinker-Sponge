@@ -12,6 +12,7 @@ import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.equipment.EquipmentInventory;
+import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
 
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class DamageListener {
         DamageType type = source.getType();
 
         if (type == DamageTypes.ATTACK || type == DamageTypes.PROJECTILE || type == DamageTypes.GENERIC) {
-            EquipmentInventory inventory = player.getInventory().query(EquipmentInventory.class);
+            EquipmentInventory inventory = player.getInventory().query(QueryOperationTypes.INVENTORY_TYPE.of(EquipmentInventory.class));
 
             for (Inventory slot : inventory.slots()) {
                 Optional<ItemStack> item = slot.peek();
