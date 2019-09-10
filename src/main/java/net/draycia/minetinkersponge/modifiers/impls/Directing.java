@@ -15,8 +15,10 @@ import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.item.inventory.DropItemEvent;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
+import org.spongepowered.api.item.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Directing extends Modifier {
 
@@ -61,23 +63,27 @@ public class Directing extends Modifier {
         EventContext context = event.getContext();
 
         if (context.containsKey(EventContextKeys.BLOCK_HIT) || context.containsKey(EventContextKeys.SPAWN_TYPE)) {
-            event.getCause().first(Player.class).ifPresent(player -> {
-                player.getItemInHand(HandTypes.MAIN_HAND).ifPresent(itemStack -> {
-                    if (modManager.itemHasModifier(itemStack, this)) {
+            Optional<Player> player = event.getCause().first(Player.class);
+
+            if (player.isPresent()) {
+                Optional<ItemStack> itemStack = player.get().getItemInHand(HandTypes.MAIN_HAND);
+
+                if (itemStack.isPresent()) {
+                    if (modManager.itemHasModifier(itemStack.get(), this)) {
                         for (Entity entity : event.getEntities()) {
                             if (entity instanceof Item) {
                                 Item item = (Item) entity;
 
                                 if (item.item().exists()) {
-                                    player.getInventory().offer(item.item().get().createStack());
+                                    player.get().getInventory().offer(item.item().get().createStack());
                                 }
                             }
                         }
 
                         event.setCancelled(true);
                     }
-                });
-            });
+                }
+            }
         }
     }
 }

@@ -25,10 +25,11 @@ public class ConvertItemCommand implements CommandExecutor {
             return CommandResult.empty();
         }
 
-        Player player = (Player)src;
+        Optional<ItemStack> mainItem = ((Player)src).getItemInHand(HandTypes.MAIN_HAND);
 
-        Optional<ItemStack> mainItem = player.getItemInHand(HandTypes.MAIN_HAND);
-        mainItem.ifPresent(itemStack -> modManager.convertItemStack(itemStack));
+        if (mainItem.isPresent()) {
+            modManager.convertItemStack(mainItem.get());
+        }
 
         return CommandResult.success();
     }

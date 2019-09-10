@@ -146,10 +146,12 @@ public class ModManager {
      * @param itemStack
      */
     public void convertItemStack(ItemStack itemStack) {
+        // Check if the item is compatible with the plugin
         if (!ItemTypeUtils.getAllTypes().contains(itemStack.getType())) {
             return;
         }
 
+        // Data Updators need to be offered before the data is
         itemStack.offer(itemStack.getOrCreate(ItemCompatibleData.class).get());
         itemStack.offer(itemStack.getOrCreate(ToolCompatibleData.class).get());
         itemStack.offer(itemStack.getOrCreate(ArmorCompatibleData.class).get());
@@ -158,6 +160,7 @@ public class ModManager {
         itemStack.offer(itemStack.getOrCreate(ItemExperienceData.class).get());
         itemStack.offer(itemStack.getOrCreate(ItemLevelData.class).get());
 
+        // Offer the actual data
         itemStack.offer(MTKeys.IS_MINETINKER, true);
         itemStack.offer(MTKeys.IS_MT_TOOL, true);
         itemStack.offer(MTKeys.MINETINKER_XP, 0);
@@ -167,6 +170,7 @@ public class ModManager {
         itemStack.offer(Keys.HIDE_ENCHANTMENTS, true);
         itemStack.offer(Keys.UNBREAKABLE, true);
 
+        // And update the lore
         rewriteItemLore(itemStack);
     }
 

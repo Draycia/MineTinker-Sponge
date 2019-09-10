@@ -26,11 +26,11 @@ public class AddModifierCommand implements CommandExecutor {
             return CommandResult.empty();
         }
 
-        Player player = (Player)src;
+        Optional<Object> modifierName = args.getOne("modifier");
 
-        args.getOne("modifier").ifPresent(modifierName -> {
-            Optional<Modifier> modifier = modManager.getModifier((String)modifierName);
-            Optional<ItemStack> mainItem = player.getItemInHand(HandTypes.MAIN_HAND);
+        if (modifierName.isPresent()) {
+            Optional<Modifier> modifier = modManager.getModifier((String)(modifierName.get()));
+            Optional<ItemStack> mainItem = ((Player)src).getItemInHand(HandTypes.MAIN_HAND);
 
             if (mainItem.isPresent() && modifier.isPresent()) {
                 if (args.getOne("amount").isPresent()) {
@@ -39,7 +39,7 @@ public class AddModifierCommand implements CommandExecutor {
                     modManager.applyModifier(mainItem.get(), modifier.get(), true, 1);
                 }
             }
-        });
+        }
 
         return CommandResult.success();
     }

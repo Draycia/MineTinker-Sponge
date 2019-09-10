@@ -2,11 +2,15 @@ package net.draycia.minetinkersponge.listeners;
 
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.modifiers.ModManager;
+import org.spongepowered.api.data.type.HandType;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
 import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.filter.cause.Root;
+import org.spongepowered.api.item.inventory.ItemStack;
+
+import java.util.Optional;
 
 public class BlockBreakListener {
 
@@ -18,12 +22,16 @@ public class BlockBreakListener {
 
     @Listener
     public void onBlockBreak(ChangeBlockEvent.Break event, @Root Player player) {
-        event.getCause().getContext().get(EventContextKeys.USED_HAND).ifPresent(usedHand -> {
-            player.getItemInHand(usedHand).ifPresent(itemStack -> {
-                if (itemStack.get(MTKeys.IS_MINETINKER).isPresent()) {
-                    modManager.addExperience(itemStack, 1);
+        Optional<HandType> handType = event.getContext().get(EventContextKeys.USED_HAND);
+
+        if (handType.isPresent()) {
+            Optional<ItemStack> itemStack = player.getItemInHand(handType.get());
+
+            if (itemStack.isPresent()) {
+                if (itemStack.get().get(MTKeys.IS_MINETINKER).isPresent()) {
+                    modManager.addExperience(itemStack.get(), 1);
                 }
-            });
-        });
+            }
+        }
     }
 }

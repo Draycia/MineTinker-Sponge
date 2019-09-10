@@ -15,9 +15,11 @@ import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.DamageEntityEvent;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
+import org.spongepowered.api.item.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Poisonous extends Modifier {
 
@@ -63,17 +65,19 @@ public class Poisonous extends Modifier {
             return;
         }
 
-        event.getCause().first(Player.class).ifPresent(player -> {
-            player.getItemInHand(HandTypes.MAIN_HAND).ifPresent(itemStack -> {
-                if (modManager.itemHasModifier(itemStack, this)) {
-                    int level = modManager.getModifierLevel(itemStack, this);
+        Optional<Player> player = event.getCause().first(Player.class);
+
+        if (player.isPresent()) {
+            Optional<ItemStack> itemStack = player.get().getItemInHand(HandTypes.MAIN_HAND);
+
+            if (itemStack.isPresent()) {
+                if (modManager.itemHasModifier(itemStack.get(), this)) {
+                    int level = modManager.getModifierLevel(itemStack.get(), this);
 
                     PotionEffectData potionEffects = event.getTargetEntity().getOrCreate(PotionEffectData.class).get();
                     potionEffects.addElement(PotionEffect.builder().potionType(PotionEffectTypes.POISON).duration(level * 20).amplifier(1).build());
-
-                    System.out.println(event.getTargetEntity().offer(potionEffects).isSuccessful());
                 }
-            });
-        });
+            }
+        }
     }
 }

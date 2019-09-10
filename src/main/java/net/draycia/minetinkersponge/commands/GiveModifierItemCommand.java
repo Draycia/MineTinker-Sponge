@@ -24,16 +24,15 @@ public class GiveModifierItemCommand implements CommandExecutor {
             return CommandResult.empty();
         }
 
-        Player player = (Player)src;
+        Optional<Object> modifierName = args.getOne("modifier");
 
-        args.getOne("modifier").ifPresent(modifierName -> {
-            Optional<Modifier> modifier = modManager.getModifier((String)modifierName);
+        if (modifierName.isPresent()) {
+            Optional<Modifier> modifier = modManager.getModifier((String)(modifierName.get()));
 
             if (modifier.isPresent()) {
-                player.getInventory().offer(modifier.get().getModifierItem());
+                ((Player)src).getInventory().offer(modifier.get().getModifierItem());
             }
-        });
-
+        }
 
         return CommandResult.success();
     }
