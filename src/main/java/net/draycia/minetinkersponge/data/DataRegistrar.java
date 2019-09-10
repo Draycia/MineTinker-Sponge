@@ -38,16 +38,14 @@ public class DataRegistrar {
 
         // MineTinker Compatible Armor
         DataRegistration.builder()
-                .name("Is MineTinker Armor")
-                .id("is_armor")
+                .name("MineTinker Armor Compatibility")
+                .id("armor_compatible")
                 .dataClass(ArmorCompatibleData.class)
-                .dataImplementation(ArmorCompatibleDataImpl.class)
                 .immutableClass(ArmorCompatibleData.Immutable.class)
-                .immutableImplementation(ArmorCompatibleDataImpl.Immutable.class)
-                .builder(new ArmorCompatibleDataImpl.Builder())
+                .builder(new ArmorCompatibleData.Builder())
                 .build();
 
-        Sponge.getDataManager().registerContentUpdater(ArmorCompatibleDataImpl.class, new ArmorCompatibleDataImpl.BoolEnabled1To2Updater());
+        Sponge.getDataManager().registerContentUpdater(ArmorCompatibleData.class, new ArmorCompatibleData.BoolEnabled1To2Updater());
 
         // MineTinker Item Level
         DataRegistration.builder()

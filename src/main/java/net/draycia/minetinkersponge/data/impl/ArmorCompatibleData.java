@@ -1,11 +1,13 @@
 package net.draycia.minetinkersponge.data.impl;
 
-import net.draycia.minetinkersponge.data.interfaces.ArmorCompatibleData;
 import net.draycia.minetinkersponge.data.MTKeys;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.DataView;
+import org.spongepowered.api.data.manipulator.DataManipulator;
+import org.spongepowered.api.data.manipulator.DataManipulatorBuilder;
+import org.spongepowered.api.data.manipulator.ImmutableDataManipulator;
 import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableBooleanData;
 import org.spongepowered.api.data.manipulator.mutable.common.AbstractBooleanData;
 import org.spongepowered.api.data.merge.MergeFunction;
@@ -15,18 +17,18 @@ import org.spongepowered.api.data.persistence.InvalidDataException;
 
 import java.util.Optional;
 
-public class ArmorCompatibleDataImpl extends AbstractBooleanData<ArmorCompatibleData, ArmorCompatibleData.Immutable> implements ArmorCompatibleData {
+public class ArmorCompatibleData extends AbstractBooleanData<ArmorCompatibleData, ArmorCompatibleData.Immutable> implements DataManipulator<ArmorCompatibleData, ArmorCompatibleData.Immutable> {
 
-    public ArmorCompatibleDataImpl(boolean enabled) {
+    public ArmorCompatibleData(boolean enabled) {
         super(MTKeys.IS_MT_ARMOR, enabled);
     }
 
     @Override
     public Optional<ArmorCompatibleData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<ArmorCompatibleDataImpl> data_ = dataHolder.get(ArmorCompatibleDataImpl.class);
+        Optional<ArmorCompatibleData> data_ = dataHolder.get(ArmorCompatibleData.class);
         if (data_.isPresent()) {
-            ArmorCompatibleDataImpl data = data_.get();
-            ArmorCompatibleDataImpl finalData = overlap.merge(this, data);
+            ArmorCompatibleData data = data_.get();
+            ArmorCompatibleData finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
@@ -47,8 +49,8 @@ public class ArmorCompatibleDataImpl extends AbstractBooleanData<ArmorCompatible
     }
 
     @Override
-    public ArmorCompatibleDataImpl copy() {
-        return new ArmorCompatibleDataImpl(getValue());
+    public ArmorCompatibleData copy() {
+        return new ArmorCompatibleData(getValue());
     }
 
     @Override
@@ -66,14 +68,14 @@ public class ArmorCompatibleDataImpl extends AbstractBooleanData<ArmorCompatible
         return super.toContainer().set(MTKeys.IS_MT_ARMOR.getQuery(), getValue());
     }
 
-    public static class Immutable extends AbstractImmutableBooleanData<ArmorCompatibleData.Immutable, ArmorCompatibleData> implements ArmorCompatibleData.Immutable {
+    public static class Immutable extends AbstractImmutableBooleanData<ArmorCompatibleData.Immutable, ArmorCompatibleData> implements ImmutableDataManipulator<ArmorCompatibleData.Immutable, ArmorCompatibleData> {
         public Immutable(boolean enabled) {
             super(MTKeys.IS_MT_ARMOR, enabled);
         }
 
         @Override
-        public ArmorCompatibleDataImpl asMutable() {
-            return new ArmorCompatibleDataImpl(getValue());
+        public ArmorCompatibleData asMutable() {
+            return new ArmorCompatibleData(getValue());
         }
 
         @Override
@@ -87,14 +89,14 @@ public class ArmorCompatibleDataImpl extends AbstractBooleanData<ArmorCompatible
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<ArmorCompatibleData> implements ArmorCompatibleData.Builder {
+    public static class Builder extends AbstractDataBuilder<ArmorCompatibleData> implements DataManipulatorBuilder<ArmorCompatibleData, ArmorCompatibleData.Immutable> {
         public Builder() {
             super(ArmorCompatibleData.class, 2);
         }
 
         @Override
-        public ArmorCompatibleDataImpl create() {
-            return new ArmorCompatibleDataImpl(false);
+        public ArmorCompatibleData create() {
+            return new ArmorCompatibleData(false);
         }
 
         @Override
