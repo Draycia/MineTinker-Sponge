@@ -15,13 +15,11 @@ public class DataRegistrar {
                 .name("Is MineTinker")
                 .id("is_minetinker")
                 .dataClass(ItemCompatibleData.class)
-                .dataImplementation(ItemCompatibleDataImpl.class)
                 .immutableClass(ItemCompatibleData.Immutable.class)
-                .immutableImplementation(ItemCompatibleDataImpl.Immutable.class)
-                .builder(new ItemCompatibleDataImpl.Builder())
+                .builder(new ItemCompatibleData.Builder())
                 .build();
 
-        Sponge.getDataManager().registerContentUpdater(ItemCompatibleDataImpl.class, new ItemCompatibleDataImpl.BoolEnabled1To2Updater());
+        Sponge.getDataManager().registerContentUpdater(ItemCompatibleData.class, new ItemCompatibleData.BoolEnabled1To2Updater());
 
         // MineTinker Compatible Tools
         DataRegistration.builder()
@@ -52,26 +50,22 @@ public class DataRegistrar {
                 .name("Item Level")
                 .id("minetinker_level")
                 .dataClass(ItemLevelData.class)
-                .dataImplementation(ItemLevelDataImpl.class)
                 .immutableClass(ItemLevelData.Immutable.class)
-                .immutableImplementation(ItemLevelDataImpl.Immutable.class)
-                .builder(new ItemLevelDataImpl.Builder())
+                .builder(new ItemLevelData.Builder())
                 .build();
 
-        Sponge.getDataManager().registerContentUpdater(ItemLevelDataImpl.class, new ItemLevelDataImpl.Int1To2Updater());
+        Sponge.getDataManager().registerContentUpdater(ItemLevelData.class, new ItemLevelData.Int1To2Updater());
 
         // MineTinker Item XP
         DataRegistration.builder()
                 .name("Item XP")
                 .id("minetinker_xp")
                 .dataClass(ItemExperienceData.class)
-                .dataImplementation(ItemExperienceDataImpl.class)
                 .immutableClass(ItemExperienceData.Immutable.class)
-                .immutableImplementation(ItemExperienceDataImpl.Immutable.class)
-                .builder(new ItemExperienceDataImpl.Builder())
+                .builder(new ItemExperienceData.Builder())
                 .build();
 
-        Sponge.getDataManager().registerContentUpdater(ItemExperienceDataImpl.class, new ItemExperienceDataImpl.Int1To2Updater());
+        Sponge.getDataManager().registerContentUpdater(ItemExperienceData.class, new ItemExperienceData.Int1To2Updater());
 
         // MineTinker Item XP
         DataRegistration.builder()

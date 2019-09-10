@@ -1,11 +1,12 @@
 package net.draycia.minetinkersponge.data.impl;
 
-import net.draycia.minetinkersponge.data.interfaces.ItemCompatibleData;
 import net.draycia.minetinkersponge.data.MTKeys;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.DataView;
+import org.spongepowered.api.data.manipulator.DataManipulatorBuilder;
+import org.spongepowered.api.data.manipulator.ImmutableDataManipulator;
 import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableBooleanData;
 import org.spongepowered.api.data.manipulator.mutable.common.AbstractBooleanData;
 import org.spongepowered.api.data.merge.MergeFunction;
@@ -15,18 +16,18 @@ import org.spongepowered.api.data.persistence.InvalidDataException;
 
 import java.util.Optional;
 
-public class ItemCompatibleDataImpl extends AbstractBooleanData<ItemCompatibleData, ItemCompatibleData.Immutable> implements ItemCompatibleData {
+public class ItemCompatibleData extends AbstractBooleanData<ItemCompatibleData, ItemCompatibleData.Immutable> {
     
-    public ItemCompatibleDataImpl(boolean enabled) {
+    public ItemCompatibleData(boolean enabled) {
         super(MTKeys.IS_MINETINKER, enabled);
     }
 
     @Override
     public Optional<ItemCompatibleData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<ItemCompatibleDataImpl> data_ = dataHolder.get(ItemCompatibleDataImpl.class);
+        Optional<ItemCompatibleData> data_ = dataHolder.get(ItemCompatibleData.class);
         if (data_.isPresent()) {
-            ItemCompatibleDataImpl data = data_.get();
-            ItemCompatibleDataImpl finalData = overlap.merge(this, data);
+            ItemCompatibleData data = data_.get();
+            ItemCompatibleData finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
@@ -47,8 +48,8 @@ public class ItemCompatibleDataImpl extends AbstractBooleanData<ItemCompatibleDa
     }
 
     @Override
-    public ItemCompatibleDataImpl copy() {
-        return new ItemCompatibleDataImpl(getValue());
+    public ItemCompatibleData copy() {
+        return new ItemCompatibleData(getValue());
     }
 
     @Override
@@ -66,14 +67,14 @@ public class ItemCompatibleDataImpl extends AbstractBooleanData<ItemCompatibleDa
         return super.toContainer().set(MTKeys.IS_MINETINKER.getQuery(), getValue());
     }
 
-    public static class Immutable extends AbstractImmutableBooleanData<ItemCompatibleData.Immutable, ItemCompatibleData> implements ItemCompatibleData.Immutable {
+    public static class Immutable extends AbstractImmutableBooleanData<ItemCompatibleData.Immutable, ItemCompatibleData> implements ImmutableDataManipulator<ItemCompatibleData.Immutable, ItemCompatibleData> {
         public Immutable(boolean enabled) {
             super(MTKeys.IS_MINETINKER, enabled);
         }
 
         @Override
-        public ItemCompatibleDataImpl asMutable() {
-            return new ItemCompatibleDataImpl(getValue());
+        public ItemCompatibleData asMutable() {
+            return new ItemCompatibleData(getValue());
         }
 
         @Override
@@ -87,14 +88,14 @@ public class ItemCompatibleDataImpl extends AbstractBooleanData<ItemCompatibleDa
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<ItemCompatibleData> implements ItemCompatibleData.Builder {
+    public static class Builder extends AbstractDataBuilder<ItemCompatibleData> implements DataManipulatorBuilder<ItemCompatibleData, ItemCompatibleData.Immutable> {
         public Builder() {
             super(ItemCompatibleData.class, 2);
         }
 
         @Override
-        public ItemCompatibleDataImpl create() {
-            return new ItemCompatibleDataImpl(false);
+        public ItemCompatibleData create() {
+            return new ItemCompatibleData(false);
         }
 
         @Override

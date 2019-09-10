@@ -1,12 +1,13 @@
 package net.draycia.minetinkersponge.data.impl;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.ItemExperienceData;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.DataView;
+import org.spongepowered.api.data.manipulator.DataManipulatorBuilder;
+import org.spongepowered.api.data.manipulator.ImmutableDataManipulator;
 import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableSingleData;
 import org.spongepowered.api.data.manipulator.mutable.common.AbstractSingleData;
 import org.spongepowered.api.data.merge.MergeFunction;
@@ -18,18 +19,18 @@ import org.spongepowered.api.data.value.mutable.Value;
 
 import java.util.Optional;
 
-public class ItemExperienceDataImpl extends AbstractSingleData<Integer, ItemExperienceData, ItemExperienceData.Immutable> implements ItemExperienceData {
+public class ItemExperienceData extends AbstractSingleData<Integer, ItemExperienceData, ItemExperienceData.Immutable> {
     
-    public ItemExperienceDataImpl(int value) {
+    public ItemExperienceData(int value) {
         super(MTKeys.MINETINKER_XP, value);
     }
 
     @Override
     public Optional<ItemExperienceData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<ItemExperienceDataImpl> data_ = dataHolder.get(ItemExperienceDataImpl.class);
+        Optional<ItemExperienceData> data_ = dataHolder.get(ItemExperienceData.class);
         if (data_.isPresent()) {
-            ItemExperienceDataImpl data = data_.get();
-            ItemExperienceDataImpl finalData = overlap.merge(this, data);
+            ItemExperienceData data = data_.get();
+            ItemExperienceData finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
@@ -50,8 +51,8 @@ public class ItemExperienceDataImpl extends AbstractSingleData<Integer, ItemExpe
     }
 
     @Override
-    public ItemExperienceDataImpl copy() {
-        return new ItemExperienceDataImpl(getValue());
+    public ItemExperienceData copy() {
+        return new ItemExperienceData(getValue());
     }
 
     @Override
@@ -74,7 +75,7 @@ public class ItemExperienceDataImpl extends AbstractSingleData<Integer, ItemExpe
         return super.toContainer().set(MTKeys.IS_MINETINKER.getQuery(), getValue());
     }
 
-    public static class Immutable extends AbstractImmutableSingleData<Integer, ItemExperienceData.Immutable, ItemExperienceData> implements ItemExperienceData.Immutable {
+    public static class Immutable extends AbstractImmutableSingleData<Integer, ItemExperienceData.Immutable, ItemExperienceData> implements ImmutableDataManipulator<ItemExperienceData.Immutable, ItemExperienceData> {
         public Immutable(int value) {
             super(MTKeys.MINETINKER_XP, value);
         }
@@ -85,8 +86,8 @@ public class ItemExperienceDataImpl extends AbstractSingleData<Integer, ItemExpe
         }
 
         @Override
-        public ItemExperienceDataImpl asMutable() {
-            return new ItemExperienceDataImpl(getValue());
+        public ItemExperienceData asMutable() {
+            return new ItemExperienceData(getValue());
         }
 
         @Override
@@ -100,14 +101,14 @@ public class ItemExperienceDataImpl extends AbstractSingleData<Integer, ItemExpe
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<ItemExperienceData> implements ItemExperienceData.Builder {
+    public static class Builder extends AbstractDataBuilder<ItemExperienceData> implements DataManipulatorBuilder<ItemExperienceData, ItemExperienceData.Immutable> {
         public Builder() {
             super(ItemExperienceData.class, 2);
         }
 
         @Override
-        public ItemExperienceDataImpl create() {
-            return new ItemExperienceDataImpl(0);
+        public ItemExperienceData create() {
+            return new ItemExperienceData(0);
         }
 
         @Override

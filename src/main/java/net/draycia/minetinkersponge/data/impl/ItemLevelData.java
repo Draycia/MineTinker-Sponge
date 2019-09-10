@@ -1,12 +1,13 @@
 package net.draycia.minetinkersponge.data.impl;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.ItemLevelData;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.DataView;
+import org.spongepowered.api.data.manipulator.DataManipulatorBuilder;
+import org.spongepowered.api.data.manipulator.ImmutableDataManipulator;
 import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableSingleData;
 import org.spongepowered.api.data.manipulator.mutable.common.AbstractSingleData;
 import org.spongepowered.api.data.merge.MergeFunction;
@@ -18,18 +19,18 @@ import org.spongepowered.api.data.value.mutable.Value;
 
 import java.util.Optional;
 
-public class ItemLevelDataImpl extends AbstractSingleData<Integer, ItemLevelData, ItemLevelData.Immutable> implements ItemLevelData {
+public class ItemLevelData extends AbstractSingleData<Integer, ItemLevelData, ItemLevelData.Immutable> {
     
-    public ItemLevelDataImpl(int value) {
+    public ItemLevelData(int value) {
         super(MTKeys.MINETINKER_LEVEL, value);
     }
 
     @Override
     public Optional<ItemLevelData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<ItemLevelDataImpl> data_ = dataHolder.get(ItemLevelDataImpl.class);
+        Optional<ItemLevelData> data_ = dataHolder.get(ItemLevelData.class);
         if (data_.isPresent()) {
-            ItemLevelDataImpl data = data_.get();
-            ItemLevelDataImpl finalData = overlap.merge(this, data);
+            ItemLevelData data = data_.get();
+            ItemLevelData finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
@@ -50,8 +51,8 @@ public class ItemLevelDataImpl extends AbstractSingleData<Integer, ItemLevelData
     }
 
     @Override
-    public ItemLevelDataImpl copy() {
-        return new ItemLevelDataImpl(getValue());
+    public ItemLevelData copy() {
+        return new ItemLevelData(getValue());
     }
 
     @Override
@@ -74,7 +75,7 @@ public class ItemLevelDataImpl extends AbstractSingleData<Integer, ItemLevelData
         return super.toContainer().set(MTKeys.IS_MINETINKER.getQuery(), getValue());
     }
 
-    public static class Immutable extends AbstractImmutableSingleData<Integer, ItemLevelData.Immutable, ItemLevelData> implements ItemLevelData.Immutable {
+    public static class Immutable extends AbstractImmutableSingleData<Integer, ItemLevelData.Immutable, ItemLevelData> implements ImmutableDataManipulator<ItemLevelData.Immutable, ItemLevelData> {
         public Immutable(int value) {
             super(MTKeys.MINETINKER_LEVEL, value);
         }
@@ -85,8 +86,8 @@ public class ItemLevelDataImpl extends AbstractSingleData<Integer, ItemLevelData
         }
 
         @Override
-        public ItemLevelDataImpl asMutable() {
-            return new ItemLevelDataImpl(getValue());
+        public ItemLevelData asMutable() {
+            return new ItemLevelData(getValue());
         }
 
         @Override
@@ -100,14 +101,14 @@ public class ItemLevelDataImpl extends AbstractSingleData<Integer, ItemLevelData
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<ItemLevelData> implements ItemLevelData.Builder {
+    public static class Builder extends AbstractDataBuilder<ItemLevelData> implements DataManipulatorBuilder<ItemLevelData, ItemLevelData.Immutable> {
         public Builder() {
             super(ItemLevelData.class, 2);
         }
 
         @Override
-        public ItemLevelDataImpl create() {
-            return new ItemLevelDataImpl(0);
+        public ItemLevelData create() {
+            return new ItemLevelData(0);
         }
 
         @Override
