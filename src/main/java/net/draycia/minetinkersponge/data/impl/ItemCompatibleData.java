@@ -109,7 +109,7 @@ public class ItemCompatibleData extends AbstractBooleanData<ItemCompatibleData, 
         }
     }
 
-    public static class BoolEnabled1To2Updater implements DataContentUpdater {
+    public static class VersionUpdater implements DataContentUpdater {
 
         @Override
         public int getInputVersion() {

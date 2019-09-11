@@ -122,7 +122,7 @@ public class ModifierIdentifierData extends AbstractSingleData<String, ModifierI
         }
     }
 
-    public static class String1To2Updater implements DataContentUpdater {
+    public static class VersionUpdater implements DataContentUpdater {
 
         @Override
         public int getInputVersion() {

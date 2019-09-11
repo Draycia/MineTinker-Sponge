@@ -122,7 +122,7 @@ public class ModifierSlotData extends AbstractSingleData<Integer, ModifierSlotDa
         }
     }
 
-    public static class Int1To2Updater implements DataContentUpdater {
+    public static class VersionUpdater implements DataContentUpdater {
 
         @Override
         public int getInputVersion() {

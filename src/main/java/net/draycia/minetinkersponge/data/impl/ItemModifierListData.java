@@ -142,7 +142,7 @@ public class ItemModifierListData extends AbstractMappedData<String, Integer, It
             return create().from(container);
         }
 
-        public static class List1To2Updater implements DataContentUpdater {
+        public static class VersionUpdater implements DataContentUpdater {
 
             @Override
             public int getInputVersion() {

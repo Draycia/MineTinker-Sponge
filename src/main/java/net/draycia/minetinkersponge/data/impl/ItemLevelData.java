@@ -122,7 +122,7 @@ public class ItemLevelData extends AbstractSingleData<Integer, ItemLevelData, It
         }
     }
 
-    public static class Int1To2Updater implements DataContentUpdater {
+    public static class VersionUpdater implements DataContentUpdater {
 
         @Override
         public int getInputVersion() {
