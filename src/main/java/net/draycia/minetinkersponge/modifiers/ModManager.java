@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.modifiers;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.*;
+import net.draycia.minetinkersponge.data.impl.*;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import net.draycia.minetinkersponge.utils.StringUtils;
 import org.spongepowered.api.data.key.Keys;
@@ -153,12 +153,10 @@ public class ModManager {
 
         // Data Updators need to be offered before the data is
         itemStack.offer(itemStack.getOrCreate(ItemCompatibleData.class).get());
-        itemStack.offer(itemStack.getOrCreate(ToolCompatibleData.class).get());
-        itemStack.offer(itemStack.getOrCreate(ArmorCompatibleData.class).get());
-        itemStack.offer(itemStack.getOrCreate(ItemModifierListData.class).get());
-        itemStack.offer(itemStack.getOrCreate(ModifierSlotData.class).get());
         itemStack.offer(itemStack.getOrCreate(ItemExperienceData.class).get());
         itemStack.offer(itemStack.getOrCreate(ItemLevelData.class).get());
+        itemStack.offer(itemStack.getOrCreate(ItemModifierListData.class).get());
+        itemStack.offer(itemStack.getOrCreate(ModifierSlotData.class).get());
 
         // Offer the actual data
         itemStack.offer(MTKeys.IS_MINETINKER, true);

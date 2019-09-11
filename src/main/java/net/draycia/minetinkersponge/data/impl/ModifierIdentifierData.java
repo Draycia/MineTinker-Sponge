@@ -1,12 +1,13 @@
 package net.draycia.minetinkersponge.data.impl;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.ModifierIdentifierData;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.DataView;
+import org.spongepowered.api.data.manipulator.DataManipulatorBuilder;
+import org.spongepowered.api.data.manipulator.ImmutableDataManipulator;
 import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableSingleData;
 import org.spongepowered.api.data.manipulator.mutable.common.AbstractSingleData;
 import org.spongepowered.api.data.merge.MergeFunction;
@@ -18,9 +19,9 @@ import org.spongepowered.api.data.value.mutable.Value;
 
 import java.util.Optional;
 
-public class ModifierIdentifierDataImpl extends AbstractSingleData<String, ModifierIdentifierData, ModifierIdentifierData.Immutable> implements ModifierIdentifierData {
+public class ModifierIdentifierData extends AbstractSingleData<String, ModifierIdentifierData, ModifierIdentifierData.Immutable> {
 
-    public ModifierIdentifierDataImpl(String data) {
+    public ModifierIdentifierData(String data) {
         super(MTKeys.MODIFIER_ID, data);
     }
 
@@ -31,10 +32,10 @@ public class ModifierIdentifierDataImpl extends AbstractSingleData<String, Modif
 
     @Override
     public Optional<ModifierIdentifierData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<ModifierIdentifierDataImpl> data_ = dataHolder.get(ModifierIdentifierDataImpl.class);
+        Optional<ModifierIdentifierData> data_ = dataHolder.get(ModifierIdentifierData.class);
         if (data_.isPresent()) {
-            ModifierIdentifierDataImpl data = data_.get();
-            ModifierIdentifierDataImpl finalData = overlap.merge(this, data);
+            ModifierIdentifierData data = data_.get();
+            ModifierIdentifierData finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
@@ -55,8 +56,8 @@ public class ModifierIdentifierDataImpl extends AbstractSingleData<String, Modif
     }
 
     @Override
-    public ModifierIdentifierDataImpl copy() {
-        return new ModifierIdentifierDataImpl(getValue());
+    public ModifierIdentifierData copy() {
+        return new ModifierIdentifierData(getValue());
     }
 
     @Override
@@ -74,7 +75,7 @@ public class ModifierIdentifierDataImpl extends AbstractSingleData<String, Modif
         return super.toContainer().set(MTKeys.MODIFIER_ID.getQuery(), getValue());
     }
 
-    public static class Immutable extends AbstractImmutableSingleData<String, ModifierIdentifierData.Immutable, ModifierIdentifierData> implements ModifierIdentifierData.Immutable {
+    public static class Immutable extends AbstractImmutableSingleData<String, ModifierIdentifierData.Immutable, ModifierIdentifierData> implements ImmutableDataManipulator<ModifierIdentifierData.Immutable, ModifierIdentifierData> {
         public Immutable(String data) {
             super(MTKeys.MODIFIER_ID, data);
         }
@@ -85,8 +86,8 @@ public class ModifierIdentifierDataImpl extends AbstractSingleData<String, Modif
         }
 
         @Override
-        public ModifierIdentifierDataImpl asMutable() {
-            return new ModifierIdentifierDataImpl(getValue());
+        public ModifierIdentifierData asMutable() {
+            return new ModifierIdentifierData(getValue());
         }
 
         @Override
@@ -100,14 +101,14 @@ public class ModifierIdentifierDataImpl extends AbstractSingleData<String, Modif
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<ModifierIdentifierData> implements ModifierIdentifierData.Builder {
+    public static class Builder extends AbstractDataBuilder<ModifierIdentifierData> implements DataManipulatorBuilder<ModifierIdentifierData, ModifierIdentifierData.Immutable> {
         public Builder() {
             super(ModifierIdentifierData.class, 2);
         }
 
         @Override
-        public ModifierIdentifierDataImpl create() {
-            return new ModifierIdentifierDataImpl("");
+        public ModifierIdentifierData create() {
+            return new ModifierIdentifierData("");
         }
 
         @Override

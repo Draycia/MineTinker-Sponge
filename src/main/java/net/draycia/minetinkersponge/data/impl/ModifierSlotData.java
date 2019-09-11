@@ -1,12 +1,13 @@
 package net.draycia.minetinkersponge.data.impl;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.ModifierSlotData;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.DataView;
+import org.spongepowered.api.data.manipulator.DataManipulatorBuilder;
+import org.spongepowered.api.data.manipulator.ImmutableDataManipulator;
 import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableSingleData;
 import org.spongepowered.api.data.manipulator.mutable.common.AbstractSingleData;
 import org.spongepowered.api.data.merge.MergeFunction;
@@ -18,18 +19,18 @@ import org.spongepowered.api.data.value.mutable.Value;
 
 import java.util.Optional;
 
-public class ModifierSlotDataImpl extends AbstractSingleData<Integer, ModifierSlotData, ModifierSlotData.Immutable> implements ModifierSlotData {
+public class ModifierSlotData extends AbstractSingleData<Integer, ModifierSlotData, ModifierSlotData.Immutable> {
 
-    public ModifierSlotDataImpl(int value) {
+    public ModifierSlotData(int value) {
         super(MTKeys.MINETINKER_SLOTS, value);
     }
 
     @Override
     public Optional<ModifierSlotData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<ModifierSlotDataImpl> data_ = dataHolder.get(ModifierSlotDataImpl.class);
+        Optional<ModifierSlotData> data_ = dataHolder.get(ModifierSlotData.class);
         if (data_.isPresent()) {
-            ModifierSlotDataImpl data = data_.get();
-            ModifierSlotDataImpl finalData = overlap.merge(this, data);
+            ModifierSlotData data = data_.get();
+            ModifierSlotData finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
@@ -50,8 +51,8 @@ public class ModifierSlotDataImpl extends AbstractSingleData<Integer, ModifierSl
     }
 
     @Override
-    public ModifierSlotDataImpl copy() {
-        return new ModifierSlotDataImpl(getValue());
+    public ModifierSlotData copy() {
+        return new ModifierSlotData(getValue());
     }
 
     @Override
@@ -74,7 +75,7 @@ public class ModifierSlotDataImpl extends AbstractSingleData<Integer, ModifierSl
         return super.toContainer().set(MTKeys.IS_MINETINKER.getQuery(), getValue());
     }
 
-    public static class Immutable extends AbstractImmutableSingleData<Integer, ModifierSlotData.Immutable, ModifierSlotData> implements ModifierSlotData.Immutable {
+    public static class Immutable extends AbstractImmutableSingleData<Integer, ModifierSlotData.Immutable, ModifierSlotData> implements ImmutableDataManipulator<ModifierSlotData.Immutable, ModifierSlotData> {
         public Immutable(int value) {
             super(MTKeys.MINETINKER_SLOTS, value);
         }
@@ -85,8 +86,8 @@ public class ModifierSlotDataImpl extends AbstractSingleData<Integer, ModifierSl
         }
 
         @Override
-        public ModifierSlotDataImpl asMutable() {
-            return new ModifierSlotDataImpl(getValue());
+        public ModifierSlotData asMutable() {
+            return new ModifierSlotData(getValue());
         }
 
         @Override
@@ -100,14 +101,14 @@ public class ModifierSlotDataImpl extends AbstractSingleData<Integer, ModifierSl
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<ModifierSlotData> implements ModifierSlotData.Builder {
+    public static class Builder extends AbstractDataBuilder<ModifierSlotData> implements DataManipulatorBuilder<ModifierSlotData, ModifierSlotData.Immutable> {
         public Builder() {
             super(ModifierSlotData.class, 2);
         }
 
         @Override
-        public ModifierSlotDataImpl create() {
-            return new ModifierSlotDataImpl(0);
+        public ModifierSlotData create() {
+            return new ModifierSlotData(0);
         }
 
         @Override

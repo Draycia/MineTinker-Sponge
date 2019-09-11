@@ -1,109 +1,45 @@
 package net.draycia.minetinkersponge.data;
 
 import net.draycia.minetinkersponge.data.impl.*;
-import net.draycia.minetinkersponge.data.interfaces.*;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataRegistration;
+import org.spongepowered.api.data.manipulator.DataManipulator;
+import org.spongepowered.api.data.manipulator.DataManipulatorBuilder;
+import org.spongepowered.api.data.manipulator.ImmutableDataManipulator;
+import org.spongepowered.api.data.manipulator.mutable.common.AbstractData;
+import org.spongepowered.api.data.persistence.AbstractDataBuilder;
+import org.spongepowered.api.data.persistence.DataContentUpdater;
 
 public class DataRegistrar {
 
     public static void registerDataManipulators() {
         MTKeys.dummy();
 
-        // MineTinker Compatible Items
-        DataRegistration.builder()
-                .name("Is MineTinker")
-                .id("is_minetinker")
-                .dataClass(ItemCompatibleData.class)
-                .immutableClass(ItemCompatibleData.Immutable.class)
-                .builder(new ItemCompatibleData.Builder())
-                .build();
+        registerUpdater("mt_item_compat", "mt_item_compat", ItemCompatibleData.class, ItemCompatibleData.Immutable.class,
+                new ItemCompatibleData.Builder(), new ItemCompatibleData.BoolEnabled1To2Updater());
 
-        Sponge.getDataManager().registerContentUpdater(ItemCompatibleData.class, new ItemCompatibleData.BoolEnabled1To2Updater());
+        registerUpdater("mt_item_level", "mt_item_level", ItemLevelData.class, ItemLevelData.Immutable.class,
+                new ItemLevelData.Builder(), new ItemLevelData.Int1To2Updater());
 
-        // MineTinker Compatible Tools
-        DataRegistration.builder()
-                .name("Is MineTinker Tool")
-                .id("is_tool")
-                .dataClass(ToolCompatibleData.class)
-                .dataImplementation(ToolCompatibleDataImpl.class)
-                .immutableClass(ToolCompatibleData.Immutable.class)
-                .immutableImplementation(ToolCompatibleDataImpl.Immutable.class)
-                .builder(new ToolCompatibleDataImpl.Builder())
-                .build();
+        registerUpdater("mt_item_experience", "mt_item_experience", ItemExperienceData.class, ItemExperienceData.Immutable.class,
+                new ItemExperienceData.Builder(), new ItemExperienceData.Int1To2Updater());
 
-        Sponge.getDataManager().registerContentUpdater(ToolCompatibleDataImpl.class, new ToolCompatibleDataImpl.BoolEnabled1To2Updater());
+        registerUpdater("mt_modifier_slots", "mt_modifier_slots", ModifierSlotData.class, ModifierSlotData.Immutable.class,
+                new ModifierSlotData.Builder(), new ModifierSlotData.Int1To2Updater());
 
-        // MineTinker Compatible Armor
-        DataRegistration.builder()
-                .name("MineTinker Armor Compatibility")
-                .id("armor_compatible")
-                .dataClass(ArmorCompatibleData.class)
-                .immutableClass(ArmorCompatibleData.Immutable.class)
-                .builder(new ArmorCompatibleData.Builder())
-                .build();
+        registerUpdater("mt_modifier_id", "mt_modifier_id", ModifierIdentifierData.class, ModifierIdentifierData.Immutable.class,
+                new ModifierIdentifierData.Builder(), new ModifierIdentifierData.String1To2Updater());
 
-        Sponge.getDataManager().registerContentUpdater(ArmorCompatibleData.class, new ArmorCompatibleData.BoolEnabled1To2Updater());
-
-        // MineTinker Item Level
-        DataRegistration.builder()
-                .name("Item Level")
-                .id("minetinker_level")
-                .dataClass(ItemLevelData.class)
-                .immutableClass(ItemLevelData.Immutable.class)
-                .builder(new ItemLevelData.Builder())
-                .build();
-
-        Sponge.getDataManager().registerContentUpdater(ItemLevelData.class, new ItemLevelData.Int1To2Updater());
-
-        // MineTinker Item XP
-        DataRegistration.builder()
-                .name("Item XP")
-                .id("minetinker_xp")
-                .dataClass(ItemExperienceData.class)
-                .immutableClass(ItemExperienceData.Immutable.class)
-                .builder(new ItemExperienceData.Builder())
-                .build();
-
-        Sponge.getDataManager().registerContentUpdater(ItemExperienceData.class, new ItemExperienceData.Int1To2Updater());
-
-        // MineTinker Item XP
-        DataRegistration.builder()
-                .name("Item Modifier Slots")
-                .id("minetinker_slots")
-                .dataClass(ModifierSlotData.class)
-                .dataImplementation(ModifierSlotDataImpl.class)
-                .immutableClass(ModifierSlotData.Immutable.class)
-                .immutableImplementation(ModifierSlotDataImpl.Immutable.class)
-                .builder(new ModifierSlotDataImpl.Builder())
-                .build();
-
-        Sponge.getDataManager().registerContentUpdater(ModifierSlotDataImpl.class, new ModifierSlotDataImpl.Int1To2Updater());
-
-        // MineTinker Modifier ID
-        DataRegistration.builder()
-                .name("Modifier ID")
-                .id("modifier_id")
-                .dataClass(ModifierIdentifierData.class)
-                .dataImplementation(ModifierIdentifierDataImpl.class)
-                .immutableClass(ModifierIdentifierData.Immutable.class)
-                .immutableImplementation(ModifierIdentifierDataImpl.Immutable.class)
-                .builder(new ModifierIdentifierDataImpl.Builder())
-                .build();
-
-        Sponge.getDataManager().registerContentUpdater(ModifierIdentifierDataImpl.class, new ModifierIdentifierDataImpl.String1To2Updater());
-
-        // List of Modifiers The Item Has
-        DataRegistration.builder()
-                .name("MineTinker Modifiers")
-                .id("mt_modifiers")
-                .dataClass(ItemModifierListData.class)
-                .dataImplementation(ModifierListDataImpl.class)
-                .immutableClass(ItemModifierListData.Immutable.class)
-                .immutableImplementation(ModifierListDataImpl.Immutable.class)
-                .builder(new ModifierListDataImpl.Builder())
-                .build();
-
-        Sponge.getDataManager().registerContentUpdater(ModifierListDataImpl.class, new ModifierListDataImpl.Builder.List1To2Updater());
+        registerUpdater("mt_modifier_list", "mt_modifier_list", ItemModifierListData.class, ItemModifierListData.Immutable.class,
+                new ItemModifierListData.Builder(), new ItemModifierListData.Builder.List1To2Updater());
     }
+
+    public static <D extends DataManipulator<D,M>, M extends ImmutableDataManipulator<M,D>, DMB extends DataManipulatorBuilder<D, M>>
+                    void registerUpdater(String name, String id, Class<D> dataClass, Class<M> dataImmutable,
+                                         DMB dataBuilder, DataContentUpdater contentUpdater) {
+
+        DataRegistration.builder().name(name).id(id).dataClass(dataClass).immutableClass(dataImmutable).builder(dataBuilder).build();
+        Sponge.getDataManager().registerContentUpdater(dataClass, contentUpdater);
+    }
+
 }

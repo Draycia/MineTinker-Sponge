@@ -1,11 +1,13 @@
 package net.draycia.minetinkersponge.data.impl;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.ItemModifierListData;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.DataView;
+import org.spongepowered.api.data.manipulator.DataManipulatorBuilder;
+import org.spongepowered.api.data.manipulator.ImmutableDataManipulator;
+import org.spongepowered.api.data.manipulator.immutable.ImmutableMappedData;
 import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableMappedData;
 import org.spongepowered.api.data.manipulator.mutable.common.AbstractMappedData;
 import org.spongepowered.api.data.merge.MergeFunction;
@@ -15,18 +17,18 @@ import org.spongepowered.api.data.persistence.InvalidDataException;
 
 import java.util.*;
 
-public class ModifierListDataImpl extends AbstractMappedData<String, Integer, ItemModifierListData, ItemModifierListData.Immutable> implements ItemModifierListData {
+public class ItemModifierListData extends AbstractMappedData<String, Integer, ItemModifierListData, ItemModifierListData.Immutable> {
 
-    public ModifierListDataImpl(Map<String, Integer> map) {
+    public ItemModifierListData(Map<String, Integer> map) {
         super(MTKeys.ITEM_MODIFIERS, map);
     }
 
     @Override
     public Optional<ItemModifierListData> fill(DataHolder dataHolder, MergeFunction overlap) {
-        Optional<ModifierListDataImpl> data_ = dataHolder.get(ModifierListDataImpl.class);
+        Optional<ItemModifierListData> data_ = dataHolder.get(ItemModifierListData.class);
         if (data_.isPresent()) {
-            ModifierListDataImpl data = data_.get();
-            ModifierListDataImpl finalData = overlap.merge(this, data);
+            ItemModifierListData data = data_.get();
+            ItemModifierListData finalData = overlap.merge(this, data);
             setValue(finalData.getValue());
         }
         return Optional.of(this);
@@ -48,8 +50,8 @@ public class ModifierListDataImpl extends AbstractMappedData<String, Integer, It
     }
 
     @Override
-    public ModifierListDataImpl copy() {
-        return new ModifierListDataImpl(getValue());
+    public ItemModifierListData copy() {
+        return new ItemModifierListData(getValue());
     }
 
     @Override
@@ -98,15 +100,15 @@ public class ModifierListDataImpl extends AbstractMappedData<String, Integer, It
         return this;
     }
 
-    public static class Immutable extends AbstractImmutableMappedData<String, Integer, ItemModifierListData.Immutable, ItemModifierListData> implements ItemModifierListData.Immutable {
+    public static class Immutable extends AbstractImmutableMappedData<String, Integer, ItemModifierListData.Immutable, ItemModifierListData> implements ImmutableDataManipulator<ItemModifierListData.Immutable, ItemModifierListData>, ImmutableMappedData<String, Integer, ItemModifierListData.Immutable, ItemModifierListData> {
 
         public Immutable(Map<String, Integer> map) {
             super(MTKeys.ITEM_MODIFIERS, map);
         }
 
         @Override
-        public ModifierListDataImpl asMutable() {
-            return new ModifierListDataImpl(getValue());
+        public ItemModifierListData asMutable() {
+            return new ItemModifierListData(getValue());
         }
 
         @Override
@@ -120,14 +122,14 @@ public class ModifierListDataImpl extends AbstractMappedData<String, Integer, It
         }
     }
 
-    public static class Builder extends AbstractDataBuilder<ItemModifierListData> implements ItemModifierListData.Builder {
+    public static class Builder extends AbstractDataBuilder<ItemModifierListData> implements DataManipulatorBuilder<ItemModifierListData, ItemModifierListData.Immutable> {
         public Builder() {
             super(ItemModifierListData.class, 2);
         }
 
         @Override
-        public ModifierListDataImpl create() {
-            return new ModifierListDataImpl(new HashMap<>());
+        public ItemModifierListData create() {
+            return new ItemModifierListData(new HashMap<>());
         }
 
         @Override

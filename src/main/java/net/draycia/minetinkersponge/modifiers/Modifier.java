@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.modifiers;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.interfaces.ModifierIdentifierData;
+import net.draycia.minetinkersponge.data.impl.ModifierIdentifierData;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
