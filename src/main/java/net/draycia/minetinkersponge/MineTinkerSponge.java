@@ -8,6 +8,7 @@ import net.draycia.minetinkersponge.listeners.DamageListener;
 import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.impls.*;
 import net.draycia.minetinkersponge.modifiers.impls.enchantments.*;
+import net.draycia.minetinkersponge.modifiers.impls.potioneffects.InstantDamage;
 import net.draycia.minetinkersponge.modifiers.impls.potioneffects.Poisonous;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.DiamondUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.GoldUpgrade;
@@ -34,6 +35,12 @@ public class MineTinkerSponge {
 
         modManager = new ModManager();
 
+        registerModifiers();
+        registerCommands();
+        registerListeners();
+    }
+
+    private void registerModifiers() {
         // Enchantment Modifiers
         modManager.registerModifier(this, new AquaAffinity());
         modManager.registerModifier(this, new BaneOfArthropods());
@@ -61,13 +68,15 @@ public class MineTinkerSponge {
         // Custom Modifiers
         modManager.registerModifier(this, new Directing(modManager));
         modManager.registerModifier(this, new Poisonous(modManager));
+        modManager.registerModifier(this, new InstantDamage(modManager));
 
         // Upgrade Modifiers
         modManager.registerModifier(this, new IronUpgrade(modManager));
         modManager.registerModifier(this, new GoldUpgrade(modManager));
         modManager.registerModifier(this, new DiamondUpgrade(modManager));
+    }
 
-        // Register commands
+    private void registerCommands() {
         CommandSpec addModifier = CommandSpec.builder()
                 .description(Text.of("Applies the modifier to the held item (or increments its level)."))
                 .permission("minetinker.commands.addmodifier")
@@ -110,8 +119,9 @@ public class MineTinkerSponge {
                 .build();
 
         Sponge.getCommandManager().register(this, addSlots, "addslots");
+    }
 
-        // Register listeners
+    private void registerListeners() {
         Sponge.getEventManager().registerListeners(this, new BlockBreakListener(modManager));
         Sponge.getEventManager().registerListeners(this, new DamageListener(modManager));
         Sponge.getEventManager().registerListeners(this, new AnvilListener(modManager));
