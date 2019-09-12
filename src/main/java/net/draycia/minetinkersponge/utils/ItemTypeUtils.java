@@ -90,8 +90,8 @@ public class ItemTypeUtils {
         weaponTypes.addAll(swordTypes);
         weaponTypes.addAll(bowTypes);
 
+        toolTypes.addAll(axeTypes);
         toolTypes.addAll(pickaxeTypes);
-        toolTypes.addAll(allTypes);
         toolTypes.addAll(hoeTypes);
         toolTypes.addAll(shovelTypes);
 
