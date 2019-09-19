@@ -151,7 +151,7 @@ public class ModManager {
             return;
         }
 
-        // Data Updators need to be offered before the data is
+        // Data Updaters need to be offered before the data is
         itemStack.offer(itemStack.getOrCreate(ItemCompatibleData.class).get());
         itemStack.offer(itemStack.getOrCreate(ItemExperienceData.class).get());
         itemStack.offer(itemStack.getOrCreate(ItemLevelData.class).get());
@@ -165,8 +165,24 @@ public class ModManager {
         itemStack.offer(MTKeys.MINETINKER_LEVEL, 1);
         itemStack.offer(MTKeys.MINETINKER_SLOTS, 1);
 
+        // TODO: Add configuration options for both of these
         itemStack.offer(Keys.HIDE_ENCHANTMENTS, true);
         itemStack.offer(Keys.UNBREAKABLE, true);
+
+        // Convert vanilla enchantments into modifiers
+        // TODO: Add configuration option to enable/disable this feature
+        Optional<List<Enchantment>> enchantments = itemStack.get(Keys.STORED_ENCHANTMENTS);
+
+        if (enchantments.isPresent()) {
+            for (Enchantment enchantment : enchantments.get()) {
+                for (Modifier modifier : modifiers.values()) {
+                    if (modifier.getAppliedEnchantments().contains(enchantment.getType())) {
+                        // TODO: Add configuration option to enable/disable modifier level caps
+                        applyModifier(itemStack, modifier, true, enchantment.getLevel());
+                    }
+                }
+            }
+        }
 
         // And update the lore
         rewriteItemLore(itemStack);
