@@ -5,6 +5,7 @@ import net.draycia.minetinkersponge.data.DataRegistrar;
 import net.draycia.minetinkersponge.listeners.AnvilListener;
 import net.draycia.minetinkersponge.listeners.BlockBreakListener;
 import net.draycia.minetinkersponge.listeners.DamageListener;
+import net.draycia.minetinkersponge.listeners.InteractListener;
 import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.impls.*;
 import net.draycia.minetinkersponge.modifiers.impls.enchantments.*;
@@ -123,6 +124,7 @@ public class MineTinkerSponge {
 
     private void registerListeners() {
         Sponge.getEventManager().registerListeners(this, new BlockBreakListener(modManager));
+        Sponge.getEventManager().registerListeners(this, new InteractListener(modManager));
         Sponge.getEventManager().registerListeners(this, new DamageListener(modManager));
         Sponge.getEventManager().registerListeners(this, new AnvilListener(modManager));
     }

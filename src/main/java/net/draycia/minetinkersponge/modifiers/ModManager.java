@@ -182,19 +182,18 @@ public class ModManager {
 
             if (enchantments.isPresent()) {
                 for (Enchantment enchantment : enchantments.get()) {
-                    for (Modifier modifier : modifiers.values()) {
-                        if (modifier.getAppliedEnchantments().contains(enchantment.getType())) {
+                    Optional<Modifier> modifier = getFirstModifierByEnchantment(enchantment.getType());
 
-                            int level;
+                    if (modifier.isPresent()) {
+                        int level;
 
-                            if (MTConfig.CONVERT_EXCEEDS_MAX_LEVEL) {
-                                level = enchantment.getLevel();
-                            } else {
-                                level = Math.min(enchantment.getLevel(), modifier.getMaxLevel());
-                            }
-
-                            applyModifier(itemStack, modifier, true, level);
+                        if (MTConfig.CONVERT_EXCEEDS_MAX_LEVEL) {
+                            level = enchantment.getLevel();
+                        } else {
+                            level = Math.min(enchantment.getLevel(), modifier.get().getMaxLevel());
                         }
+
+                        applyModifier(itemStack, modifier.get(), true, level);
                     }
                 }
             }
@@ -202,6 +201,16 @@ public class ModManager {
 
         // And update the lore
         rewriteItemLore(itemStack);
+    }
+
+    public Optional<Modifier> getFirstModifierByEnchantment(EnchantmentType enchantment) {
+        for (Modifier modifier : modifiers.values()) {
+            if (modifier.getAppliedEnchantments().contains(enchantment)) {
+                return Optional.of(modifier);
+            }
+        }
+
+        return Optional.empty();
     }
 
     /**
