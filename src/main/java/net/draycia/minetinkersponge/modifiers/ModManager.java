@@ -3,6 +3,7 @@ package net.draycia.minetinkersponge.modifiers;
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.data.impl.*;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
+import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.StringUtils;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.enchantment.Enchantment;
@@ -165,20 +166,35 @@ public class ModManager {
         itemStack.offer(MTKeys.MINETINKER_LEVEL, 1);
         itemStack.offer(MTKeys.MINETINKER_SLOTS, 1);
 
-        // TODO: Add configuration options for both of these
-        itemStack.offer(Keys.HIDE_ENCHANTMENTS, true);
-        itemStack.offer(Keys.UNBREAKABLE, true);
+        // Optionally hide enchantments
+        if (MTConfig.HIDE_ENCHANTMENTS) {
+            itemStack.offer(Keys.HIDE_ENCHANTMENTS, true);
+        }
+
+        // Optionally make item unbreakable
+        if (MTConfig.MAKE_UNBREAKABLE) {
+            itemStack.offer(Keys.UNBREAKABLE, true);
+        }
 
         // Convert vanilla enchantments into modifiers
-        // TODO: Add configuration option to enable/disable this feature
-        Optional<List<Enchantment>> enchantments = itemStack.get(Keys.STORED_ENCHANTMENTS);
+        if (MTConfig.CONVERT_TRANSFERS_ENCHANTMENTS) {
+            Optional<List<Enchantment>> enchantments = itemStack.get(Keys.ITEM_ENCHANTMENTS);
 
-        if (enchantments.isPresent()) {
-            for (Enchantment enchantment : enchantments.get()) {
-                for (Modifier modifier : modifiers.values()) {
-                    if (modifier.getAppliedEnchantments().contains(enchantment.getType())) {
-                        // TODO: Add configuration option to enable/disable modifier level caps
-                        applyModifier(itemStack, modifier, true, enchantment.getLevel());
+            if (enchantments.isPresent()) {
+                for (Enchantment enchantment : enchantments.get()) {
+                    for (Modifier modifier : modifiers.values()) {
+                        if (modifier.getAppliedEnchantments().contains(enchantment.getType())) {
+
+                            int level;
+
+                            if (MTConfig.CONVERT_EXCEEDS_MAX_LEVEL) {
+                                level = enchantment.getLevel();
+                            } else {
+                                level = Math.min(enchantment.getLevel(), modifier.getMaxLevel());
+                            }
+
+                            applyModifier(itemStack, modifier, true, level);
+                        }
                     }
                 }
             }
@@ -237,7 +253,7 @@ public class ModManager {
 
     /**
      *
-     * @param itemStack
+     * @param itemStack The item to have its lore updated
      */
     public void rewriteItemLore(ItemStack itemStack) {
         Map<String, Integer> itemModifierLevels = getItemModifierLevels(itemStack);
@@ -300,16 +316,17 @@ public class ModManager {
 
     /**
      *
-     * @param itemStack
-     * @param experience
+     * @param itemStack The item to give experience to
+     * @param experience The amount of experience to give.
      */
     public void addExperience(ItemStack itemStack, int experience) {
         Optional<Integer> current = itemStack.get(MTKeys.MINETINKER_XP);
 
         if (current.isPresent()) {
             if (current.get() >= getExperienceRequiredToLevel(itemStack)) {
-                itemStack.offer(MTKeys.MINETINKER_XP, 0);
-                incrementItemLevel(itemStack);
+                if (incrementItemLevel(itemStack)) {
+                    itemStack.offer(MTKeys.MINETINKER_XP, 0);
+                }
             } else {
                 itemStack.offer(MTKeys.MINETINKER_XP, current.get() + experience);
             }
@@ -322,23 +339,31 @@ public class ModManager {
 
     /**
      *
-     * @param itemStack
+     * @param itemStack The item to increment the level of
      */
-    public void incrementItemLevel(ItemStack itemStack) {
+    public boolean incrementItemLevel(ItemStack itemStack) {
         Optional<Integer> level = itemStack.get(MTKeys.MINETINKER_LEVEL);
 
         if (level.isPresent()) {
+            if (MTConfig.GLOBAL_MAX_LEVEL > 0) {
+                if (level.get() >= MTConfig.GLOBAL_MAX_LEVEL) {
+                    return false;
+                }
+            }
+
             itemStack.offer(MTKeys.MINETINKER_LEVEL, level.get() + 1);
         } else {
             itemStack.offer(MTKeys.MINETINKER_LEVEL, 1);
         }
 
         incrementItemModifierSlots(itemStack);
+
+        return true;
     }
 
     /**
      *
-     * @param itemStack
+     * @param itemStack The item to increment the modifier slot amount of
      */
     public void incrementItemModifierSlots(ItemStack itemStack) {
         Optional<Integer> slots = itemStack.get(MTKeys.MINETINKER_SLOTS);
@@ -351,9 +376,9 @@ public class ModManager {
     }
 
     /**
-     *
-     * @param itemStack
-     * @param level
+     * Sets the amount of modifier slots
+     * @param itemStack The item to set the modifier slot count of
+     * @param level The amount of slots the item will have
      */
     public void setItemModifierSlots(ItemStack itemStack, int level) {
         itemStack.offer(MTKeys.MINETINKER_SLOTS, level);
@@ -361,8 +386,8 @@ public class ModManager {
 
     /**
      *
-     * @param itemStack
-     * @return
+     * @param itemStack The item to get the number of slots from
+     * @return The amount of slots the item has
      */
     public int getItemModifierSlots(ItemStack itemStack) {
         return itemStack.get(MTKeys.MINETINKER_SLOTS).orElse(0);
@@ -370,8 +395,8 @@ public class ModManager {
 
     /**
      *
-     * @param itemStack
-     * @return
+     * @param itemStack The item to get the remaining experience from
+     * @return The amount of experience the item needs to get in order to level up
      */
     public double getExperienceRequiredToLevel(ItemStack itemStack) {
         Optional<Integer> level = itemStack.get(MTKeys.MINETINKER_LEVEL);
