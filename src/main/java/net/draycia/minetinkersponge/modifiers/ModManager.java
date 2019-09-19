@@ -146,7 +146,7 @@ public class ModManager {
      *
      * @param itemStack
      */
-    public void convertItemStack(ItemStack itemStack) {
+    public void convertItemStack(ItemStack itemStack, boolean canExceedMaxLevel) {
         // Check if the item is compatible with the plugin
         if (!ItemTypeUtils.getAllTypes().contains(itemStack.getType())) {
             return;
@@ -177,7 +177,7 @@ public class ModManager {
         }
 
         // Convert vanilla enchantments into modifiers
-        if (MTConfig.CONVERT_TRANSFERS_ENCHANTMENTS) {
+        if (MTConfig.CONVERT_TRANSFERS_ENCHANTMENTS || canExceedMaxLevel) {
             Optional<List<Enchantment>> enchantments = itemStack.get(Keys.ITEM_ENCHANTMENTS);
 
             if (enchantments.isPresent()) {

@@ -28,7 +28,7 @@ public class ConvertItemCommand implements CommandExecutor {
         Optional<ItemStack> mainItem = ((Player)src).getItemInHand(HandTypes.MAIN_HAND);
 
         if (mainItem.isPresent()) {
-            modManager.convertItemStack(mainItem.get());
+            modManager.convertItemStack(mainItem.get(), src.hasPermission("minetinker.commands.convertitem.exceedcap"));
         }
 
         return CommandResult.success();
