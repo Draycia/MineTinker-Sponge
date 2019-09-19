@@ -6,14 +6,16 @@ import net.draycia.minetinkersponge.utils.MTConfig;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.EntityTypes;
-import org.spongepowered.api.entity.Item;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.InteractBlockEvent;
 import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.enchantment.Enchantment;
+import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.inventory.entity.MainPlayerInventory;
+import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -64,15 +66,17 @@ public class InteractListener {
                     Optional<Modifier> modifier = modManager.getFirstModifierByEnchantment(enchantment.getType());
 
                     if (modifier.isPresent()) {
-                        System.out.println("Modifier is present!");
-                        // Attempt to spawn the item on the ground near the interacted block
-
                         // Give the player the modifier
                         ItemStack modifierItem = modifier.get().getModifierItem(enchantment.getLevel());
 
-                        if (player.getInventory().canFit(modifierItem)) {
-                            player.getInventory().offer(modifierItem);
+                        // If the player can fit the modifier in their inventory, give them it directly
+                        Inventory inventory = player.getInventory()
+                                .query(QueryOperationTypes.INVENTORY_TYPE.of(MainPlayerInventory.class));
+
+                        if (inventory.canFit(modifierItem)) {
+                            inventory.offer(modifierItem);
                         } else {
+                            // If the player can't fit the item in their inventory, drop it next to them
                             Location<World> location = player.getLocation();
 
                             Entity itemEntity = location.createEntity(EntityTypes.ITEM);
