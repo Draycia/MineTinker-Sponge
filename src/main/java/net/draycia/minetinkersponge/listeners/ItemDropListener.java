@@ -30,7 +30,7 @@ public class ItemDropListener {
                 continue;
             }
 
-            Item item = (Item) entity;
+            Item item = (Item)entity;
 
             if (!ItemTypeUtils.getAllTypes().contains(item.getItemType())) {
                 continue;
