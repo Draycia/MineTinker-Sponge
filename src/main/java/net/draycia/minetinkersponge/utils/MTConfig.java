@@ -18,4 +18,6 @@ public class MTConfig {
     // TODO: Method to calculate the modifier cost and remaining modifiers and resulting level.
     public static boolean COSTS_ARE_LINEAR = true;
 
+    public static boolean CONVERT_MOB_DROPS = true;
+
 }
