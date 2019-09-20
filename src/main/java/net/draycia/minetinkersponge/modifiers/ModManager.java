@@ -6,9 +6,12 @@ import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.StringUtils;
 import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.game.GameRegistryEvent;
 import org.spongepowered.api.item.enchantment.Enchantment;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
@@ -17,6 +20,15 @@ import java.util.*;
 public class ModManager {
 
     private HashMap<String, Modifier> modifiers = new HashMap<>();
+
+    @Listener
+    public void onRecipeRegisterReady(GameRegistryEvent.Register<CraftingRecipe> event) {
+        for (Modifier modifier : modifiers.values()) {
+            if (modifier.getRecipe().isPresent()) {
+                event.register(modifier.getRecipe().get());
+            }
+        }
+    }
 
     /**
      * Registers the modifier and adds it to MineTinker's internal modifier map

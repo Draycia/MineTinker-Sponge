@@ -16,6 +16,10 @@ import org.spongepowered.api.event.item.inventory.DropItemEvent;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
+import org.spongepowered.api.item.recipe.crafting.Ingredient;
+import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
+import org.spongepowered.api.item.recipe.crafting.ShapelessCraftingRecipe;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +56,21 @@ public class Directing extends Modifier {
     @Override
     public void onModifierRegister(Object plugin) {
         Sponge.getEventManager().registerListeners(plugin, this);
+    }
+
+    @Override
+    public Optional<CraftingRecipe> getRecipe() {
+
+        ShapedCraftingRecipe recipe = ShapedCraftingRecipe.builder()
+                .aisle("ECE", "CIC", "ECE")
+                .where('E', Ingredient.of(ItemTypes.ENDER_PEARL))
+                .where('C', Ingredient.of(ItemTypes.COMPASS))
+                .where('I', Ingredient.of(ItemTypes.IRON_BLOCK))
+                .result(getModifierItem())
+                .id(getKey())
+                .build();
+
+        return Optional.of(recipe);
     }
 
     public Directing(ModManager modManager) {

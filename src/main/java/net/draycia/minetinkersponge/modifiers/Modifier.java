@@ -6,10 +6,13 @@ import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
+import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class Modifier {
 
@@ -56,6 +59,10 @@ public abstract class Modifier {
      * @param plugin The instance of the plugin that owns the modifier that's being registered.
      */
     public void onModifierRegister(Object plugin) {}
+
+    public Optional<CraftingRecipe> getRecipe() {
+        return Optional.empty();
+    }
 
     /**
      * @return The enchantment the modifier applies to items. Null if one isn't applied.
