@@ -118,11 +118,10 @@ public class ModManager {
             Optional<List<Enchantment>> enchantments = itemStack.get(Keys.ITEM_ENCHANTMENTS);
             int level = getModifierLevel(itemStack, modifier) + amount;
 
-            if (enchantments.isPresent()) {
-                List<Enchantment> enchantmentList = enchantments.get();
-                enchantmentList.add(Enchantment.builder().type(type).level(level).build());
-                itemStack.offer(Keys.ITEM_ENCHANTMENTS, enchantmentList);
-            }
+            List<Enchantment> enchantmentList = enchantments.orElseGet(ArrayList::new);
+            enchantmentList.add(Enchantment.builder().type(type).level(level).build());
+
+            itemStack.offer(Keys.ITEM_ENCHANTMENTS, enchantmentList);
         }
 
         // Sets the level of the modifier on the item
@@ -231,10 +230,6 @@ public class ModManager {
      */
     public void setModifierLevel(ItemStack itemStack, Modifier modifier, int amount) {
         Map<String, Integer> itemModifierLevels = getItemModifierLevels(itemStack);
-
-        if (itemModifierLevels == null) {
-            return;
-        }
 
         itemModifierLevels.put(modifier.getKey(), amount);
 
