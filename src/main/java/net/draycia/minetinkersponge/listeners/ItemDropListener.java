@@ -40,7 +40,7 @@ public class ItemDropListener {
 
             modManager.convertItemStack(newItem, true);
 
-            System.out.println(entity.offer(Keys.REPRESENTED_ITEM, newItem.createSnapshot()).isSuccessful());
+            entity.offer(Keys.REPRESENTED_ITEM, newItem.createSnapshot());
         }
     }
 
