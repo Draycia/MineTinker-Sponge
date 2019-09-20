@@ -27,14 +27,12 @@ public class ItemDropListener {
 
         for (Entity entity : event.getEntities()) {
             if (!(entity instanceof Item)) {
-                System.out.println("Oh 1 :(");
                 continue;
             }
 
             Item item = (Item) entity;
 
             if (!ItemTypeUtils.getAllTypes().contains(item.getItemType())) {
-                System.out.println("Oh 2 :(");
                 continue;
             }
 
