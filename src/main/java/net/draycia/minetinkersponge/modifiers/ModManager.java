@@ -247,7 +247,7 @@ public class ModManager {
      * @return
      */
     public Map<String, Integer> getItemModifierLevels(ItemStack itemStack) {
-        return itemStack.get(MTKeys.ITEM_MODIFIERS).orElse(Collections.emptyMap());
+        return itemStack.get(MTKeys.ITEM_MODIFIERS).orElse(new HashMap<>());
     }
 
     public List<Modifier> getItemAppliedModifiers(ItemStack itemStack) {
