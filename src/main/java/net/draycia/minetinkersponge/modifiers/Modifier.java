@@ -7,7 +7,6 @@ import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
-import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
@@ -34,7 +33,6 @@ public abstract class Modifier {
      * @return The item type used for creation of the modifier item.
      */
     public abstract ItemType getModifierItemType();
-
 
     /**
      * @return The list of modifiers that this one is incompatible with.
