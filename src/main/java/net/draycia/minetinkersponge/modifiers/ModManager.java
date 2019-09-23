@@ -5,12 +5,16 @@ import net.draycia.minetinkersponge.data.impl.*;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.StringUtils;
+import org.spongepowered.api.data.DataHolder;
+import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.value.ValueContainer;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.GameRegistryEvent;
 import org.spongepowered.api.item.enchantment.Enchantment;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -61,14 +65,35 @@ public class ModManager {
     }
 
     /**
-     *
-     * @param itemStack
-     * @param modifier
-     * @return
+     * Checks if the ItemStack has the Modifier or not
+     * @param itemStack The item
+     * @param modifier The modifier
+     * @return True if the item has the modifier
      */
     public boolean itemHasModifier(ItemStack itemStack, Modifier modifier) {
-        if (itemStack.get(MTKeys.IS_MINETINKER).isPresent()) {
-            Optional<Map<String, Integer>> modifiers = itemStack.get(MTKeys.ITEM_MODIFIERS);
+        return dataHolderHasModifier(itemStack, modifier);
+    }
+
+    /**
+     * Checks if the ItemStack has the Modifier or not
+     * @param itemStack The item
+     * @param modifier The modifier
+     * @return True if the item has the modifier
+     */
+    public boolean itemHasModifier(ItemStackSnapshot itemStack, Modifier modifier) {
+        return dataHolderHasModifier(itemStack, modifier);
+    }
+
+    /**
+     * Checks if the supplied object contains the specified modifier
+     * @param valueContainer An object that fulfills {@link T} so that values can be queried
+     * @param modifier The modifier to check the presence of
+     * @param <T> An object that extends {@link ValueContainer}, and thus implements {@link ValueContainer#get(Key)}
+     * @return
+     */
+    private <T extends ValueContainer> boolean dataHolderHasModifier(T valueContainer, Modifier modifier) {
+        if (valueContainer.get(MTKeys.IS_MINETINKER).isPresent()) {
+            Optional<Map<String, Integer>> modifiers = valueContainer.get(MTKeys.ITEM_MODIFIERS);
 
             if (modifiers.isPresent()) {
                 return modifiers.get().containsKey(modifier.getKey());

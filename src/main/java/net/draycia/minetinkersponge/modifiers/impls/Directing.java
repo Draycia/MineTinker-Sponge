@@ -97,8 +97,8 @@ public class Directing extends Modifier {
             // Check if the player is the cause
             if (player.isPresent()) {
                 // Get the item in the player's main hand
-                // TODO: Check for context item used.
-                Optional<ItemStack> itemStack = player.get().getItemInHand(HandTypes.MAIN_HAND);
+                Optional<ItemStackSnapshot> itemStack = context.get(EventContextKeys.USED_ITEM);
+
                 if (itemStack.isPresent()) {
                     // Check if the item used has this modifier (directing)
                     if (modManager.itemHasModifier(itemStack.get(), this)) {
