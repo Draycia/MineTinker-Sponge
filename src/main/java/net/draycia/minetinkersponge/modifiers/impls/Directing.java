@@ -5,8 +5,11 @@ import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.CompositeUnmodifiableList;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.HandTypes;
+import org.spongepowered.api.data.value.mutable.Value;
 import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.Item;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
@@ -15,11 +18,17 @@ import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.item.inventory.DropItemEvent;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
+import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.inventory.ItemStackSnapshot;
+import org.spongepowered.api.item.inventory.entity.MainPlayerInventory;
+import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.ShapelessCraftingRecipe;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
 
 import java.util.List;
 import java.util.Optional;
@@ -81,24 +90,47 @@ public class Directing extends Modifier {
     public void onItemDrop(DropItemEvent.Destruct event) {
         EventContext context = event.getContext();
 
+        // Check if contexts contains blocks being broken or entities being killed
         if (context.containsKey(EventContextKeys.BLOCK_HIT) || context.containsKey(EventContextKeys.SPAWN_TYPE)) {
             Optional<Player> player = event.getCause().first(Player.class);
 
+            // Check if the player is the cause
             if (player.isPresent()) {
+                // Get the item in the player's main hand
+                // TODO: Check for context item used.
                 Optional<ItemStack> itemStack = player.get().getItemInHand(HandTypes.MAIN_HAND);
-
                 if (itemStack.isPresent()) {
+                    // Check if the item used has this modifier (directing)
                     if (modManager.itemHasModifier(itemStack.get(), this)) {
+                        // Get the player's grid inventory
+                        Inventory inventory = player.get().getInventory()
+                                .query(QueryOperationTypes.INVENTORY_TYPE.of(MainPlayerInventory.class));
+
+                        // Loop through all entities dropped
                         for (Entity entity : event.getEntities()) {
                             if (entity instanceof Item) {
                                 Item item = (Item) entity;
 
+                                // And put each in the player's inventory
                                 if (item.item().exists()) {
-                                    player.get().getInventory().offer(item.item().get().createStack());
+                                    ItemStack itemToGive = item.item().get().createStack();
+
+                                    if (inventory.canFit(itemToGive)) {
+                                        inventory.offer(itemToGive);
+                                    } else {
+                                        // If the player can't fit the item in their inventory, drop it next to them
+                                        Location<World> location = player.get().getLocation();
+
+                                        Entity itemEntity = location.createEntity(EntityTypes.ITEM);
+                                        itemEntity.offer(Keys.ACTIVE_ITEM, item.item().get());
+
+                                        location.spawnEntity(itemEntity);
+                                    }
                                 }
                             }
                         }
 
+                        // Cancel the drops
                         event.setCancelled(true);
                     }
                 }
