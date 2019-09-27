@@ -48,7 +48,6 @@ public class AquaAffinity extends Modifier {
 
     @Override
     public Optional<CraftingRecipe> getRecipe() {
-
         ShapedCraftingRecipe recipe = ShapedCraftingRecipe.builder()
                 .aisle("PEP", "ECE", "PEP")
                 .where('E', Ingredient.of(ItemTypes.DIAMOND))
