@@ -136,7 +136,7 @@ public class ModifierIdentifierData extends AbstractSingleData<String, ModifierI
 
         @Override
         public DataView update(DataView content) {
-            return content.set(DataQuery.of('.', "minetinker.modifier_if"), content.get(DataQuery.of('.', "minetinker.modifier_if"))).remove(DataQuery.of('.', "minetinker.modifier_if"));
+            return content.set(DataQuery.of('.', "minetinker.modifier_id"), content.get(DataQuery.of('.', "minetinker.modifier_id"))).remove(DataQuery.of('.', "minetinker.modifier_id"));
         }
     }
 
