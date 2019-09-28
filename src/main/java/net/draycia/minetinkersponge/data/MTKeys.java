@@ -10,8 +10,6 @@ import org.spongepowered.api.util.TypeTokens;
 public class MTKeys {
 
     public static final Key<Value<Boolean>> IS_MINETINKER;
-    public static final Key<Value<Boolean>> IS_MT_TOOL;
-    public static final Key<Value<Boolean>> IS_MT_ARMOR;
 
     public static final Key<Value<Integer>> MINETINKER_LEVEL;
     public static final Key<Value<Integer>> MINETINKER_SLOTS;
@@ -27,20 +25,6 @@ public class MTKeys {
                 .id("minetinker-sponge")
                 .name("Is MineTinker")
                 .query(DataQuery.of("minetinker.is_compatible"))
-                .build();
-
-        IS_MT_TOOL = Key.builder()
-                .type(TypeTokens.BOOLEAN_VALUE_TOKEN)
-                .id("minetinker-sponge")
-                .name("Is MineTinker Tool")
-                .query(DataQuery.of("minetinker.is_tool"))
-                .build();
-
-        IS_MT_ARMOR = Key.builder()
-                .type(TypeTokens.BOOLEAN_VALUE_TOKEN)
-                .id("minetinker-sponge")
-                .name("Is MineTinker Armor")
-                .query(DataQuery.of("minetinker.is_armor"))
                 .build();
 
         MINETINKER_LEVEL = Key.builder()

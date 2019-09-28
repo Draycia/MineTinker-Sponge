@@ -197,7 +197,6 @@ public class ModManager {
 
         // Offer the actual data
         itemStack.offer(MTKeys.IS_MINETINKER, true);
-        itemStack.offer(MTKeys.IS_MT_TOOL, true);
         itemStack.offer(MTKeys.MINETINKER_XP, 0);
         itemStack.offer(MTKeys.MINETINKER_LEVEL, 1);
         itemStack.offer(MTKeys.MINETINKER_SLOTS, 1);
