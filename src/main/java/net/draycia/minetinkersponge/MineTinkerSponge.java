@@ -11,11 +11,13 @@ import net.draycia.minetinkersponge.modifiers.impls.potioneffects.Poisonous;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.DiamondUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.GoldUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.IronUpgrade;
+import net.draycia.minetinkersponge.utils.ItemLevelManager;
 import net.draycia.minetinkersponge.utils.MTConfig;
+import net.draycia.minetinkersponge.utils.PlayerNameManager;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
-import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
+import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
@@ -27,16 +29,39 @@ import org.spongepowered.api.text.Text;
 public class MineTinkerSponge {
 
     private ModManager modManager;
+    private ItemLevelManager itemLevelManager;
+    private PlayerNameManager playerNameManager;
+
+    public ModManager getModManager() {
+        return modManager;
+    }
+
+    public ItemLevelManager getItemLevelManager() {
+        return itemLevelManager;
+    }
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
         DataRegistrar.registerDataManipulators();
 
         modManager = new ModManager();
+        itemLevelManager = new ItemLevelManager(modManager);
+        playerNameManager = new PlayerNameManager(this);
 
         registerModifiers();
         registerCommands();
         registerListeners();
+    }
+
+    @Listener
+    public void onGameStarted(GameStartingServerEvent event) {
+        playerNameManager.onGameStarted();
+        playerNameManager.startScheduler();
+    }
+
+    @Listener
+    public void onGameStopped(GameStoppingServerEvent event) {
+        playerNameManager.onGameStopped();
     }
 
     private void registerModifiers() {
