@@ -11,6 +11,7 @@ import net.draycia.minetinkersponge.modifiers.impls.potioneffects.Poisonous;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.DiamondUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.GoldUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.IronUpgrade;
+import net.draycia.minetinkersponge.utils.MTConfig;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -123,7 +124,11 @@ public class MineTinkerSponge {
         Sponge.getEventManager().registerListeners(this, new BlockBreakListener(modManager));
         Sponge.getEventManager().registerListeners(this, new InventoryListener(modManager));
         Sponge.getEventManager().registerListeners(this, new InteractListener(modManager));
-        Sponge.getEventManager().registerListeners(this, new ItemDropListener(modManager));
+
+        if (MTConfig.CONVERT_MOB_DROPS) {
+            Sponge.getEventManager().registerListeners(this, new ItemDropListener(modManager));
+        }
+
         Sponge.getEventManager().registerListeners(this, new FishingListener(modManager));
         Sponge.getEventManager().registerListeners(this, new DamageListener(modManager));
         Sponge.getEventManager().registerListeners(this, new AnvilListener(modManager));
