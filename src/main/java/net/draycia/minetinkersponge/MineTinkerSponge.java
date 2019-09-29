@@ -48,6 +48,14 @@ public class MineTinkerSponge {
         modManager.registerModifier(this, new DepthStrider());
         modManager.registerModifier(this, new Efficiency());
         modManager.registerModifier(this, new FeatherFalling());
+        modManager.registerModifier(this, new FireAspect());
+        modManager.registerModifier(this, new FireProtection());
+        modManager.registerModifier(this, new Flame());
+        modManager.registerModifier(this, new Fortune());
+        modManager.registerModifier(this, new FrostWalker());
+        modManager.registerModifier(this, new Infinity());
+        modManager.registerModifier(this, new Knockback());
+        modManager.registerModifier(this, new Looting());
         modManager.registerModifier(this, new LuckOfTheSea());
         modManager.registerModifier(this, new Lure());
         modManager.registerModifier(this, new Mending());
