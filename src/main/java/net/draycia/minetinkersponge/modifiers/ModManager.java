@@ -129,6 +129,10 @@ public class ModManager {
             return new ModifierApplicationResult(null);
         }
 
+        if (!itemStack.get(MTKeys.IS_MINETINKER).orElse(false)) {
+            return new ModifierApplicationResult(null);
+        }
+
         // Check if the item has enough modifier slots
         if (!ignoreSlots && getItemModifierSlots(itemStack) < amount) {
             return new ModifierApplicationResult(null);
@@ -150,10 +154,11 @@ public class ModManager {
             }
         }
 
+        int level = getModifierLevel(itemStack, modifier) + amount;
+
         // If the modifier applies any enchantments to the item, do so
         for (EnchantmentType type : modifier.getAppliedEnchantments()) {
             Optional<List<Enchantment>> enchantments = itemStack.get(Keys.ITEM_ENCHANTMENTS);
-            int level = getModifierLevel(itemStack, modifier) + amount;
 
             List<Enchantment> enchantmentList = enchantments.orElseGet(ArrayList::new);
             enchantmentList.add(Enchantment.builder().type(type).level(level).build());
@@ -162,7 +167,7 @@ public class ModManager {
         }
 
         // Sets the level of the modifier on the item
-        setModifierLevel(itemStack, modifier, getModifierLevel(itemStack, modifier) + amount);
+        setModifierLevel(itemStack, modifier, level);
 
         // Modifies the item's modifier slots
         if (!ignoreSlots) {
@@ -259,10 +264,9 @@ public class ModManager {
     }
 
     /**
-     *
-     * @param itemStack
-     * @param modifier
-     * @param amount
+     * @param itemStack The {@link ItemStack} to apply the modifier to
+     * @param modifier The {@link Modifier} to apply to the item
+     * @param amount The level to set the modifier to on the item
      */
     public void setModifierLevel(ItemStack itemStack, Modifier modifier, int amount) {
         Map<String, Integer> itemModifierLevels = getItemModifierLevels(itemStack);
@@ -273,9 +277,8 @@ public class ModManager {
     }
 
     /**
-     *
-     * @param itemStack
-     * @return
+     * @param itemStack The {@link ItemStack} to get the modifier levels of
+     * @return A map containing the key of each modifier and its corresponding level
      */
     public Map<String, Integer> getItemModifierLevels(ItemStack itemStack) {
         return itemStack.get(MTKeys.ITEM_MODIFIERS).orElse(new HashMap<>());
