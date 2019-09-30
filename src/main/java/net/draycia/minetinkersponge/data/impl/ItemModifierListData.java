@@ -129,7 +129,7 @@ public class ItemModifierListData extends AbstractMappedData<String, Integer, It
 
         @Override
         public ItemModifierListData create() {
-            return new ItemModifierListData(new HashMap<>());
+            return new ItemModifierListData(new TreeMap<>());
         }
 
         @Override
