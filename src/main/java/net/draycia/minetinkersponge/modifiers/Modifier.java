@@ -15,10 +15,28 @@ import java.util.Optional;
 
 public abstract class Modifier {
 
+    /**
+     *
+     * @return The display friendly name of this modifier
+     */
     public abstract String getName();
+
+    /**
+     *
+     * @return The highest level this modifier can be on items
+     */
     public abstract int getMaxLevel();
+
+    /**
+     *
+     * @return An int describing the value of the modifier, used to determine effective level and combat level
+     */
     public abstract int getLevelWeight();
 
+    /**
+     *
+     * @return A string able to be used to obtain the modifier in commands and in the API
+     */
     public String getKey() {
         return getName().replace(" ", "-").replace("'", "").toLowerCase();
     }
@@ -69,10 +87,19 @@ public abstract class Modifier {
         return Collections.emptyList();
     }
 
+    /**
+     *
+     * @return An item with a stack size of 1 used to apply the modifier to items
+     */
     public ItemStack getModifierItem() {
         return getModifierItem(1);
     }
 
+    /**
+     *
+     * @param amount The stack size (amount of the item) to return
+     * @return An item used to apply the modifier to items
+     */
     public ItemStack getModifierItem(int amount) {
         ItemStack itemStack = ItemStack.builder()
                 .itemType(getModifierItemType())
