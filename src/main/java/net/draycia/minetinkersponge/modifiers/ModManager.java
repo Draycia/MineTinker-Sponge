@@ -5,7 +5,6 @@ import net.draycia.minetinkersponge.data.impl.*;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.StringUtils;
-import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.value.ValueContainer;
@@ -89,7 +88,7 @@ public class ModManager {
      * @param valueContainer An object that fulfills {@link T} so that values can be queried
      * @param modifier The modifier to check the presence of
      * @param <T> An object that extends {@link ValueContainer}, and thus implements {@link ValueContainer#get(Key)}
-     * @return
+     * @return If the object contains the modifier
      */
     private <T extends ValueContainer> boolean dataHolderHasModifier(T valueContainer, Modifier modifier) {
         if (valueContainer.get(MTKeys.IS_MINETINKER).isPresent()) {
@@ -105,8 +104,8 @@ public class ModManager {
 
     /**
      *
-     * @param itemStack
-     * @param modifier
+     * @param itemStack The item to remove the modifier from
+     * @param modifier The modifier to be removed from the item
      */
     public void removeModifier(ItemStack itemStack, Modifier modifier) {
         Map<String, Integer> modifiers = getItemModifierLevels(itemStack);
@@ -118,10 +117,10 @@ public class ModManager {
 
     /**
      *
-     * @param itemStack
-     * @param modifier
-     * @param amount
-     * @return
+     * @param itemStack The item to apply the modifier to
+     * @param modifier The modifier to apply to the item
+     * @param amount The level to set the modifier to, or add if the item already has the modifier on it
+     * @return A {@link ModifierApplicationResult result} saying if the application was successful and the new item if successful
      */
     public ModifierApplicationResult applyModifier(ItemStack itemStack, Modifier modifier, boolean ignoreSlots, int amount) {
         // Check if the modifier is compatible with the item
@@ -185,7 +184,7 @@ public class ModManager {
 
     /**
      *
-     * @param itemStack
+     * @param itemStack The item to add data to and make compatible
      */
     public void convertItemStack(ItemStack itemStack, boolean canExceedMaxLevel) {
         // Check if the item is compatible with the plugin
@@ -243,6 +242,11 @@ public class ModManager {
         rewriteItemLore(itemStack);
     }
 
+    /**
+     * Gets the first modifier found that applies the desired enchantment
+     * @param enchantment The enchantment that the returned modifier will apply to items
+     * @return The first modifier found that applies the desired enchantment
+     */
     public Optional<Modifier> getFirstModifierByEnchantment(EnchantmentType enchantment) {
         for (Modifier modifier : modifiers.values()) {
             if (modifier.getAppliedEnchantments().contains(enchantment)) {
@@ -255,9 +259,9 @@ public class ModManager {
 
     /**
      *
-     * @param itemStack
-     * @param modifier
-     * @return
+     * @param itemStack The item that contains modifiers
+     * @param modifier The modifier to get the level of
+     * @return The level of the modifier
      */
     public int getModifierLevel(ItemStack itemStack, Modifier modifier) {
         return getItemModifierLevels(itemStack).getOrDefault(modifier.getKey(), 0);
