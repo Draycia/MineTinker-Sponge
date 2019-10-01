@@ -5,10 +5,14 @@ import net.draycia.minetinkersponge.modifiers.Modifier;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
+import org.spongepowered.api.item.recipe.crafting.Ingredient;
+import org.spongepowered.api.item.recipe.crafting.ShapelessCraftingRecipe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class GoldUpgrade extends Modifier {
 
@@ -71,6 +75,17 @@ public class GoldUpgrade extends Modifier {
         }
 
         return itemStack;
+    }
+
+    @Override
+    public Optional<CraftingRecipe> getRecipe() {
+        ShapelessCraftingRecipe recipe = ShapelessCraftingRecipe.builder()
+                .addIngredient(Ingredient.of(ItemTypes.GOLD_INGOT))
+                .addIngredient(Ingredient.of(ItemTypes.GOLD_INGOT))
+                .result(getModifierItem())
+                .build();
+
+        return Optional.of(recipe);
     }
 
 }

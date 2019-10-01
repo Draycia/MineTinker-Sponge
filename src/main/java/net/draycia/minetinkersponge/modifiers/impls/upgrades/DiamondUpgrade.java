@@ -5,10 +5,15 @@ import net.draycia.minetinkersponge.modifiers.Modifier;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
+import org.spongepowered.api.item.recipe.crafting.Ingredient;
+import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
+import org.spongepowered.api.item.recipe.crafting.ShapelessCraftingRecipe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class DiamondUpgrade extends Modifier {
 
@@ -71,6 +76,17 @@ public class DiamondUpgrade extends Modifier {
         }
 
         return itemStack;
+    }
+
+    @Override
+    public Optional<CraftingRecipe> getRecipe() {
+        ShapelessCraftingRecipe recipe = ShapelessCraftingRecipe.builder()
+                .addIngredient(Ingredient.of(ItemTypes.DIAMOND))
+                .addIngredient(Ingredient.of(ItemTypes.DIAMOND))
+                .result(getModifierItem())
+                .build();
+
+        return Optional.of(recipe);
     }
 
 }
