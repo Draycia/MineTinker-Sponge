@@ -19,6 +19,12 @@ public class ItemLevelManager {
         this.modManager = modManager;
     }
 
+    /**
+     *
+     * @param player The player to get the combat level of
+     * @param average If the returned number should be an average of all 5 slots, if false the returned number is a sum
+     * @return The calculated combat level of the player
+     */
     public int getPlayerCombatLevel(Player player, boolean average) {
         int helmet = 0;
         int chestplate = 0;
