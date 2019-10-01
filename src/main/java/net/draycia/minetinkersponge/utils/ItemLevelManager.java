@@ -32,7 +32,9 @@ public class ItemLevelManager {
         int boots = 0;
         int weapon = 0;
 
+        // Loop through all items in the player's inventory
         for (Inventory slot : player.getInventory().slots()) {
+            // Get the item in the slot
             Optional<ItemStack> itemStackOptional = slot.peek();
 
             if (!itemStackOptional.isPresent()) {
@@ -41,10 +43,12 @@ public class ItemLevelManager {
 
             ItemStack itemStack = itemStackOptional.get();
 
+            // Check if the item is MT compatible
             if (!itemStack.get(MTKeys.IS_MINETINKER).orElse(false)) {
                 continue;
             }
 
+            // Calculate the item's effective level
             Map<String, Integer> itemModifierLevels = modManager.getItemModifierLevels(itemStack);
 
             int itemLevel = 0;
@@ -57,8 +61,10 @@ public class ItemLevelManager {
                 }
             }
 
+            // Get the item's type
             ItemType itemType = itemStack.getType();
 
+            // Set the slot's level to the higher of the two
             if (ItemTypeUtils.getHelmetTypes().contains(itemType)) {
                 helmet = Math.max(helmet, itemLevel);
             } else if (ItemTypeUtils.getChestplateTypes().contains(itemType)) {
@@ -72,6 +78,7 @@ public class ItemLevelManager {
             }
         }
 
+        // Return the result
         if (average) {
             return (helmet + chestplate + leggings + boots + weapon) / 5;
         } else {
