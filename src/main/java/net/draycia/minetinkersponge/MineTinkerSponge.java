@@ -17,10 +17,24 @@ import net.draycia.minetinkersponge.utils.PlayerNameManager;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.manipulator.mutable.PotionEffectData;
+import org.spongepowered.api.effect.potion.PotionEffect;
+import org.spongepowered.api.effect.potion.PotionEffectTypes;
+import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.EntityTypes;
+import org.spongepowered.api.entity.living.ArmorStand;
+import org.spongepowered.api.entity.living.monster.Slime;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 @Plugin(
         id = "minetinker-sponge",
@@ -62,6 +76,75 @@ public class MineTinkerSponge {
     @Listener
     public void onGameStopped(GameStoppingServerEvent event) {
         playerNameManager.onGameStopped();
+    }
+
+    @Listener
+    public void onPlayerJoin(ClientConnectionEvent.Join event) {
+        Player player = event.getTargetEntity();
+
+        for (Entity entity : player.getPassengers()) {
+            for (Entity entity1 : entity.getPassengers()) {
+                for (Entity entity2 : entity1.getPassengers()) {
+                    for (Entity entity3 : entity2.getPassengers()) {
+                        if (!(entity3 instanceof Player)) {
+                            entity3.remove();
+                        }
+                    }
+                    if (!(entity2 instanceof Player)) {
+                        entity2.remove();
+                    }
+                }
+                if (!(entity1 instanceof Player)) {
+                    entity1.remove();
+                }
+            }
+            if (!(entity instanceof Player)) {
+                entity.remove();
+            }
+        }
+
+        player.clearPassengers();
+
+        Entity silverfish = player.getWorld().createEntity(EntityTypes.SILVERFISH, player.getLocation().getPosition());
+        PotionEffect potionEffect = PotionEffect.builder().potionType(PotionEffectTypes.INVISIBILITY).duration(99999).amplifier(9).ambience(false).build();
+        PotionEffectData effectData = silverfish.getOrCreate(PotionEffectData.class).get();
+        effectData.addElement(potionEffect);
+        silverfish.offer(effectData);
+        silverfish.offer(Keys.AI_ENABLED, false);
+
+        player.getWorld().spawnEntity(silverfish);
+
+        Entity armorStand = player.getWorld().createEntity(EntityTypes.ARMOR_STAND, player.getLocation().getPosition());
+        armorStand.offer(Keys.INVISIBLE, true);
+        armorStand.offer(Keys.ARMOR_STAND_MARKER, true);
+        armorStand.offer(Keys.ARMOR_STAND_IS_SMALL, true);
+        armorStand.offer(Keys.CUSTOM_NAME_VISIBLE, true);
+        armorStand.offer(Keys.DISPLAY_NAME, Text.of(TextColors.RED, "Combat Level: ", TextColors.WHITE, getItemLevelManager().getPlayerCombatLevel(player, false)));
+
+        player.getWorld().spawnEntity(armorStand);
+
+        Entity silverfish2 = player.getWorld().createEntity(EntityTypes.SILVERFISH, player.getLocation().getPosition());
+        PotionEffectData effectData2 = silverfish2.getOrCreate(PotionEffectData.class).get();
+        effectData2.addElement(potionEffect);
+        silverfish2.offer(effectData2);
+        silverfish2.offer(Keys.AI_ENABLED, false);
+
+        player.getWorld().spawnEntity(silverfish2);
+
+        ArmorStand armorStand2 = (ArmorStand) player.getWorld().createEntity(EntityTypes.ARMOR_STAND, player.getLocation().getPosition());
+
+        armorStand2.offer(Keys.INVISIBLE, true);
+        armorStand2.offer(Keys.ARMOR_STAND_MARKER, true);
+        armorStand2.offer(Keys.ARMOR_STAND_IS_SMALL, true);
+        armorStand2.offer(Keys.CUSTOM_NAME_VISIBLE, true);
+        armorStand2.offer(Keys.DISPLAY_NAME, Text.of(TextColors.GRAY, player.getName()));
+
+        player.getWorld().spawnEntity(armorStand2);
+
+        silverfish.addPassenger(armorStand);
+        armorStand.addPassenger(silverfish2);
+        silverfish2.addPassenger(armorStand2);
+        player.addPassenger(silverfish);
     }
 
     private void registerModifiers() {

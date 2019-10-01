@@ -2,6 +2,13 @@ package net.draycia.minetinkersponge.utils;
 
 import net.draycia.minetinkersponge.MineTinkerSponge;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.manipulator.mutable.PotionEffectData;
+import org.spongepowered.api.effect.potion.PotionEffect;
+import org.spongepowered.api.effect.potion.PotionEffectTypes;
+import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.EntityTypes;
+import org.spongepowered.api.entity.living.ArmorStand;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.scoreboard.Scoreboard;
@@ -56,21 +63,10 @@ public class PlayerNameManager {
     public void startScheduler() {
         Task.builder().execute(() -> {
             for (Player player : Sponge.getServer().getOnlinePlayers()) {
-                player.setScoreboard(Sponge.getServer().getServerScoreboard().get());
-                Scoreboard playerScoreboard = player.getScoreboard();
+                Entity entity = player.getPassengers().get(0).getPassengers().get(0);
 
-                Optional<Objective> optionalObjective = playerScoreboard.getObjective(DisplaySlots.BELOW_NAME);
-
-                if (optionalObjective.isPresent()) {
-                    Objective objective = optionalObjective.get();
-
-                    if (!objective.getName().equals(OBJECTIVE_ID)) {
-                        continue;
-                    }
-
-                    int combatLevel = mineTinkerSponge.getItemLevelManager().getPlayerCombatLevel(player, false);
-                    objective.getOrCreateScore(Text.of(player.getName())).setScore(combatLevel);
-                }
+                entity.offer(Keys.DISPLAY_NAME, Text.of(TextColors.RED, "Combat Level: ", TextColors.WHITE,
+                        mineTinkerSponge.getItemLevelManager().getPlayerCombatLevel(player, false)));
             }
         }).delayTicks(20).intervalTicks(20).submit(mineTinkerSponge);
     }
