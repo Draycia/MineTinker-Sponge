@@ -83,6 +83,7 @@ public class IronUpgrade extends Modifier {
                 .addIngredient(Ingredient.of(ItemTypes.IRON_INGOT))
                 .addIngredient(Ingredient.of(ItemTypes.IRON_INGOT))
                 .result(getModifierItem())
+                .id(getKey())
                 .build();
 
         return Optional.of(recipe);
