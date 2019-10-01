@@ -6,9 +6,13 @@ import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.enchantment.EnchantmentTypes;
+import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
+import org.spongepowered.api.item.recipe.crafting.Ingredient;
+import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class VanishingCurse extends Modifier {
 
@@ -40,6 +44,20 @@ public class VanishingCurse extends Modifier {
     @Override
     public List<EnchantmentType> getAppliedEnchantments() {
         return Collections.singletonList(EnchantmentTypes.VANISHING_CURSE);
+    }
+
+    @Override
+    public Optional<CraftingRecipe> getRecipe() {
+        ShapedCraftingRecipe recipe = ShapedCraftingRecipe.builder()
+                .aisle("PEP", "ECE", "PEP")
+                .where('E', Ingredient.of(ItemTypes.COAL))
+                .where('C', Ingredient.of(ItemTypes.DIAMOND))
+                .where('P', Ingredient.of(ItemTypes.ENDER_PEARL))
+                .result(getModifierItem())
+                .id(getKey())
+                .build();
+
+        return Optional.of(recipe);
     }
 
 }

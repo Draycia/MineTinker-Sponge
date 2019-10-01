@@ -16,6 +16,9 @@ import org.spongepowered.api.event.entity.DamageEntityEvent;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
+import org.spongepowered.api.item.recipe.crafting.Ingredient;
+import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +51,20 @@ public class Poisonous extends Modifier {
     @Override
     public List<ItemType> getCompatibleItems() {
         return ItemTypeUtils.getWeaponTypes();
+    }
+
+    @Override
+    public Optional<CraftingRecipe> getRecipe() {
+        ShapedCraftingRecipe recipe = ShapedCraftingRecipe.builder()
+                .aisle("SGS", "GDG", "SGS")
+                .where('S', Ingredient.of(ItemTypes.POISONOUS_POTATO))
+                .where('G', Ingredient.of(ItemTypes.ROTTEN_FLESH))
+                .where('D', Ingredient.of(ItemTypes.DIAMOND))
+                .result(getModifierItem())
+                .id(getKey())
+                .build();
+
+        return Optional.of(recipe);
     }
 
     @Override

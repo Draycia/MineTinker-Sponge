@@ -50,10 +50,10 @@ public class BlastProtection extends Modifier {
     @Override
     public Optional<CraftingRecipe> getRecipe() {
         ShapedCraftingRecipe recipe = ShapedCraftingRecipe.builder()
-                .aisle("PEP", "ECE", "PEP")
-                .where('E', Ingredient.of(ItemTypes.TNT))
-                .where('C', Ingredient.of(ItemTypes.DIAMOND))
-                .where('P', Ingredient.of(ItemTypes.IRON_BLOCK))
+                .aisle("RLR", "LDL", "RLR")
+                .where('L', Ingredient.of(ItemTypes.TNT))
+                .where('R', Ingredient.of(ItemTypes.IRON_BLOCK))
+                .where('D', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
                 .id(getKey())
                 .build();
