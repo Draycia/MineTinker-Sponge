@@ -6,10 +6,14 @@ import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.enchantment.EnchantmentTypes;
+import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
+import org.spongepowered.api.item.recipe.crafting.Ingredient;
+import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class Infinity extends Modifier {
 
@@ -48,6 +52,20 @@ public class Infinity extends Modifier {
     @Override
     public List<EnchantmentType> getAppliedEnchantments() {
         return Collections.singletonList(EnchantmentTypes.INFINITY);
+    }
+
+    @Override
+    public Optional<CraftingRecipe> getRecipe() {
+        ShapedCraftingRecipe recipe = ShapedCraftingRecipe.builder()
+                .aisle("EAE", "EDE", "EAE")
+                .where('E', Ingredient.of(ItemTypes.ENDER_PEARL))
+                .where('A', Ingredient.of(ItemTypes.ARROW))
+                .where('D', Ingredient.of(ItemTypes.DIAMOND))
+                .result(getModifierItem())
+                .id(getKey())
+                .build();
+
+        return Optional.of(recipe);
     }
 
 }

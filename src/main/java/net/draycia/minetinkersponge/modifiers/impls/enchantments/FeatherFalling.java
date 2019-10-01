@@ -6,9 +6,13 @@ import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.enchantment.EnchantmentTypes;
+import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
+import org.spongepowered.api.item.recipe.crafting.Ingredient;
+import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class FeatherFalling extends Modifier {
 
@@ -43,6 +47,20 @@ public class FeatherFalling extends Modifier {
     @Override
     public List<EnchantmentType> getAppliedEnchantments() {
         return Collections.singletonList(EnchantmentTypes.FEATHER_FALLING);
+    }
+
+    @Override
+    public Optional<CraftingRecipe> getRecipe() {
+        ShapedCraftingRecipe recipe = ShapedCraftingRecipe.builder()
+                .aisle("FSF", "SDS", "FSF")
+                .where('F', Ingredient.of(ItemTypes.FEATHER))
+                .where('S', Ingredient.of(ItemTypes.SLIME_BALL))
+                .where('D', Ingredient.of(ItemTypes.DIAMOND))
+                .result(getModifierItem())
+                .id(getKey())
+                .build();
+
+        return Optional.of(recipe);
     }
 
 }
