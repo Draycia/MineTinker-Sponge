@@ -10,6 +10,9 @@ import org.spongepowered.api.data.persistence.DataContentUpdater;
 
 public class DataRegistrar {
 
+    /**
+     * Registers data manipulators that are necessary for the plugin's keys to work
+     */
     public static void registerDataManipulators() {
         MTKeys.dummy();
 
@@ -32,7 +35,7 @@ public class DataRegistrar {
                 new ItemModifierListData.Builder(), new ItemModifierListData.Builder.VersionUpdater());
     }
 
-    public static <D extends DataManipulator<D,M>, M extends ImmutableDataManipulator<M,D>, DMB extends DataManipulatorBuilder<D, M>>
+    private static <D extends DataManipulator<D,M>, M extends ImmutableDataManipulator<M,D>, DMB extends DataManipulatorBuilder<D, M>>
                     void registerUpdater(String id, Class<D> dataClass, Class<M> dataImmutable, DMB dataBuilder, DataContentUpdater contentUpdater) {
 
         DataRegistration.builder().id(id).dataClass(dataClass).immutableClass(dataImmutable).builder(dataBuilder).build();

@@ -28,6 +28,11 @@ public class StringUtils {
         map.put(1, "I");
     }
 
+    /**
+     *
+     * @param number The int that'll be represented with roman numerals
+     * @return A string containing roman numerals representing the number
+     */
     public static String toRomanNumerals(int number) {
         if (number <= 0) {
             return "Nulla"; //Roman Numbers do not have a zero, "nulla" was often used instead (meaning "nothing")
