@@ -1,5 +1,6 @@
 package net.draycia.minetinkersponge.utils;
 
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.ArrayList;
@@ -51,20 +52,26 @@ public class StringUtils {
         return map.get(floorKey) + toRomanNumerals(number-floorKey);
     }
 
-    public static List<String> splitString(String msg, int lineSize) {
-        if (msg == null) return new ArrayList<>();
-        List<String> res = new ArrayList<>();
+    public static List<Text> splitString(String msg, int lineSize) {
+        if (msg == null) {
+            return new ArrayList<>();
+        }
+
+        List<Text> res = new ArrayList<>();
 
         String[] str = msg.split(" ");
         int index = 0;
+
         while (index < str.length) {
             StringBuilder line = new StringBuilder();
+
             do {
                 index++;
                 line.append(str[index - 1]);
                 line.append(" ");
             } while (index < str.length && line.length() + str[index].length() < lineSize);
-            res.add(TextColors.WHITE + line.toString().substring(0, line.length() - 1));
+
+            res.add(Text.of(TextColors.WHITE, line.toString().substring(0, line.length() - 1)));
         }
 
         return res;
