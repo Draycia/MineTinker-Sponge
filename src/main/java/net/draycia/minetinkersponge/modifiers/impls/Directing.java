@@ -79,6 +79,11 @@ public class Directing extends Modifier {
         return Optional.of(recipe);
     }
 
+    @Override
+    public String getDescription() {
+        return "Drops from breaking blocks and killing mobs will instantly be placed in your inventory.";
+    }
+
     public Directing(ModManager modManager) {
         this.modManager = modManager;
     }

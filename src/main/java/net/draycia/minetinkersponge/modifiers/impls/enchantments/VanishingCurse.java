@@ -42,8 +42,8 @@ public class VanishingCurse extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.VANISHING_CURSE);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.VANISHING_CURSE;
     }
 
     @Override

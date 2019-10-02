@@ -42,8 +42,8 @@ public class Looting extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.LOOTING);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.LOOTING;
     }
 
     @Override

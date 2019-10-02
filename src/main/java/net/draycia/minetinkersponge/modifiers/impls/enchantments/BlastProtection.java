@@ -43,8 +43,8 @@ public class BlastProtection extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.BLAST_PROTECTION);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.BLAST_PROTECTION;
     }
 
     @Override

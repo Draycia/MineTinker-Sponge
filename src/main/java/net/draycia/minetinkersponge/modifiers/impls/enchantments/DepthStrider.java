@@ -45,8 +45,8 @@ public class DepthStrider extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.DEPTH_STRIDER);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.DEPTH_STRIDER;
     }
 
     @Override

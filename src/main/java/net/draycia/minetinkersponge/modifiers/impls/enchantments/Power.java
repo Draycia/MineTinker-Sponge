@@ -42,8 +42,8 @@ public class Power extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.POWER);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.POWER;
     }
 
     @Override

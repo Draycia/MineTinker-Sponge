@@ -56,8 +56,8 @@ public class Smite extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.SMITE);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.SMITE;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class Lure extends Modifier {
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.WATERLILY;
+        return ItemTypes.FISH;
     }
 
     @Override
@@ -42,8 +42,8 @@ public class Lure extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.LURE);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.LURE;
     }
 
     @Override

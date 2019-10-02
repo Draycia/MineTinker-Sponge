@@ -45,13 +45,13 @@ public class Mending extends Modifier {
 
     @Override
     public List<ItemType> getCompatibleItems() {
-        // Some entries in getAllTypes isn't repairable (and plugin makes things unbreakable)
+        // Some entries in getAllTypes aren't repairable (and plugin makes things unbreakable)
         return ItemTypeUtils.getAllTypes();
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.MENDING);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.MENDING;
     }
 
     @Override

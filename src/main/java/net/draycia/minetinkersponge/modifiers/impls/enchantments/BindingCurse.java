@@ -43,8 +43,8 @@ public class BindingCurse extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.BINDING_CURSE);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.BINDING_CURSE;
     }
 
     @Override

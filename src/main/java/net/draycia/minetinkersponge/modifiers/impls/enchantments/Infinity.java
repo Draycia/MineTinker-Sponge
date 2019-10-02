@@ -49,8 +49,8 @@ public class Infinity extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.INFINITY);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.INFINITY;
     }
 
     @Override

@@ -42,8 +42,8 @@ public class Flame extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.FLAME);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.FLAME;
     }
 
     @Override

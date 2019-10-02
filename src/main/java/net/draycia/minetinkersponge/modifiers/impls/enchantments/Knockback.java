@@ -42,8 +42,8 @@ public class Knockback extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.KNOCKBACK);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.KNOCKBACK;
     }
 
     @Override

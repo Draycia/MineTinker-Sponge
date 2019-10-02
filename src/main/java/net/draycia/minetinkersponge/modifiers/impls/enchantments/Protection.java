@@ -56,8 +56,8 @@ public class Protection extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.PROTECTION);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.PROTECTION;
     }
 
     @Override

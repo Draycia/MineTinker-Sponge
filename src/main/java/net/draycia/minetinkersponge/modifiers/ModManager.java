@@ -22,7 +22,11 @@ import java.util.*;
 
 public class ModManager {
 
-    private HashMap<String, Modifier> modifiers = new HashMap<>();
+    private TreeMap<String, Modifier> modifiers = new TreeMap<>();
+
+    public TreeMap<String, Modifier> getAllModifiers() {
+        return modifiers;
+    }
 
     @Listener
     public void onRecipeRegisterReady(GameRegistryEvent.Register<CraftingRecipe> event) {
@@ -155,12 +159,12 @@ public class ModManager {
 
         int level = getModifierLevel(itemStack, modifier) + amount;
 
-        // If the modifier applies any enchantments to the item, do so
-        for (EnchantmentType type : modifier.getAppliedEnchantments()) {
+        // If the modifier applies an enchantment to the item, do so
+        if (modifier.getAppliedEnchantment() != null) {
             Optional<List<Enchantment>> enchantments = itemStack.get(Keys.ITEM_ENCHANTMENTS);
 
             List<Enchantment> enchantmentList = enchantments.orElseGet(ArrayList::new);
-            enchantmentList.add(Enchantment.builder().type(type).level(level).build());
+            enchantmentList.add(Enchantment.builder().type(modifier.getAppliedEnchantment()).level(level).build());
 
             itemStack.offer(Keys.ITEM_ENCHANTMENTS, enchantmentList);
         }
@@ -249,7 +253,7 @@ public class ModManager {
      */
     public Optional<Modifier> getFirstModifierByEnchantment(EnchantmentType enchantment) {
         for (Modifier modifier : modifiers.values()) {
-            if (modifier.getAppliedEnchantments().contains(enchantment)) {
+            if (modifier.getAppliedEnchantment() != null && modifier.getAppliedEnchantment() == enchantment) {
                 return Optional.of(modifier);
             }
         }

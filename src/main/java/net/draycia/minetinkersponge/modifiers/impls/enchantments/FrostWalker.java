@@ -42,8 +42,8 @@ public class FrostWalker extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.FROST_WALKER);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.FROST_WALKER;
     }
 
     @Override

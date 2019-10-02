@@ -42,8 +42,8 @@ public class LuckOfTheSea extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.LUCK_OF_THE_SEA);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.LUCK_OF_THE_SEA;
     }
 
     @Override

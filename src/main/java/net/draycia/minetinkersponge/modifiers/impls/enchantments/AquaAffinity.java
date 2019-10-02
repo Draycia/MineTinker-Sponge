@@ -42,8 +42,8 @@ public class AquaAffinity extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.AQUA_AFFINITY);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.AQUA_AFFINITY;
     }
 
     @Override

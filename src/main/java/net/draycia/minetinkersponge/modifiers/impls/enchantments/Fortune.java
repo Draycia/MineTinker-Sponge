@@ -42,8 +42,8 @@ public class Fortune extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.FORTUNE);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.FORTUNE;
     }
 
     @Override

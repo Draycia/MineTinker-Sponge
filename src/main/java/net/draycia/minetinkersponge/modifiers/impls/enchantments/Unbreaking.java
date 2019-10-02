@@ -43,8 +43,8 @@ public class Unbreaking extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.UNBREAKING);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.UNBREAKING;
     }
 
     @Override

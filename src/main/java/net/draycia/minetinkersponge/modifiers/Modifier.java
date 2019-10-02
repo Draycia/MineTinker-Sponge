@@ -5,6 +5,7 @@ import net.draycia.minetinkersponge.data.impl.ModifierIdentifierData;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
+import org.spongepowered.api.item.enchantment.EnchantmentTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.text.Text;
@@ -35,6 +36,14 @@ public abstract class Modifier {
 
     /**
      *
+     * @return A string describing the modifier
+     */
+    public String getDescription() {
+        return "";
+    }
+
+    /**
+     *
      * @return A string able to be used to obtain the modifier in commands and in the API
      */
     public String getKey() {
@@ -46,6 +55,10 @@ public abstract class Modifier {
      * @return A list of compatible ItemTypes. Or null if the modifier can go on any item.
      */
     public abstract List<ItemType> getCompatibleItems();
+
+    public String getCompatibilityString() {
+        return "Everything";
+    }
 
     /**
      * @return The item type used for creation of the modifier item.
@@ -83,8 +96,8 @@ public abstract class Modifier {
     /**
      * @return The enchantment the modifier applies to items. Null if one isn't applied.
      */
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.emptyList();
+    public EnchantmentType getAppliedEnchantment() {
+        return null;
     }
 
     /**

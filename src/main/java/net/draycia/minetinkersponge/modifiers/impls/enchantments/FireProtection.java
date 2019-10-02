@@ -56,8 +56,8 @@ public class FireProtection extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.FIRE_PROTECTION);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.FIRE_PROTECTION;
     }
 
     @Override
