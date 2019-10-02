@@ -59,8 +59,8 @@ public class BaneOfArthropods extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.BANE_OF_ARTHROPODS);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.BANE_OF_ARTHROPODS;
     }
 
     @Override

@@ -42,8 +42,8 @@ public class Punch extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.PUNCH);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.PUNCH;
     }
 
     @Override

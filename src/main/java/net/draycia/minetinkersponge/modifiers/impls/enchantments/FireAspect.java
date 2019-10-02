@@ -42,8 +42,8 @@ public class FireAspect extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.FIRE_ASPECT);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.FIRE_ASPECT;
     }
 
     @Override

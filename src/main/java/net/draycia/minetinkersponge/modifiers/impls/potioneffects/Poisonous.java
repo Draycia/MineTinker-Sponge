@@ -66,6 +66,11 @@ public class Poisonous extends Modifier {
     }
 
     @Override
+    public String getDescription() {
+        return "Applies the Poisonous potion effect to mobs that are hit. Duration = level, amplifier = 1.";
+    }
+
+    @Override
     public void onModifierRegister(Object plugin) {
         Sponge.getEventManager().registerListeners(plugin, this);
     }

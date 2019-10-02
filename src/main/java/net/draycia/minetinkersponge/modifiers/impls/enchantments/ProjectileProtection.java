@@ -56,8 +56,8 @@ public class ProjectileProtection extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.PROJECTILE_PROTECTION);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.PROJECTILE_PROTECTION;
     }
 
     @Override

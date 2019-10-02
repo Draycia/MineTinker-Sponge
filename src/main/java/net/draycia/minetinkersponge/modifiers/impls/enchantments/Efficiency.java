@@ -42,8 +42,8 @@ public class Efficiency extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.EFFICIENCY);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.EFFICIENCY;
     }
 
     @Override

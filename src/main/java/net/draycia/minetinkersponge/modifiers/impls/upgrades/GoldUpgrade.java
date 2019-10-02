@@ -78,6 +78,11 @@ public class GoldUpgrade extends Modifier {
     }
 
     @Override
+    public String getDescription() {
+        return "Upgrades the item type from iron to gold when max level is reached.";
+    }
+
+    @Override
     public Optional<CraftingRecipe> getRecipe() {
         ShapelessCraftingRecipe recipe = ShapelessCraftingRecipe.builder()
                 .addIngredient(Ingredient.of(ItemTypes.GOLD_INGOT))

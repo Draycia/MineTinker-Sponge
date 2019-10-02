@@ -67,6 +67,11 @@ public class InstantDamage extends Modifier {
     }
 
     @Override
+    public String getDescription() {
+        return "Applies the Instant Damage potion effect to mobs that are hit. Duration = 1, amplifier = 1.";
+    }
+
+    @Override
     public void onModifierRegister(Object plugin) {
         Sponge.getEventManager().registerListeners(plugin, this);
     }

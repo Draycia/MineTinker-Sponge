@@ -48,8 +48,8 @@ public class SilkTouch extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.SILK_TOUCH);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.SILK_TOUCH;
     }
 
     @Override

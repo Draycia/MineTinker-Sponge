@@ -43,8 +43,8 @@ public class Thorns extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.THORNS);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.THORNS;
     }
 
     @Override

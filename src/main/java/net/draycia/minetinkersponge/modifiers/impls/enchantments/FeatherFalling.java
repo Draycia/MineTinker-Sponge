@@ -45,8 +45,8 @@ public class FeatherFalling extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.FEATHER_FALLING);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.FEATHER_FALLING;
     }
 
     @Override

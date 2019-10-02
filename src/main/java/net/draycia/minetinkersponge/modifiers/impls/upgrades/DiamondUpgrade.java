@@ -78,6 +78,11 @@ public class DiamondUpgrade extends Modifier {
     }
 
     @Override
+    public String getDescription() {
+        return "Upgrades the item type from gold to diamond when max level is reached.";
+    }
+
+    @Override
     public Optional<CraftingRecipe> getRecipe() {
         ShapelessCraftingRecipe recipe = ShapelessCraftingRecipe.builder()
                 .addIngredient(Ingredient.of(ItemTypes.DIAMOND))

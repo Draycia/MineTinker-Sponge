@@ -78,6 +78,11 @@ public class IronUpgrade extends Modifier {
     }
 
     @Override
+    public String getDescription() {
+        return "Upgrades the item type from leather/wood to iron when max level is reached.";
+    }
+
+    @Override
     public Optional<CraftingRecipe> getRecipe() {
         ShapelessCraftingRecipe recipe = ShapelessCraftingRecipe.builder()
                 .addIngredient(Ingredient.of(ItemTypes.IRON_INGOT))

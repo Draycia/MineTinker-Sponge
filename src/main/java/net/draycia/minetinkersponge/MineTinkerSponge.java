@@ -1,5 +1,6 @@
 package net.draycia.minetinkersponge;
 
+import com.google.inject.Inject;
 import net.draycia.minetinkersponge.commands.*;
 import net.draycia.minetinkersponge.data.DataRegistrar;
 import net.draycia.minetinkersponge.listeners.*;
@@ -11,6 +12,7 @@ import net.draycia.minetinkersponge.modifiers.impls.potioneffects.Poisonous;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.DiamondUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.GoldUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.IronUpgrade;
+import net.draycia.minetinkersponge.utils.InventoryGUIManager;
 import net.draycia.minetinkersponge.utils.ItemLevelManager;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.PlayerNameManager;
@@ -24,6 +26,7 @@ import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.Direction;
 import org.spongepowered.api.world.BlockChangeFlag;
@@ -37,9 +40,13 @@ import org.spongepowered.api.world.World;
 )
 public class MineTinkerSponge {
 
+    @Inject
+    private PluginContainer container;
+
     private ModManager modManager;
     private ItemLevelManager itemLevelManager;
     private PlayerNameManager playerNameManager;
+    private InventoryGUIManager inventoryGUIManager;
 
     public ModManager getModManager() {
         return modManager;
@@ -47,6 +54,10 @@ public class MineTinkerSponge {
 
     public ItemLevelManager getItemLevelManager() {
         return itemLevelManager;
+    }
+
+    public PluginContainer getContainer() {
+        return container;
     }
 
     @Listener
@@ -60,6 +71,8 @@ public class MineTinkerSponge {
         registerModifiers();
         registerCommands();
         registerListeners();
+
+        inventoryGUIManager = new InventoryGUIManager(this);
     }
 
     @Listener
@@ -71,6 +84,11 @@ public class MineTinkerSponge {
     @Listener
     public void onGameStopped(GameStoppingServerEvent event) {
         playerNameManager.onGameStopped();
+    }
+
+    @Listener
+    public void onPlayerJoin(ClientConnectionEvent.Join event) {
+        inventoryGUIManager.showViewToPlayer(event.getTargetEntity());
     }
 
     private void registerModifiers() {

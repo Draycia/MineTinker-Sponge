@@ -55,8 +55,8 @@ public class Sharpness extends Modifier {
     }
 
     @Override
-    public List<EnchantmentType> getAppliedEnchantments() {
-        return Collections.singletonList(EnchantmentTypes.SHARPNESS);
+    public EnchantmentType getAppliedEnchantment() {
+        return EnchantmentTypes.SHARPNESS;
     }
 
     @Override
