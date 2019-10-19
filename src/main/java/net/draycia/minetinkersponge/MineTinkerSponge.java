@@ -35,14 +35,11 @@ public class MineTinkerSponge {
     @Inject
     private PluginContainer container;
 
-    private ModManager modManager;
+    private static ModManager modManager = null;
+
     private ItemLevelManager itemLevelManager;
     private PlayerNameManager playerNameManager;
     private InventoryGUIManager inventoryGUIManager;
-
-    public ModManager getModManager() {
-        return modManager;
-    }
 
     public ItemLevelManager getItemLevelManager() {
         return itemLevelManager;
@@ -50,6 +47,10 @@ public class MineTinkerSponge {
 
     public PluginContainer getContainer() {
         return container;
+    }
+
+    public static ModManager getModManager() {
+        return modManager;
     }
 
     @Listener
