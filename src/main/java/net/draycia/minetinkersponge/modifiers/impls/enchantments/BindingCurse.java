@@ -34,7 +34,7 @@ public class BindingCurse extends Modifier {
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.COAL;
+        return ItemTypes.STICK;
     }
 
     @Override

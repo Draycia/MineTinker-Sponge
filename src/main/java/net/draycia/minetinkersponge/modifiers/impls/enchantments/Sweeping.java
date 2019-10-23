@@ -33,7 +33,7 @@ public class Sweeping extends Modifier {
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.DIAMOND;
+        return ItemTypes.PRISMARINE_CRYSTALS;
     }
 
     @Override

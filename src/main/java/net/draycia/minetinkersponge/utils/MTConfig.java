@@ -31,4 +31,10 @@ public class MTConfig {
     // Converts mob drops into minetinker items
     public static boolean CONVERT_MOB_DROPS = true;
 
+    public static String RESULT_INCOMPATIBLE_MODIFIER = "That modifier is incompatible with ";
+    public static String RESULT_INCOMPATIBLE_TOOL = "That item is not MineTinker compatible!";
+    public static String RESULT_NOT_ENOUGH_SLOTS = "That item does not have enough slots!";
+    public static String RESULT_RANDOM_CHANCE = "Failed to apply enchantment due to RNG!";
+    public static String RESULT_LEVEL_CAP = "Modifier is already max level!";
+
 }

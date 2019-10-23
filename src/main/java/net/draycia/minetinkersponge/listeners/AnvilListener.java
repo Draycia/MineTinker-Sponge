@@ -63,7 +63,7 @@ public class AnvilListener {
 
         int amount = Math.min(slots, quantity);
 
-        ModifierApplicationResult result = modManager.applyModifier(left, modifier, false, amount);
+        ModifierApplicationResult result = modManager.applyModifier(left, modifier, false, true, amount);
 
         if (result.wasSuccess()) {
             event.getResult().setCustom(result.getItemStack().createSnapshot());
@@ -129,7 +129,7 @@ public class AnvilListener {
                 return;
             }
 
-            ModifierApplicationResult applicationResult = modManager.applyModifier(left, modifier.get(), false, amount);
+            ModifierApplicationResult applicationResult = modManager.applyModifier(left, modifier.get(), false, false, amount);
 
             if (applicationResult.wasSuccess()) {
                 event.getCursorTransaction().setValid(true);

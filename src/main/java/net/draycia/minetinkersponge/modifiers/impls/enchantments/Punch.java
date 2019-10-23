@@ -33,7 +33,7 @@ public class Punch extends Modifier {
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.GUNPOWDER;
+        return ItemTypes.BRICK;
     }
 
     @Override

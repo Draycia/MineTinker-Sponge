@@ -34,6 +34,10 @@ public abstract class Modifier {
      */
     public abstract int getLevelWeight();
 
+    public int getApplicationChance() {
+        return 100;
+    }
+
     /**
      *
      * @return A string describing the modifier

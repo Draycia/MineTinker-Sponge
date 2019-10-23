@@ -36,7 +36,8 @@ import org.spongepowered.api.world.World;
 
 @Plugin(
         id = "minetinker-sponge",
-        name = "MineTinker-Sponge"
+        name = "MineTinker-Sponge",
+        description = "Adds an alternate enchantment system and new enchantments"
 )
 public class MineTinkerSponge {
 
@@ -58,6 +59,10 @@ public class MineTinkerSponge {
 
     public PluginContainer getContainer() {
         return container;
+    }
+
+    public InventoryGUIManager getInventoryGUIManager() {
+        return inventoryGUIManager;
     }
 
     @Listener
@@ -84,11 +89,6 @@ public class MineTinkerSponge {
     @Listener
     public void onGameStopped(GameStoppingServerEvent event) {
         playerNameManager.onGameStopped();
-    }
-
-    @Listener
-    public void onPlayerJoin(ClientConnectionEvent.Join event) {
-        inventoryGUIManager.showViewToPlayer(event.getTargetEntity());
     }
 
     private void registerModifiers() {
@@ -181,6 +181,14 @@ public class MineTinkerSponge {
                 .build();
 
         Sponge.getCommandManager().register(this, addSlots, "addslots");
+
+        CommandSpec modifiers = CommandSpec.builder()
+                .description(Text.of("Shows the modifier GUI"))
+                .permission("minetinker.commands.modifiers")
+                .executor(new ModifiersCommand(this))
+                .build();
+
+        Sponge.getCommandManager().register(this, modifiers, "modifiers", "mods");
     }
 
     private void registerListeners() {
