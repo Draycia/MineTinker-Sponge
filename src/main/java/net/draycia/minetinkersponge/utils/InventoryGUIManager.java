@@ -23,6 +23,7 @@ import org.spongepowered.api.text.TranslatableText;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -61,8 +62,18 @@ public class InventoryGUIManager {
             StringBuilder slotCosts = new StringBuilder(Integer.toString(modifier.getModifierSlotCost(1)));
 
             if (modifier.getMaxLevel() > 1) {
+                ArrayList<Integer> slots = new ArrayList<>();
+
                 for (int i = 2; i <= modifier.getMaxLevel(); i++) {
-                    slotCosts.append(", ").append(modifier.getModifierSlotCost(i));
+                    slots.add(modifier.getModifierSlotCost(i));
+                }
+
+                if (slots.stream().distinct().count() == 1) {
+                    slotCosts.append(" at all levels.");
+                } else {
+                    for (Integer slotCost : slots) {
+                        slotCosts.append(", ").append(slotCost);
+                    }
                 }
             }
 
