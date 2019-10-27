@@ -34,6 +34,19 @@ public abstract class Modifier {
      */
     public abstract int getLevelWeight();
 
+    /**
+     * Returns the number of slots the item must have and will be reduced by when the modifier is applied.
+     * May return different slot costs depending on the modifier level, may also return the same cost for all levels.
+     * @return The number of slots the modifier costs at the given level.
+     */
+    public int getModifierSlotCost(int modifierLevel) {
+        return 1;
+    }
+
+    /**
+     *
+     * @return The chance that the modifier will successfully apply, in a range of 0-100.
+     */
     public int getApplicationChance() {
         return 100;
     }

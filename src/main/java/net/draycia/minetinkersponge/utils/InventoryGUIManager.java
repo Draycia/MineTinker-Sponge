@@ -57,6 +57,18 @@ public class InventoryGUIManager {
             lore.add(Text.of(""));
             lore.add(Text.of(TextColors.GOLD, "Max Level: ", TextColors.WHITE, modifier.getMaxLevel()));
 
+            // Show the modifier slot costs
+            StringBuilder slotCosts = new StringBuilder(Integer.toString(modifier.getModifierSlotCost(1)));
+
+            if (modifier.getMaxLevel() > 1) {
+                for (int i = 2; i <= modifier.getMaxLevel(); i++) {
+                    slotCosts.append(", ").append(modifier.getModifierSlotCost(i));
+                }
+            }
+
+            lore.add(Text.of(""));
+            lore.add(Text.of(TextColors.GRAY, "Required Slots: ", TextColors.WHITE, slotCosts.toString()));
+
             // Show the modifier's compatible items
             lore.add(Text.of(""));
             lore.add(Text.of(TextColors.BLUE, "Applicable On: ", TextColors.WHITE, modifier.getCompatibilityString()));

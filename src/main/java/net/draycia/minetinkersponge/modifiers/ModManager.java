@@ -137,16 +137,22 @@ public class ModManager {
             return new ModifierApplicationResult(null, MTConfig.RESULT_INCOMPATIBLE_TOOL);
         }
 
-        // Check if the item has enough modifier slots
-        if (!ignoreSlots && getItemModifierSlots(itemStack) < amount) {
-            return new ModifierApplicationResult(null, MTConfig.RESULT_NOT_ENOUGH_SLOTS);
-        }
+        int level = getModifierLevel(itemStack, modifier) + amount;
 
         // Ensure the modifier level doesn't exceed the modifier's level cap
-        int targetLevel = getModifierLevel(itemStack, modifier) + amount;
-
-        if (targetLevel > modifier.getMaxLevel()) {
+        if (level > modifier.getMaxLevel()) {
             return new ModifierApplicationResult(null, MTConfig.RESULT_LEVEL_CAP);
+        }
+
+        int totalCost = 0;
+
+        for (int i = level; i < amount + level; i++) {
+            totalCost += modifier.getModifierSlotCost(i);
+        }
+
+        // Check if the item has enough modifier slots
+        if (!ignoreSlots && getItemModifierSlots(itemStack) < totalCost) {
+            return new ModifierApplicationResult(null, MTConfig.RESULT_NOT_ENOUGH_SLOTS);
         }
 
         // Check if the item has any modifiers that are incompatible with the one being applied
@@ -167,8 +173,6 @@ public class ModManager {
             }
         }
 
-
-        int level = getModifierLevel(itemStack, modifier) + amount;
 
         // If the modifier applies an enchantment to the item, do so
         if (modifier.getAppliedEnchantment() != null) {
@@ -192,7 +196,7 @@ public class ModManager {
         rewriteItemLore(itemStack);
 
         // Toss back the result of the item
-        ItemStack newItem = modifier.onModifierApplication(itemStack, targetLevel);
+        ItemStack newItem = modifier.onModifierApplication(itemStack, level);
 
         return new ModifierApplicationResult(newItem, "");
     }
