@@ -4,6 +4,7 @@ import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.data.manipulator.mutable.PotionEffectData;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.effect.potion.PotionEffect;
@@ -18,6 +19,7 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
+import org.spongepowered.api.plugin.PluginContainer;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,7 +61,7 @@ public class Poisonous extends Modifier {
                 .where('G', Ingredient.of(ItemTypes.ROTTEN_FLESH))
                 .where('D', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);
@@ -71,8 +73,8 @@ public class Poisonous extends Modifier {
     }
 
     @Override
-    public void onModifierRegister(Object plugin) {
-        Sponge.getEventManager().registerListeners(plugin, this);
+    public void onModifierRegister(PluginContainer container) {
+        Sponge.getEventManager().registerListeners(container, this);
     }
 
     public Poisonous(ModManager modManager) {
@@ -81,22 +83,20 @@ public class Poisonous extends Modifier {
 
     @Listener
     public void onItemDrop(DamageEntityEvent event) {
-        if (!(event.getTargetEntity() instanceof Living)) {
+        if (!(event.getEntity() instanceof Living)) {
             return;
         }
 
         Optional<Player> player = event.getCause().first(Player.class);
 
         if (player.isPresent()) {
-            Optional<ItemStack> itemStack = player.get().getItemInHand(HandTypes.MAIN_HAND);
+            ItemStack itemStack = player.get().getItemInHand(HandTypes.MAIN_HAND);
 
-            if (itemStack.isPresent()) {
-                if (modManager.itemHasModifier(itemStack.get(), this)) {
-                    int level = modManager.getModifierLevel(itemStack.get(), this);
+            if (modManager.itemHasModifier(itemStack, this)) {
+                int level = modManager.getModifierLevel(itemStack, this);
 
-                    PotionEffectData potionEffects = event.getTargetEntity().getOrCreate(PotionEffectData.class).get();
-                    potionEffects.addElement(PotionEffect.builder().potionType(PotionEffectTypes.POISON).duration(level * 20).amplifier(1).build());
-                }
+                List<PotionEffect> potionEffects = event.getEntity().get(Keys.POTION_EFFECTS).get();
+                potionEffects.add(PotionEffect.builder().potionType(PotionEffectTypes.POISON).duration(level * 20).amplifier(1).build());
             }
         }
     }

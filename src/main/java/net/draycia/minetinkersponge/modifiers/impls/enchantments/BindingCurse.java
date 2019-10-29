@@ -54,7 +54,7 @@ public class BindingCurse extends Modifier {
                 .where('C', Ingredient.of(ItemTypes.DIAMOND))
                 .where('P', Ingredient.of(ItemTypes.BONE))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

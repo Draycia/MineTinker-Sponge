@@ -6,8 +6,7 @@ import com.mcsimonflash.sponge.teslalibs.inventory.Layout;
 import com.mcsimonflash.sponge.teslalibs.inventory.View;
 import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.modifiers.Modifier;
-import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.data.type.DyeColors;
+import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
@@ -87,7 +86,7 @@ public class InventoryGUIManager {
             if (modifier.getAppliedEnchantment() != null) {
                 lore.add(Text.of(""));
                 lore.add(Text.of(TextColors.YELLOW, "Applied Enchantments: ", TextColors.WHITE,
-                        TranslatableText.of(modifier.getAppliedEnchantment().getTranslation())));
+                        TranslatableText.of(modifier.getAppliedEnchantment().getNameTranslation())));
             }
 
             // If the modifier has a recipe, create a sub-GUI for it
@@ -141,8 +140,7 @@ public class InventoryGUIManager {
 
                 recipeLayout.set(Element.of(recipe.getExemplaryResult()), 24);
 
-                ItemStack greenPane = ItemStack.builder().itemType(ItemTypes.STAINED_GLASS_PANE).build();
-                greenPane.offer(Keys.DYE_COLOR , DyeColors.LIME);
+                ItemStack greenPane = ItemStack.builder().itemType(ItemTypes.GREEN_STAINED_GLASS_PANE).build();
                 greenPane.offer(Keys.DISPLAY_NAME, Text.of("Return To Modifiers"));
 
                 Consumer<Action.Click> goToMain = click -> showViewToPlayer(click.getPlayer());

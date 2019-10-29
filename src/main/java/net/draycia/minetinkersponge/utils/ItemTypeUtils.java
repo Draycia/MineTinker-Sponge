@@ -84,7 +84,7 @@ public class ItemTypeUtils {
 
         miscArmorTypes.add(ItemTypes.ELYTRA);
         miscArmorTypes.add(ItemTypes.PUMPKIN);
-        miscArmorTypes.add(ItemTypes.LIT_PUMPKIN);
+        miscArmorTypes.add(ItemTypes.JACK_O_LANTERN);
 
         weaponTypes.addAll(axeTypes);
         weaponTypes.addAll(swordTypes);

@@ -56,10 +56,10 @@ public class SilkTouch extends Modifier {
         ShapedCraftingRecipe recipe = ShapedCraftingRecipe.builder()
                 .aisle("RLR", "LDL", "RLR")
                 .where('L', Ingredient.of(ItemTypes.STRING))
-                .where('R', Ingredient.of(ItemTypes.WEB))
+                .where('R', Ingredient.of(ItemTypes.COBWEB))
                 .where('D', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

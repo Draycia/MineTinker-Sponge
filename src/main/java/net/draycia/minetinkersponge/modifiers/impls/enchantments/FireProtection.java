@@ -64,10 +64,10 @@ public class FireProtection extends Modifier {
         ShapedCraftingRecipe recipe = ShapedCraftingRecipe.builder()
                 .aisle("IMI", "MDM", "IMI")
                 .where('I', Ingredient.of(ItemTypes.IRON_BLOCK))
-                .where('M', Ingredient.of(ItemTypes.MAGMA))
+                .where('M', Ingredient.of(ItemTypes.MAGMA_BLOCK))
                 .where('D', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

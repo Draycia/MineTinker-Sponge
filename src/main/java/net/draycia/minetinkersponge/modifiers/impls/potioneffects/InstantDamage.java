@@ -5,6 +5,7 @@ import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.CompositeUnmodifiableList;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.data.manipulator.mutable.PotionEffectData;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.effect.potion.PotionEffect;
@@ -19,6 +20,7 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
+import org.spongepowered.api.plugin.PluginContainer;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,10 +59,10 @@ public class InstantDamage extends Modifier {
         ShapedCraftingRecipe recipe = ShapedCraftingRecipe.builder()
                 .aisle("SGS", "GDG", "SGS")
                 .where('S', Ingredient.of(ItemTypes.POISONOUS_POTATO))
-                .where('G', Ingredient.of(ItemTypes.DEADBUSH))
+                .where('G', Ingredient.of(ItemTypes.DEAD_BUSH))
                 .where('D', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);
@@ -72,8 +74,8 @@ public class InstantDamage extends Modifier {
     }
 
     @Override
-    public void onModifierRegister(Object plugin) {
-        Sponge.getEventManager().registerListeners(plugin, this);
+    public void onModifierRegister(PluginContainer container) {
+        Sponge.getEventManager().registerListeners(container, this);
     }
 
     public InstantDamage(ModManager modManager) {
@@ -82,20 +84,18 @@ public class InstantDamage extends Modifier {
 
     @Listener
     public void onItemDrop(DamageEntityEvent event) {
-        if (!(event.getTargetEntity() instanceof Living)) {
+        if (!(event.getEntity() instanceof Living)) {
             return;
         }
 
         Optional<Player> player = event.getCause().first(Player.class);
 
         if (player.isPresent()) {
-            Optional<ItemStack> itemStack = player.get().getItemInHand(HandTypes.MAIN_HAND);
+            ItemStack itemStack = player.get().getItemInHand(HandTypes.MAIN_HAND);
 
-            if (itemStack.isPresent()) {
-                if (modManager.itemHasModifier(itemStack.get(), this)) {
-                    PotionEffectData potionEffects = event.getTargetEntity().getOrCreate(PotionEffectData.class).get();
-                    potionEffects.addElement(PotionEffect.builder().potionType(PotionEffectTypes.INSTANT_DAMAGE).duration(1).amplifier(1).build());
-                }
+            if (modManager.itemHasModifier(itemStack, this)) {
+                List<PotionEffect> potionEffects = event.getEntity().get(Keys.POTION_EFFECTS).get();
+                potionEffects.add(PotionEffect.builder().potionType(PotionEffectTypes.INSTANT_DAMAGE).duration(1).amplifier(1).build());
             }
         }
     }

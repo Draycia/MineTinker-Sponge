@@ -53,7 +53,7 @@ public class VanishingCurse extends Modifier {
                 .where('C', Ingredient.of(ItemTypes.DIAMOND))
                 .where('P', Ingredient.of(ItemTypes.ENDER_PEARL))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

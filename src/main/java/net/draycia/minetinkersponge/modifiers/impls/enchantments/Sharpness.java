@@ -66,7 +66,7 @@ public class Sharpness extends Modifier {
                 .where('R', Ingredient.of(ItemTypes.FLINT))
                 .where('D', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

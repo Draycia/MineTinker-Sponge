@@ -10,12 +10,12 @@ import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.item.inventory.ClickInventoryEvent;
 import org.spongepowered.api.event.item.inventory.UpdateAnvilEvent;
 import org.spongepowered.api.item.ItemTypes;
-import org.spongepowered.api.item.inventory.Inventory;
-import org.spongepowered.api.item.inventory.InventoryArchetypes;
-import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.inventory.*;
 import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
 import org.spongepowered.api.item.inventory.slot.InputSlot;
 import org.spongepowered.api.item.inventory.slot.OutputSlot;
+import org.spongepowered.api.item.inventory.transaction.SlotTransaction;
+import org.spongepowered.api.item.inventory.type.ViewableInventory;
 
 import java.util.Optional;
 
@@ -73,7 +73,13 @@ public class AnvilListener {
 
     @Listener
     public void onAnvilClick(ClickInventoryEvent event, @First Player player) {
-        if (event.getTargetInventory().getArchetype() != InventoryArchetypes.ANVIL) {
+        if (!(event.getTargetInventory() instanceof ViewableInventory)) {
+            return;
+        }
+
+        ViewableInventory viewableInventory = (ViewableInventory)event.getTargetInventory();
+
+        if (viewableInventory.getType() != ContainerTypes.ANVIL) {
             return;
         }
 
@@ -84,34 +90,31 @@ public class AnvilListener {
         ItemStack result = null;
 
         for (Inventory slot : input.slots()) {
-            Optional<ItemStack> itemStack = slot.peek();
+            ItemStack itemStack = slot.peek();
 
-            if (itemStack.isPresent()) {
-                if (left == null) {
-                    left = itemStack.get();
-                } else if (right == null) {
-                    right = itemStack.get();
-                }
+            if (left == null) {
+                left = itemStack;
+            } else if (right == null) {
+                right = itemStack;
             }
         }
 
         Inventory output = event.getTargetInventory().query(QueryOperationTypes.INVENTORY_TYPE.of(OutputSlot.class));
 
-        Optional<ItemStack> outputItem = output.peek();
+        ItemStack outputItem = output.peek();
 
-        if (outputItem.isPresent()) {
-            result = outputItem.get();
+        if (outputItem.getType() != ItemTypes.AIR) {
+            result = outputItem;
         }
 
         if (left == null || right == null || result == null) {
             return;
         }
 
-        if (!event.getSlot().isPresent() || !event.getSlot().get().peek().isPresent()) {
-            return;
-        }
+        SlotTransaction transaction = event.getTransactions().get(0);
+        Slot transactionSlot = transaction.getSlot();
 
-        if (event.getSlot().get().peek().get().equalTo(result)) {
+        if (transactionSlot.peek().equalTo(result)) {
             Optional<String> modifierId = right.get(MTKeys.MODIFIER_ID);
 
             if (!modifierId.isPresent()) {
@@ -140,14 +143,14 @@ public class AnvilListener {
                 for (Inventory slot : input.slots()) {
                     if (isSecond) {
                         right.setQuantity(right.getQuantity() - amount);
-                        slot.set(right);
+                        slot.set(0, right);
                     } else {
-                        slot.set(ItemStack.builder().itemType(ItemTypes.AIR).quantity(1).build());
+                        slot.set(0, ItemStack.builder().itemType(ItemTypes.AIR).quantity(1).build());
                         isSecond = true;
                     }
                 }
 
-                output.set(ItemStack.builder().itemType(ItemTypes.AIR).quantity(1).build());
+                output.set(0, ItemStack.builder().itemType(ItemTypes.AIR).quantity(1).build());
             }
         }
     }

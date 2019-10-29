@@ -1,12 +1,12 @@
 package net.draycia.minetinkersponge.modifiers;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.impl.ModifierIdentifierData;
-import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
@@ -101,9 +101,9 @@ public abstract class Modifier {
     /**
      * Called when the {@link ModManager} successfully registers the modifier.
      * This should be used for registering event listeners instead of in the constructor.
-     * @param plugin The instance of the plugin that owns the modifier that's being registered.
+     * @param container The plugin container of the plugin that owns the modifier that's being registered.
      */
-    public void onModifierRegister(Object plugin) {}
+    public void onModifierRegister(PluginContainer container) {}
 
     public Optional<CraftingRecipe> getRecipe() {
         return Optional.empty();
@@ -135,9 +135,7 @@ public abstract class Modifier {
                 .quantity(amount)
                 .build();
 
-        itemStack.offer(itemStack.getOrCreate(ModifierIdentifierData.class).get());
         itemStack.offer(MTKeys.MODIFIER_ID, getKey());
-
         itemStack.offer(Keys.DISPLAY_NAME, Text.of(getName() + " Modifier"));
 
         return itemStack;

@@ -56,7 +56,7 @@ public class FeatherFalling extends Modifier {
                 .where('S', Ingredient.of(ItemTypes.SLIME_BALL))
                 .where('D', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

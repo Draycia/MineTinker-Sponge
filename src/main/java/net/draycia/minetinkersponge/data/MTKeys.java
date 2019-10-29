@@ -1,11 +1,10 @@
 package net.draycia.minetinkersponge.data;
 
 import com.google.common.reflect.TypeToken;
-import org.spongepowered.api.data.DataQuery;
-import org.spongepowered.api.data.key.Key;
-import org.spongepowered.api.data.value.mutable.MapValue;
-import org.spongepowered.api.data.value.mutable.Value;
-import org.spongepowered.api.util.TypeTokens;
+import org.spongepowered.api.CatalogKey;
+import org.spongepowered.api.data.Key;
+import org.spongepowered.api.data.value.MapValue;
+import org.spongepowered.api.data.value.Value;
 
 public class MTKeys {
 
@@ -21,45 +20,33 @@ public class MTKeys {
 
     static {
         IS_MINETINKER = Key.builder()
-                .type(TypeTokens.BOOLEAN_VALUE_TOKEN)
-                .id("minetinker-sponge")
-                .name("Is MineTinker")
-                .query(DataQuery.of("minetinker.is_compatible"))
+                .type(new TypeToken<Value<Boolean>>() {})
+                .key(CatalogKey.builder().namespace("minetinker.is_compatible").build())
                 .build();
 
         MINETINKER_LEVEL = Key.builder()
-                .type(TypeTokens.INTEGER_VALUE_TOKEN)
-                .id("minetinker-sponge")
-                .name("Item Level")
-                .query(DataQuery.of("minetinker.minetinker_level"))
+                .type(new TypeToken<Value<Integer>>() {})
+                .key(CatalogKey.builder().namespace("minetinker.minetinker_level").build())
                 .build();
 
         MINETINKER_XP = Key.builder()
-                .type(TypeTokens.INTEGER_VALUE_TOKEN)
-                .id("minetinker-sponge")
-                .name("Item XP")
-                .query(DataQuery.of("minetinker.minetinker_xp"))
+                .type(new TypeToken<Value<Integer>>() {})
+                .key(CatalogKey.builder().namespace("minetinker.minetinker_xp").build())
                 .build();
 
         MINETINKER_SLOTS = Key.builder()
-                .type(TypeTokens.INTEGER_VALUE_TOKEN)
-                .id("minetinker-sponge")
-                .name("Item Modifier Slots")
-                .query(DataQuery.of("minetinker.minetinker_slots"))
+                .type(new TypeToken<Value<Integer>>() {})
+                .key(CatalogKey.builder().namespace("minetinker.minetinker_slots").build())
                 .build();
 
         MODIFIER_ID = Key.builder()
-                .type(TypeTokens.STRING_VALUE_TOKEN)
-                .id("minetinker-sponge")
-                .name("Modifier Item ID")
-                .query(DataQuery.of("minetinker.modifier_id"))
+                .type(new TypeToken<Value<String>>() {})
+                .key(CatalogKey.builder().namespace("minetinker.modifier_id").build())
                 .build();
 
         ITEM_MODIFIERS = Key.builder()
                 .type(new TypeToken<MapValue<String, Integer>>() {})
-                .id("minetinker-sponge")
-                .name("Item Modifiers")
-                .query(DataQuery.of("minetinker.item_modifiers"))
+                .key(CatalogKey.builder().namespace("minetinker.item_modifiers").build())
                 .build();
     }
 

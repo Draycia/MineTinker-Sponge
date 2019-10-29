@@ -53,7 +53,7 @@ public class Punch extends Modifier {
                 .where('G', Ingredient.of(ItemTypes.GUNPOWDER))
                 .where('D', Ingredient.of(ItemTypes.ARROW))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

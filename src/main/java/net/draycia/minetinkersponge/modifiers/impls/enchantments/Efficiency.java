@@ -49,11 +49,11 @@ public class Efficiency extends Modifier {
     public Optional<CraftingRecipe> getRecipe() {
         ShapedCraftingRecipe recipe = ShapedCraftingRecipe.builder()
                 .aisle("FDF", "DRD", "FDF")
-                .where('F', Ingredient.of(ItemTypes.FIREWORKS))
+                .where('F', Ingredient.of(ItemTypes.FIREWORK_ROCKET))
                 .where('D', Ingredient.of(ItemTypes.DIAMOND))
                 .where('R', Ingredient.of(ItemTypes.REDSTONE_BLOCK))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

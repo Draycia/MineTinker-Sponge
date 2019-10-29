@@ -26,28 +26,24 @@ public class DamageListener {
 
     @Listener
     public void onPlayerDamage(DamageEntityEvent event, @Root DamageSource source) {
-        if (!(event.getTargetEntity() instanceof Player)) {
+        if (!(event.getEntity() instanceof Player)) {
             return;
         }
 
-        Player player = (Player)event.getTargetEntity();
+        Player player = (Player)event.getEntity();
         DamageType type = source.getType();
 
         if (type == DamageTypes.ATTACK || type == DamageTypes.PROJECTILE || type == DamageTypes.GENERIC) {
-            EquipmentInventory inventory = player.getInventory().query(QueryOperationTypes.INVENTORY_TYPE.of(EquipmentInventory.class));
+            Inventory inventory = player.getInventory().query(QueryOperationTypes.INVENTORY_TYPE.of(EquipmentInventory.class));
 
             for (Inventory slot : inventory.slots()) {
-                Optional<ItemStack> item = slot.peek();
+                ItemStack itemStack = slot.peek();
 
-                if (item.isPresent()) {
-                    ItemStack itemStack = item.get();
+                Optional<Boolean> isMineTinker = itemStack.get(MTKeys.IS_MINETINKER);
 
-                    Optional<Boolean> isMineTinker = itemStack.get(MTKeys.IS_MINETINKER);
-
-                    if (isMineTinker.isPresent() && isMineTinker.get()) {
-                        modManager.addExperience(itemStack, 1);
-                        slot.set(itemStack); // This is necessary. I assume somewhere the item is copied.
-                    }
+                if (isMineTinker.isPresent() && isMineTinker.get()) {
+                    modManager.addExperience(itemStack, 1);
+                    slot.set(0, itemStack); // This is necessary. I assume somewhere the item is copied.
                 }
             }
         }

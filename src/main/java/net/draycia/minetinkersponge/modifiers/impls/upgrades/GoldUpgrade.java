@@ -88,7 +88,7 @@ public class GoldUpgrade extends Modifier {
                 .addIngredient(Ingredient.of(ItemTypes.GOLD_INGOT))
                 .addIngredient(Ingredient.of(ItemTypes.GOLD_INGOT))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

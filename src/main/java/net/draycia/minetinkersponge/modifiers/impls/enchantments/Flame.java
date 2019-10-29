@@ -53,7 +53,7 @@ public class Flame extends Modifier {
                 .where('B', Ingredient.of(ItemTypes.BLAZE_ROD))
                 .where('A', Ingredient.of(ItemTypes.ARROW))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

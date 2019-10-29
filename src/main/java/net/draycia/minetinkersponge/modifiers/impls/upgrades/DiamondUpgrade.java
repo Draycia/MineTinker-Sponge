@@ -88,7 +88,7 @@ public class DiamondUpgrade extends Modifier {
                 .addIngredient(Ingredient.of(ItemTypes.DIAMOND))
                 .addIngredient(Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

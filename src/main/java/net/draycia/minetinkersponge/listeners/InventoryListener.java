@@ -21,15 +21,11 @@ public class InventoryListener {
     @Listener
     public void onInventoryOpen(InteractInventoryEvent.Open event) {
         for (Inventory inventory : event.getTargetInventory().slots()) {
-            Optional<ItemStack> itemStack = inventory.peek();
+            ItemStack itemStack = inventory.peek();
 
-            if (!itemStack.isPresent()) {
-                continue;
-            }
-
-            if (ItemTypeUtils.getAllTypes().contains(itemStack.get().getType())) {
-                if (!itemStack.get().get(MTKeys.IS_MINETINKER).orElse(false)) {
-                    modManager.convertItemStack(itemStack.get(), true);
+            if (ItemTypeUtils.getAllTypes().contains(itemStack.getType())) {
+                if (!itemStack.get(MTKeys.IS_MINETINKER).orElse(false)) {
+                    modManager.convertItemStack(itemStack, true);
                 }
             }
         }

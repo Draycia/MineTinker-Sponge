@@ -16,6 +16,7 @@ import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
+import org.spongepowered.api.plugin.PluginContainer;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,8 +51,8 @@ public class Hammer extends Modifier {
     }
 
     @Override
-    public void onModifierRegister(Object plugin) {
-        Sponge.getEventManager().registerListeners(plugin, this);
+    public void onModifierRegister(PluginContainer container) {
+        Sponge.getEventManager().registerListeners(container, this);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class Hammer extends Modifier {
                 .where('C', Ingredient.of(ItemTypes.NETHER_STAR))
                 .where('I', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

@@ -70,7 +70,7 @@ public class BaneOfArthropods extends Modifier {
                 .where('C', Ingredient.of(ItemTypes.FERMENTED_SPIDER_EYE))
                 .where('P', Ingredient.of(ItemTypes.SPIDER_EYE))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

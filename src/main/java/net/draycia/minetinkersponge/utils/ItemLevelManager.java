@@ -35,13 +35,7 @@ public class ItemLevelManager {
         // Loop through all items in the player's inventory
         for (Inventory slot : player.getInventory().slots()) {
             // Get the item in the slot
-            Optional<ItemStack> itemStackOptional = slot.peek();
-
-            if (!itemStackOptional.isPresent()) {
-                continue;
-            }
-
-            ItemStack itemStack = itemStackOptional.get();
+            ItemStack itemStack = slot.peek();
 
             // Check if the item is MT compatible
             if (!itemStack.get(MTKeys.IS_MINETINKER).orElse(false)) {

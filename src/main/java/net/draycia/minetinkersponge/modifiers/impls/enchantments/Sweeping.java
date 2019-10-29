@@ -53,7 +53,7 @@ public class Sweeping extends Modifier {
                 .where('C', Ingredient.of(ItemTypes.IRON_SWORD))
                 .where('P', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

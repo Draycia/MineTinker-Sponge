@@ -5,7 +5,7 @@ import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.CompositeUnmodifiableList;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.Item;
@@ -24,8 +24,8 @@ import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
 
 import java.util.List;
 import java.util.Optional;
@@ -60,8 +60,8 @@ public class Directing extends Modifier {
     }
 
     @Override
-    public void onModifierRegister(Object plugin) {
-        Sponge.getEventManager().registerListeners(plugin, this);
+    public void onModifierRegister(PluginContainer container) {
+        Sponge.getEventManager().registerListeners(container, this);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class Directing extends Modifier {
                 .where('C', Ingredient.of(ItemTypes.COMPASS))
                 .where('I', Ingredient.of(ItemTypes.IRON_BLOCK))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);
@@ -114,20 +114,18 @@ public class Directing extends Modifier {
                                 Item item = (Item) entity;
 
                                 // And put each in the player's inventory
-                                if (item.item().exists()) {
-                                    ItemStack itemToGive = item.item().get().createStack();
+                                ItemStack itemToGive = item.item().get().createStack();
 
-                                    if (inventory.canFit(itemToGive)) {
-                                        inventory.offer(itemToGive);
-                                    } else {
-                                        // If the player can't fit the item in their inventory, drop it next to them
-                                        Location<World> location = player.get().getLocation();
+                                if (inventory.canFit(itemToGive)) {
+                                    inventory.offer(itemToGive);
+                                } else {
+                                    // If the player can't fit the item in their inventory, drop it next to them
+                                    Location location = player.get().getLocation();
 
-                                        Entity itemEntity = location.createEntity(EntityTypes.ITEM);
-                                        itemEntity.offer(Keys.ACTIVE_ITEM, item.item().get());
+                                    Entity itemEntity = location.createEntity(EntityTypes.ITEM);
+                                    itemEntity.offer(Keys.ACTIVE_ITEM, item.item().get());
 
-                                        location.spawnEntity(itemEntity);
-                                    }
+                                    location.spawnEntity(itemEntity);
                                 }
                             }
                         }

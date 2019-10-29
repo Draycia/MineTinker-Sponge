@@ -54,7 +54,7 @@ public class BlastProtection extends Modifier {
                 .where('R', Ingredient.of(ItemTypes.IRON_BLOCK))
                 .where('D', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

@@ -32,7 +32,7 @@ public class LuckOfTheSea extends Modifier {
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.COOKED_FISH;
+        return ItemTypes.COOKED_COD;
     }
 
     @Override
@@ -49,11 +49,11 @@ public class LuckOfTheSea extends Modifier {
     public Optional<CraftingRecipe> getRecipe() {
         ShapedCraftingRecipe recipe = ShapedCraftingRecipe.builder()
                 .aisle("RLR", "LDL", "RLR")
-                .where('L', Ingredient.of(ItemTypes.FISH))
+                .where('L', Ingredient.of(ItemTypes.COD))
                 .where('R', Ingredient.of(ItemTypes.LAPIS_BLOCK))
                 .where('D', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

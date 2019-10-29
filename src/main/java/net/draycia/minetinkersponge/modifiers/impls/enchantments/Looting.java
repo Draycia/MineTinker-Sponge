@@ -53,7 +53,7 @@ public class Looting extends Modifier {
                 .where('R', Ingredient.of(ItemTypes.LAPIS_BLOCK))
                 .where('D', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

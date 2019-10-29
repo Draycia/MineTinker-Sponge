@@ -2,7 +2,7 @@ package net.draycia.minetinkersponge.modifiers.impls.enchantments;
 
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
-import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.data.type.DyeColors;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
@@ -35,7 +35,7 @@ public class DepthStrider extends Modifier {
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.WATERLILY;
+        return ItemTypes.LILY_PAD;
     }
 
     @Override
@@ -50,8 +50,7 @@ public class DepthStrider extends Modifier {
 
     @Override
     public Optional<CraftingRecipe> getRecipe() {
-        ItemStack dye = ItemStack.builder().itemType(ItemTypes.DYE).build();
-        dye.offer(Keys.DYE_COLOR, DyeColors.BLUE);
+        ItemStack dye = ItemStack.builder().itemType(ItemTypes.LAPIS_LAZULI).build();
 
         ShapedCraftingRecipe recipe = ShapedCraftingRecipe.builder()
                 .aisle("PEP", "ECE", "PEP")
@@ -59,7 +58,7 @@ public class DepthStrider extends Modifier {
                 .where('C', Ingredient.of(ItemTypes.DIAMOND))
                 .where('P', Ingredient.of(ItemTypes.PRISMARINE_CRYSTALS))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

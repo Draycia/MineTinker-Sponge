@@ -5,7 +5,7 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.scoreboard.Scoreboard;
-import org.spongepowered.api.scoreboard.critieria.Criteria;
+import org.spongepowered.api.scoreboard.criteria.Criteria;
 import org.spongepowered.api.scoreboard.displayslot.DisplaySlots;
 import org.spongepowered.api.scoreboard.objective.Objective;
 import org.spongepowered.api.scoreboard.objective.displaymode.ObjectiveDisplayModes;
@@ -26,7 +26,7 @@ public class PlayerNameManager {
     }
 
     public void onGameStarted() {
-        Optional<Scoreboard> serverScoreboard = Sponge.getServer().getServerScoreboard();
+        Optional<? extends Scoreboard> serverScoreboard = Sponge.getServer().getServerScoreboard();
 
         if (serverScoreboard.isPresent()) {
             Scoreboard globalScoreboard = serverScoreboard.get();
@@ -48,9 +48,13 @@ public class PlayerNameManager {
     }
 
     public void onGameStopped() {
-        Sponge.getServer().getServerScoreboard()
-                .ifPresent(scoreboard -> scoreboard.getObjective(OBJECTIVE_ID)
-                        .ifPresent(scoreboard::removeObjective));
+        Optional<? extends Scoreboard> scoreboard = Sponge.getServer().getServerScoreboard();
+
+        if (scoreboard.isPresent()) {
+            Optional<Objective> objective = scoreboard.get().getObjective(OBJECTIVE_ID);
+
+            objective.ifPresent(value -> scoreboard.get().removeObjective(value));
+        }
     }
 
     public void startScheduler() {
@@ -72,7 +76,7 @@ public class PlayerNameManager {
                     objective.getOrCreateScore(Text.of(player.getName())).setScore(combatLevel);
                 }
             }
-        }).delayTicks(20).intervalTicks(20).submit(mineTinkerSponge);
+        }).delayTicks(20).intervalTicks(20).plugin(mineTinkerSponge.getContainer()).build();
     }
 
 }

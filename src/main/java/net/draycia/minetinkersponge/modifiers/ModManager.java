@@ -1,12 +1,11 @@
 package net.draycia.minetinkersponge.modifiers;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.data.impl.*;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.StringUtils;
 import org.spongepowered.api.data.key.Key;
-import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.data.value.ValueContainer;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.GameRegistryEvent;
@@ -15,6 +14,7 @@ import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
@@ -40,11 +40,11 @@ public class ModManager {
 
     /**
      * Registers the modifier and adds it to MineTinker's internal modifier map
-     * @param plugin The plugin that's registering the modifier
+     * @param container The plugin container for the plugin that's registering the modifier
      * @param modifier The modifier instance to register
      * @return If the registration was a success. My return false if a modifier with the key already exists.
      */
-    public boolean registerModifier(Object plugin, Modifier modifier) {
+    public boolean registerModifier(PluginContainer container, Modifier modifier) {
         // Only allow one modifier to have the same key, first come first serve.
          if (modifiers.containsKey(modifier.getKey())) {
              return false;
@@ -54,7 +54,7 @@ public class ModManager {
 
          // Allow the modifier to register event listeners etc when successfully registered.
          // Passes in the plugin instance the method caller supplies.
-         modifier.onModifierRegister(plugin);
+         modifier.onModifierRegister(container);
 
          return true;
     }
@@ -92,7 +92,7 @@ public class ModManager {
      * Checks if the supplied object contains the specified modifier
      * @param valueContainer An object that fulfills {@link T} so that values can be queried
      * @param modifier The modifier to check the presence of
-     * @param <T> An object that extends {@link ValueContainer}, and thus implements {@link ValueContainer#get(Key)}
+     * @param <T> An object that extends {@link ValueContainer}
      * @return If the object contains the modifier
      */
     private <T extends ValueContainer> boolean dataHolderHasModifier(T valueContainer, Modifier modifier) {
@@ -210,13 +210,6 @@ public class ModManager {
         if (!ItemTypeUtils.getAllTypes().contains(itemStack.getType())) {
             return;
         }
-
-        // Data Updaters need to be offered before the data is
-        itemStack.offer(itemStack.getOrCreate(ItemCompatibleData.class).get());
-        itemStack.offer(itemStack.getOrCreate(ItemExperienceData.class).get());
-        itemStack.offer(itemStack.getOrCreate(ItemLevelData.class).get());
-        itemStack.offer(itemStack.getOrCreate(ItemModifierListData.class).get());
-        itemStack.offer(itemStack.getOrCreate(ModifierSlotData.class).get());
 
         // Offer the actual data
         itemStack.offer(MTKeys.IS_MINETINKER, true);

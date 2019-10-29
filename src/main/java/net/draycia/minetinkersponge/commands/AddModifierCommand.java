@@ -2,12 +2,14 @@ package net.draycia.minetinkersponge.commands;
 
 import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.utils.ContextUtils;
 import org.spongepowered.api.command.CommandResult;
-import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.command.parameter.CommandContext;
+import org.spongepowered.api.command.CommandExecutor;
+import org.spongepowered.api.command.parameter.Parameter;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.item.inventory.ItemStack;
 
 import java.util.Optional;
@@ -21,22 +23,27 @@ public class AddModifierCommand implements CommandExecutor {
     }
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) {
-        if (!(src instanceof Player)) {
+    public CommandResult execute(CommandContext context) {
+        EventContext eventContext = context.getCause().getContext();
+        Optional<Player> player = ContextUtils.getPlayerFromContext(eventContext);
+
+        if (!player.isPresent()) {
             return CommandResult.empty();
         }
 
-        Optional<Object> modifierName = args.getOne("modifier");
+        Optional<String> modifierName = context.getOne(Parameter.key("modifier", String.class));
 
         if (modifierName.isPresent()) {
-            Optional<Modifier> modifier = modManager.getModifier((String)(modifierName.get()));
-            Optional<ItemStack> mainItem = ((Player)src).getItemInHand(HandTypes.MAIN_HAND);
+            Optional<Modifier> modifier = modManager.getModifier((modifierName.get()));
+            ItemStack mainItem = player.get().getItemInHand(HandTypes.MAIN_HAND);
 
-            if (mainItem.isPresent() && modifier.isPresent()) {
-                if (args.getOne("amount").isPresent()) {
-                    modManager.applyModifier(mainItem.get(), modifier.get(), true, true, (int)args.getOne("amount").get());
+            if (modifier.isPresent()) {
+                Optional<Integer> amount = context.getOne(Parameter.key("amount", Integer.class));
+
+                if (amount.isPresent()) {
+                    modManager.applyModifier(mainItem, modifier.get(), true, true, amount.get());
                 } else {
-                    modManager.applyModifier(mainItem.get(), modifier.get(), true, true, 1);
+                    modManager.applyModifier(mainItem, modifier.get(), true, true, 1);
                 }
             }
         }

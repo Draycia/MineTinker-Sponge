@@ -53,7 +53,7 @@ public class AquaAffinity extends Modifier {
                 .where('C', Ingredient.of(ItemTypes.REDSTONE))
                 .where('P', Ingredient.of(ItemTypes.PRISMARINE_SHARD))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

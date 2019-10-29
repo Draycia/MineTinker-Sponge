@@ -25,12 +25,10 @@ public class BlockBreakListener {
         Optional<HandType> handType = event.getContext().get(EventContextKeys.USED_HAND);
 
         if (handType.isPresent()) {
-            Optional<ItemStack> itemStack = player.getItemInHand(handType.get());
+            ItemStack itemStack = player.getItemInHand(handType.get());
 
-            if (itemStack.isPresent()) {
-                if (itemStack.get().get(MTKeys.IS_MINETINKER).isPresent()) {
-                    modManager.addExperience(itemStack.get(), 1);
-                }
+            if (itemStack.get(MTKeys.IS_MINETINKER).isPresent()) {
+                modManager.addExperience(itemStack, 1);
             }
         }
     }

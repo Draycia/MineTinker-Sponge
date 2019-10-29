@@ -53,7 +53,7 @@ public class Respiration extends Modifier {
                 .where('R', Ingredient.of(ItemTypes.IRON_INGOT))
                 .where('D', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

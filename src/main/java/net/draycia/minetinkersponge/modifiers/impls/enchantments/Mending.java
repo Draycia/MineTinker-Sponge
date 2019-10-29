@@ -62,7 +62,7 @@ public class Mending extends Modifier {
                 .where('R', Ingredient.of(ItemTypes.MOSSY_COBBLESTONE))
                 .where('D', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

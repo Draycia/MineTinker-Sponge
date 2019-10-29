@@ -61,7 +61,7 @@ public class Infinity extends Modifier {
                 .where('A', Ingredient.of(ItemTypes.ARROW))
                 .where('D', Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .name(getKey())
                 .build();
 
         return Optional.of(recipe);

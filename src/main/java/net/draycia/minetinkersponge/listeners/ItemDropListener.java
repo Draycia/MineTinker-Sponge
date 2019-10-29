@@ -2,7 +2,7 @@ package net.draycia.minetinkersponge.listeners;
 
 import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
-import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.Item;
 import org.spongepowered.api.event.Listener;
@@ -40,7 +40,7 @@ public class ItemDropListener {
 
             modManager.convertItemStack(newItem, true);
 
-            entity.offer(Keys.REPRESENTED_ITEM, newItem.createSnapshot());
+            item.offer(Keys.ITEM_STACK_SNAPSHOT, newItem.createSnapshot());
         }
     }
 
