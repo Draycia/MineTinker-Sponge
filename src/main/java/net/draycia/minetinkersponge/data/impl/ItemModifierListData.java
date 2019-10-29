@@ -15,7 +15,10 @@ import org.spongepowered.api.data.persistence.AbstractDataBuilder;
 import org.spongepowered.api.data.persistence.DataContentUpdater;
 import org.spongepowered.api.data.persistence.InvalidDataException;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class ItemModifierListData extends AbstractMappedData<String, Integer, ItemModifierListData, ItemModifierListData.Immutable> {
 

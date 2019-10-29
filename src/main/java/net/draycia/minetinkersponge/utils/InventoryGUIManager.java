@@ -23,7 +23,6 @@ import org.spongepowered.api.text.TranslatableText;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;

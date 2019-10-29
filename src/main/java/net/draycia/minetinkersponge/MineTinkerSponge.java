@@ -5,7 +5,8 @@ import net.draycia.minetinkersponge.commands.*;
 import net.draycia.minetinkersponge.data.DataRegistrar;
 import net.draycia.minetinkersponge.listeners.*;
 import net.draycia.minetinkersponge.modifiers.ModManager;
-import net.draycia.minetinkersponge.modifiers.impls.*;
+import net.draycia.minetinkersponge.modifiers.impls.Directing;
+import net.draycia.minetinkersponge.modifiers.impls.Hammer;
 import net.draycia.minetinkersponge.modifiers.impls.enchantments.*;
 import net.draycia.minetinkersponge.modifiers.impls.potioneffects.InstantDamage;
 import net.draycia.minetinkersponge.modifiers.impls.potioneffects.Poisonous;
@@ -17,22 +18,15 @@ import net.draycia.minetinkersponge.utils.ItemLevelManager;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.PlayerNameManager;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
-import org.spongepowered.api.data.type.HandTypes;
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.network.ClientConnectionEvent;
+import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
+import org.spongepowered.api.event.game.state.GameStartingServerEvent;
+import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.util.Direction;
-import org.spongepowered.api.world.BlockChangeFlag;
-import org.spongepowered.api.world.BlockChangeFlags;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
 
 @Plugin(
         id = "minetinker-sponge",

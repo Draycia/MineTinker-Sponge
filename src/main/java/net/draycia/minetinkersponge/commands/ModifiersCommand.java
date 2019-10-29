@@ -1,7 +1,6 @@
 package net.draycia.minetinkersponge.commands;
 
 import net.draycia.minetinkersponge.MineTinkerSponge;
-import net.draycia.minetinkersponge.utils.InventoryGUIManager;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
