@@ -159,7 +159,9 @@ public class ModManager {
         for (Modifier appliedModifier : getItemAppliedModifiers(itemStack)) {
             for (Class<? extends Modifier> modClass : modifier.getIncompatibleModifiers()) {
                 if (appliedModifier.getClass() == modClass) {
-                    return new ModifierApplicationResult(null, MTConfig.RESULT_INCOMPATIBLE_MODIFIER + appliedModifier.getName());
+                    String reason = MTConfig.RESULT_INCOMPATIBLE_MODIFIER.replace("%s", appliedModifier.getName());
+
+                    return new ModifierApplicationResult(null, reason);
                 }
             }
         }

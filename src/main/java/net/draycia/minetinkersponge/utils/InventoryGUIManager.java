@@ -23,7 +23,6 @@ import org.spongepowered.api.text.TranslatableText;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -82,6 +81,7 @@ public class InventoryGUIManager {
 
             // Show the modifier's compatible items
             lore.add(Text.of(""));
+            // TODO: Override compatibility strings in each modifier
             lore.add(Text.of(TextColors.BLUE, "Applicable On: ", TextColors.WHITE, modifier.getCompatibilityString()));
 
             // If the modifier applies an enchantment, say so

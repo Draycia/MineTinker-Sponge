@@ -12,27 +12,28 @@ import net.draycia.minetinkersponge.modifiers.impls.potioneffects.Poisonous;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.DiamondUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.GoldUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.IronUpgrade;
-import net.draycia.minetinkersponge.utils.InventoryGUIManager;
-import net.draycia.minetinkersponge.utils.ItemLevelManager;
-import net.draycia.minetinkersponge.utils.MTConfig;
-import net.draycia.minetinkersponge.utils.PlayerNameManager;
+import net.draycia.minetinkersponge.utils.*;
+import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
+import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
-import org.spongepowered.api.data.type.HandTypes;
-import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.config.ConfigDir;
+import org.spongepowered.api.config.DefaultConfig;
+import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.util.Direction;
-import org.spongepowered.api.world.BlockChangeFlag;
-import org.spongepowered.api.world.BlockChangeFlags;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Optional;
 
 @Plugin(
         id = "minetinker-sponge",
@@ -43,6 +44,23 @@ public class MineTinkerSponge {
 
     @Inject
     private PluginContainer container;
+
+    @Inject
+    @DefaultConfig(sharedRoot = false)
+    private Path defaultConfig;
+
+    @Inject
+    @DefaultConfig(sharedRoot = false)
+    private ConfigurationLoader<CommentedConfigurationNode> configLoader;
+
+    @Inject
+    @ConfigDir(sharedRoot = false)
+    private Path configDir;
+
+    @Inject
+    private Logger logger;
+
+    private ConfigurationNode config;
 
     private ModManager modManager;
     private ItemLevelManager itemLevelManager;
@@ -67,6 +85,8 @@ public class MineTinkerSponge {
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
+        reloadConfig();
+
         DataRegistrar.registerDataManipulators();
 
         modManager = new ModManager();
@@ -89,6 +109,80 @@ public class MineTinkerSponge {
     @Listener
     public void onGameStopped(GameStoppingServerEvent event) {
         playerNameManager.onGameStopped();
+    }
+
+    @Listener
+    public void reload(GameReloadEvent event) {
+        reloadConfig();
+    }
+
+    private void reloadConfig() {
+        // TODO: Per modifier configurations
+
+        // TODO: Modifier method that's called when configs are messed with so extra options can be registered
+        // Plugin will automatically handle config values that all modifiers share, but unique per-modifier ones
+        // will be handled by the modifier itself. Maybe have a config serializer/deserializer instead?
+
+        try {
+            config = configLoader.load();
+
+            if (!defaultConfig.toFile().exists()) {
+                saveDefaultConfigValues();
+            } else {
+                loadConfigValues();
+            }
+        } catch (IOException exception) {
+            logger.warn("Failed to load main configuration!");
+            exception.printStackTrace();
+        }
+    }
+
+    private void saveDefaultConfigValues() throws IOException {
+        config.getNode("globalMaxLevel").setValue(MTConfig.GLOBAL_MAX_LEVEL);
+
+        config.getNode("enchantmentConvertBlock").setValue(MTConfig.ENCHANTMENT_CONVERT_BLOCK.getId());
+
+        config.getNode("convertTransfersEnchantments").setValue(MTConfig.CONVERT_TRANSFERS_ENCHANTMENTS);
+        config.getNode("convertExceedsMaxLevel").setValue(MTConfig.CONVERT_EXCEEDS_MAX_LEVEL);
+        config.getNode("hideEnchantments").setValue(MTConfig.HIDE_ENCHANTMENTS);
+        config.getNode("makeItemsUnbreakable").setValue(MTConfig.MAKE_UNBREAKABLE);
+        config.getNode("costsAreLinear").setValue(MTConfig.COSTS_ARE_LINEAR);
+        config.getNode("convertMobDrops").setValue(MTConfig.CONVERT_MOB_DROPS);
+
+        config.getNode("resultIncompatibleModifier").setValue(MTConfig.RESULT_INCOMPATIBLE_MODIFIER);
+        config.getNode("resultIncompatibleTool").setValue(MTConfig.RESULT_INCOMPATIBLE_TOOL);
+        config.getNode("resultNotEnoughSlots").setValue(MTConfig.RESULT_NOT_ENOUGH_SLOTS);
+        config.getNode("resultRandomChance").setValue(MTConfig.RESULT_RANDOM_CHANCE);
+        config.getNode("resultLevelCap").setValue(MTConfig.RESULT_LEVEL_CAP);
+
+        configLoader.save(config);
+    }
+
+    private void loadConfigValues() {
+        MTConfig.GLOBAL_MAX_LEVEL = config.getNode("globalMaxLevel").getInt();
+
+        String blockName = config.getNode("enchantmentConvertBlock").getString();
+        Optional<BlockType> convertBlock = Sponge.getGame().getRegistry().getType(BlockType.class, blockName);
+
+        if (convertBlock.isPresent()) {
+            MTConfig.ENCHANTMENT_CONVERT_BLOCK = convertBlock.get();
+        } else {
+            logger.warn("No BlockType found matching input \"" + blockName + "\".");
+            MTConfig.ENCHANTMENT_CONVERT_BLOCK = BlockTypes.BOOKSHELF;
+        }
+
+        MTConfig.CONVERT_TRANSFERS_ENCHANTMENTS = config.getNode("convertTransfersEnchantments").getBoolean();
+        MTConfig.CONVERT_EXCEEDS_MAX_LEVEL = config.getNode("convertExceedsMaxLevel").getBoolean();
+        MTConfig.HIDE_ENCHANTMENTS = config.getNode("hideEnchantments").getBoolean();
+        MTConfig.MAKE_UNBREAKABLE = config.getNode("makeItemsUnbreakable").getBoolean();
+        MTConfig.COSTS_ARE_LINEAR = config.getNode("costsAreLinear").getBoolean();
+        MTConfig.CONVERT_MOB_DROPS = config.getNode("convertMobDrops").getBoolean();
+
+        MTConfig.RESULT_INCOMPATIBLE_MODIFIER = config.getNode("resultIncompatibleModifier").getString();
+        MTConfig.RESULT_INCOMPATIBLE_TOOL = config.getNode("resultIncompatibleTool").getString();
+        MTConfig.RESULT_NOT_ENOUGH_SLOTS = config.getNode("resultNotEnoughSlots").getString();
+        MTConfig.RESULT_RANDOM_CHANCE = config.getNode("resultRandomChance").getString();
+        MTConfig.RESULT_LEVEL_CAP = config.getNode("resultLevelCap").getString();
     }
 
     private void registerModifiers() {
