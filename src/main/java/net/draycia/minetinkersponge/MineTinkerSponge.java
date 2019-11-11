@@ -29,6 +29,7 @@ import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
@@ -188,8 +189,20 @@ public class MineTinkerSponge {
     }
 
     private void loadModifierConfigValues(Modifier modifier, ConfigurationNode modifierNode) {
-        // TODO: Implement.
-        // TODO: Add setters for the above fields (and maybe more?)
+        modifier.setName(modifierNode.getNode("name").getString());
+        modifier.setMaxLevel(modifierNode.getNode("maxLevel").getInt());
+        modifier.setLevelWeight(modifierNode.getNode("levelWeight").getInt());
+        modifier.setApplicationChance(modifierNode.getNode("applicationChance").getInt());
+        modifier.setDescription(modifierNode.getNode("description").getString());
+
+        String modifierItemId = modifierNode.getNode("modifierItem").getString();
+        Optional<ItemType> modifierItem = Sponge.getGame().getRegistry().getType(ItemType.class, modifierItemId);
+
+        if (modifierItem.isPresent()) {
+             modifier.setModifierItemType(modifierItem.get());
+        } else {
+            logger.warn("No BlockType found matching input \"" + modifierItemId + "\".");
+        }
 
         modifier.onConfigurationLoad(modifierNode);
     }

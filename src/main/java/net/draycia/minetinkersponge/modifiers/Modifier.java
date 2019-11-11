@@ -22,17 +22,23 @@ public abstract class Modifier {
      */
     public abstract String getName();
 
+    public abstract String setName(String name);
+
     /**
      *
      * @return The highest level this modifier can be on items
      */
     public abstract int getMaxLevel();
 
+    public abstract void setMaxLevel(int maxLevel);
+
     /**
      *
      * @return An int describing the value of the modifier, used to determine effective level and combat level
      */
     public abstract int getLevelWeight();
+
+    public abstract void setLevelWeight(int levelWeight);
 
     /**
      * Returns the number of slots the item must have and will be reduced by when the modifier is applied.
@@ -41,6 +47,7 @@ public abstract class Modifier {
      */
     public int getModifierSlotCost(int modifierLevel) {
         return 1;
+        // TODO: Let user specify custom algorithm to determine slot costs?
     }
 
     /**
@@ -51,6 +58,8 @@ public abstract class Modifier {
         return 100;
     }
 
+    public abstract void setApplicationChance(int applicationChance);
+
     /**
      *
      * @return A string describing the modifier
@@ -58,6 +67,8 @@ public abstract class Modifier {
     public String getDescription() {
         return "";
     }
+
+    public abstract void setDescription(String description);
 
     /**
      *
@@ -81,6 +92,8 @@ public abstract class Modifier {
      * @return The item type used for creation of the modifier item.
      */
     public abstract ItemType getModifierItemType();
+
+    public abstract void setModifierItemType(ItemType itemType);
 
     /**
      * @return The list of modifiers that this one is incompatible with.
