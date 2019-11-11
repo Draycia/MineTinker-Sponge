@@ -22,7 +22,7 @@ public abstract class Modifier {
      */
     public abstract String getName();
 
-    public abstract String setName(String name);
+    public void setName(String name) {}
 
     /**
      *
@@ -30,7 +30,7 @@ public abstract class Modifier {
      */
     public abstract int getMaxLevel();
 
-    public abstract void setMaxLevel(int maxLevel);
+    public void setMaxLevel(int maxLevel) {}
 
     /**
      *
@@ -38,7 +38,7 @@ public abstract class Modifier {
      */
     public abstract int getLevelWeight();
 
-    public abstract void setLevelWeight(int levelWeight);
+    public void setLevelWeight(int levelWeight) {}
 
     /**
      * Returns the number of slots the item must have and will be reduced by when the modifier is applied.
@@ -58,7 +58,7 @@ public abstract class Modifier {
         return 100;
     }
 
-    public abstract void setApplicationChance(int applicationChance);
+    public void setApplicationChance(int applicationChance) {}
 
     /**
      *
@@ -68,7 +68,7 @@ public abstract class Modifier {
         return "";
     }
 
-    public abstract void setDescription(String description);
+    public void setDescription(String description) {}
 
     /**
      *
@@ -93,7 +93,7 @@ public abstract class Modifier {
      */
     public abstract ItemType getModifierItemType();
 
-    public abstract void setModifierItemType(ItemType itemType);
+    public void setModifierItemType(ItemType itemType) {}
 
     /**
      * @return The list of modifiers that this one is incompatible with.
@@ -131,6 +131,10 @@ public abstract class Modifier {
      */
     public void onModifierRegister(Object plugin) {}
 
+    /**
+     * Gets the CraftingRecipe for the modifier
+     * @return Empty optional by default, a CraftingRecipe if the modifier has one
+     */
     public Optional<CraftingRecipe> getRecipe() {
         return Optional.empty();
     }
