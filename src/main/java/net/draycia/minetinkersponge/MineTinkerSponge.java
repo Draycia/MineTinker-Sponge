@@ -182,12 +182,16 @@ public class MineTinkerSponge {
         modifierNode.getNode("modifierItem").setValue(modifier.getModifierItemType().getId());
         // TODO: Recipes
 
+        modifier.onConfigurationSave(modifierNode);
+
         modifierLoader.save(modifierNode);
     }
 
     private void loadModifierConfigValues(Modifier modifier, ConfigurationNode modifierNode) {
         // TODO: Implement.
         // TODO: Add setters for the above fields (and maybe more?)
+
+        modifier.onConfigurationLoad(modifierNode);
     }
 
     private void loadConfigValues() {

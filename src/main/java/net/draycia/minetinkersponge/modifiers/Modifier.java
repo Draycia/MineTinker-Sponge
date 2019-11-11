@@ -2,6 +2,7 @@ package net.draycia.minetinkersponge.modifiers;
 
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.data.impl.ModifierIdentifierData;
+import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
@@ -97,6 +98,18 @@ public abstract class Modifier {
     public ItemStack onModifierApplication(ItemStack itemStack, int level) {
         return itemStack;
     }
+
+    /**
+     * Called when the configuration for the modifier is being created and/or saved.
+     * @param modifierNode The ConfigurationNode that extra options should be saved to
+     */
+    public void onConfigurationSave(ConfigurationNode modifierNode) {}
+
+    /**
+     * Called when the configuration for the modifier is being loaded and read from.
+     * @param modifierNode The ConfigurationNode that extra options should be obtained from
+     */
+    public void onConfigurationLoad(ConfigurationNode modifierNode) {}
 
     /**
      * Called when the {@link ModManager} successfully registers the modifier.
