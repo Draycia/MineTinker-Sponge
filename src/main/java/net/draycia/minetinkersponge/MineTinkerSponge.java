@@ -5,6 +5,7 @@ import net.draycia.minetinkersponge.commands.*;
 import net.draycia.minetinkersponge.data.DataRegistrar;
 import net.draycia.minetinkersponge.listeners.*;
 import net.draycia.minetinkersponge.modifiers.ModManager;
+import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.modifiers.impls.*;
 import net.draycia.minetinkersponge.modifiers.impls.enchantments.*;
 import net.draycia.minetinkersponge.modifiers.impls.potioneffects.InstantDamage;
@@ -15,6 +16,7 @@ import net.draycia.minetinkersponge.modifiers.impls.upgrades.IronUpgrade;
 import net.draycia.minetinkersponge.utils.*;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
@@ -31,6 +33,7 @@ import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -46,6 +49,10 @@ public class MineTinkerSponge {
     private PluginContainer container;
 
     @Inject
+    @ConfigDir(sharedRoot = false)
+    private Path configDir;
+
+    @Inject
     @DefaultConfig(sharedRoot = false)
     private Path defaultConfig;
 
@@ -54,13 +61,9 @@ public class MineTinkerSponge {
     private ConfigurationLoader<CommentedConfigurationNode> configLoader;
 
     @Inject
-    @ConfigDir(sharedRoot = false)
-    private Path configDir;
-
-    @Inject
     private Logger logger;
 
-    private ConfigurationNode config;
+    private ConfigurationNode mainConfig;
 
     private ModManager modManager;
     private ItemLevelManager itemLevelManager;
@@ -117,19 +120,29 @@ public class MineTinkerSponge {
     }
 
     private void reloadConfig() {
-        // TODO: Per modifier configurations
-
         // TODO: Modifier method that's called when configs are messed with so extra options can be registered
         // Plugin will automatically handle config values that all modifiers share, but unique per-modifier ones
         // will be handled by the modifier itself. Maybe have a config serializer/deserializer instead?
 
         try {
-            config = configLoader.load();
+            mainConfig = configLoader.load();
 
             if (!defaultConfig.toFile().exists()) {
                 saveDefaultConfigValues();
             } else {
                 loadConfigValues();
+            }
+
+            for (Modifier modifier : modManager.getAllModifiers().values()) {
+                File modifierFile = new File(configDir.toFile(), modifier.getKey() + ".conf");
+                ConfigurationLoader<CommentedConfigurationNode> modifierLoader = HoconConfigurationLoader.builder().setFile(modifierFile).build();
+                ConfigurationNode modifierNode = modifierLoader.load();
+
+                if (!modifierFile.exists()) {
+                    saveDefaultModifierValues(modifier, modifierNode, modifierLoader);
+                } else {
+                    loadModifierConfigValues(modifier, modifierNode);
+                }
             }
         } catch (IOException exception) {
             logger.warn("Failed to load main configuration!");
@@ -138,30 +151,49 @@ public class MineTinkerSponge {
     }
 
     private void saveDefaultConfigValues() throws IOException {
-        config.getNode("globalMaxLevel").setValue(MTConfig.GLOBAL_MAX_LEVEL);
+        mainConfig.getNode("globalMaxLevel").setValue(MTConfig.GLOBAL_MAX_LEVEL);
 
-        config.getNode("enchantmentConvertBlock").setValue(MTConfig.ENCHANTMENT_CONVERT_BLOCK.getId());
+        mainConfig.getNode("enchantmentConvertBlock").setValue(MTConfig.ENCHANTMENT_CONVERT_BLOCK.getId());
 
-        config.getNode("convertTransfersEnchantments").setValue(MTConfig.CONVERT_TRANSFERS_ENCHANTMENTS);
-        config.getNode("convertExceedsMaxLevel").setValue(MTConfig.CONVERT_EXCEEDS_MAX_LEVEL);
-        config.getNode("hideEnchantments").setValue(MTConfig.HIDE_ENCHANTMENTS);
-        config.getNode("makeItemsUnbreakable").setValue(MTConfig.MAKE_UNBREAKABLE);
-        config.getNode("costsAreLinear").setValue(MTConfig.COSTS_ARE_LINEAR);
-        config.getNode("convertMobDrops").setValue(MTConfig.CONVERT_MOB_DROPS);
+        mainConfig.getNode("convertTransfersEnchantments").setValue(MTConfig.CONVERT_TRANSFERS_ENCHANTMENTS);
+        mainConfig.getNode("convertExceedsMaxLevel").setValue(MTConfig.CONVERT_EXCEEDS_MAX_LEVEL);
+        mainConfig.getNode("hideEnchantments").setValue(MTConfig.HIDE_ENCHANTMENTS);
+        mainConfig.getNode("makeItemsUnbreakable").setValue(MTConfig.MAKE_UNBREAKABLE);
+        mainConfig.getNode("costsAreLinear").setValue(MTConfig.COSTS_ARE_LINEAR);
+        mainConfig.getNode("convertMobDrops").setValue(MTConfig.CONVERT_MOB_DROPS);
 
-        config.getNode("resultIncompatibleModifier").setValue(MTConfig.RESULT_INCOMPATIBLE_MODIFIER);
-        config.getNode("resultIncompatibleTool").setValue(MTConfig.RESULT_INCOMPATIBLE_TOOL);
-        config.getNode("resultNotEnoughSlots").setValue(MTConfig.RESULT_NOT_ENOUGH_SLOTS);
-        config.getNode("resultRandomChance").setValue(MTConfig.RESULT_RANDOM_CHANCE);
-        config.getNode("resultLevelCap").setValue(MTConfig.RESULT_LEVEL_CAP);
+        mainConfig.getNode("resultIncompatibleModifier").setValue(MTConfig.RESULT_INCOMPATIBLE_MODIFIER);
+        mainConfig.getNode("resultIncompatibleTool").setValue(MTConfig.RESULT_INCOMPATIBLE_TOOL);
+        mainConfig.getNode("resultNotEnoughSlots").setValue(MTConfig.RESULT_NOT_ENOUGH_SLOTS);
+        mainConfig.getNode("resultRandomChance").setValue(MTConfig.RESULT_RANDOM_CHANCE);
+        mainConfig.getNode("resultLevelCap").setValue(MTConfig.RESULT_LEVEL_CAP);
 
-        configLoader.save(config);
+        configLoader.save(mainConfig);
+    }
+
+    private void saveDefaultModifierValues(Modifier modifier, ConfigurationNode modifierNode,
+                                           ConfigurationLoader modifierLoader) throws IOException {
+
+        modifierNode.getNode("name").setValue(modifier.getName());
+        modifierNode.getNode("maxLevel").setValue(modifier.getMaxLevel());
+        modifierNode.getNode("levelWeight").setValue(modifier.getLevelWeight());
+        modifierNode.getNode("applicationChance").setValue(modifier.getApplicationChance());
+        modifierNode.getNode("description").setValue(modifier.getDescription());
+        modifierNode.getNode("modifierItem").setValue(modifier.getModifierItemType().getId());
+        // TODO: Recipes
+
+        modifierLoader.save(modifierNode);
+    }
+
+    private void loadModifierConfigValues(Modifier modifier, ConfigurationNode modifierNode) {
+        // TODO: Implement.
+        // TODO: Add setters for the above fields (and maybe more?)
     }
 
     private void loadConfigValues() {
-        MTConfig.GLOBAL_MAX_LEVEL = config.getNode("globalMaxLevel").getInt();
+        MTConfig.GLOBAL_MAX_LEVEL = mainConfig.getNode("globalMaxLevel").getInt();
 
-        String blockName = config.getNode("enchantmentConvertBlock").getString();
+        String blockName = mainConfig.getNode("enchantmentConvertBlock").getString();
         Optional<BlockType> convertBlock = Sponge.getGame().getRegistry().getType(BlockType.class, blockName);
 
         if (convertBlock.isPresent()) {
@@ -171,18 +203,18 @@ public class MineTinkerSponge {
             MTConfig.ENCHANTMENT_CONVERT_BLOCK = BlockTypes.BOOKSHELF;
         }
 
-        MTConfig.CONVERT_TRANSFERS_ENCHANTMENTS = config.getNode("convertTransfersEnchantments").getBoolean();
-        MTConfig.CONVERT_EXCEEDS_MAX_LEVEL = config.getNode("convertExceedsMaxLevel").getBoolean();
-        MTConfig.HIDE_ENCHANTMENTS = config.getNode("hideEnchantments").getBoolean();
-        MTConfig.MAKE_UNBREAKABLE = config.getNode("makeItemsUnbreakable").getBoolean();
-        MTConfig.COSTS_ARE_LINEAR = config.getNode("costsAreLinear").getBoolean();
-        MTConfig.CONVERT_MOB_DROPS = config.getNode("convertMobDrops").getBoolean();
+        MTConfig.CONVERT_TRANSFERS_ENCHANTMENTS = mainConfig.getNode("convertTransfersEnchantments").getBoolean();
+        MTConfig.CONVERT_EXCEEDS_MAX_LEVEL = mainConfig.getNode("convertExceedsMaxLevel").getBoolean();
+        MTConfig.HIDE_ENCHANTMENTS = mainConfig.getNode("hideEnchantments").getBoolean();
+        MTConfig.MAKE_UNBREAKABLE = mainConfig.getNode("makeItemsUnbreakable").getBoolean();
+        MTConfig.COSTS_ARE_LINEAR = mainConfig.getNode("costsAreLinear").getBoolean();
+        MTConfig.CONVERT_MOB_DROPS = mainConfig.getNode("convertMobDrops").getBoolean();
 
-        MTConfig.RESULT_INCOMPATIBLE_MODIFIER = config.getNode("resultIncompatibleModifier").getString();
-        MTConfig.RESULT_INCOMPATIBLE_TOOL = config.getNode("resultIncompatibleTool").getString();
-        MTConfig.RESULT_NOT_ENOUGH_SLOTS = config.getNode("resultNotEnoughSlots").getString();
-        MTConfig.RESULT_RANDOM_CHANCE = config.getNode("resultRandomChance").getString();
-        MTConfig.RESULT_LEVEL_CAP = config.getNode("resultLevelCap").getString();
+        MTConfig.RESULT_INCOMPATIBLE_MODIFIER = mainConfig.getNode("resultIncompatibleModifier").getString();
+        MTConfig.RESULT_INCOMPATIBLE_TOOL = mainConfig.getNode("resultIncompatibleTool").getString();
+        MTConfig.RESULT_NOT_ENOUGH_SLOTS = mainConfig.getNode("resultNotEnoughSlots").getString();
+        MTConfig.RESULT_RANDOM_CHANCE = mainConfig.getNode("resultRandomChance").getString();
+        MTConfig.RESULT_LEVEL_CAP = mainConfig.getNode("resultLevelCap").getString();
     }
 
     private void registerModifiers() {
