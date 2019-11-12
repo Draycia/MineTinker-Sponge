@@ -89,15 +89,17 @@ public class MineTinkerSponge {
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
-        reloadConfig();
-
         DataRegistrar.registerDataManipulators();
 
         modManager = new ModManager();
+
+        registerModifiers();
+
+        reloadConfig();
+
         itemLevelManager = new ItemLevelManager(modManager);
         playerNameManager = new PlayerNameManager(this);
 
-        registerModifiers();
         registerCommands();
         registerListeners();
 
@@ -134,8 +136,14 @@ public class MineTinkerSponge {
                 loadConfigValues();
             }
 
+            File modifierDirectory = configDir.resolve("modifiers").toFile();
+
+            if (!modifierDirectory.exists()) {
+                modifierDirectory.mkdirs();
+            }
+
             for (Modifier modifier : modManager.getAllModifiers().values()) {
-                File modifierFile = new File(configDir.toFile(), modifier.getKey() + ".conf");
+                File modifierFile = new File(modifierDirectory, modifier.getKey() + ".conf");
                 ConfigurationLoader<CommentedConfigurationNode> modifierLoader = HoconConfigurationLoader.builder().setFile(modifierFile).build();
                 ConfigurationNode modifierNode = modifierLoader.load();
 
@@ -186,6 +194,7 @@ public class MineTinkerSponge {
         modifier.onConfigurationSave(modifierNode);
 
         modifierLoader.save(modifierNode);
+        System.out.println("Saving " + modifier.getKey());
     }
 
     private void loadModifierConfigValues(Modifier modifier, ConfigurationNode modifierNode) {
