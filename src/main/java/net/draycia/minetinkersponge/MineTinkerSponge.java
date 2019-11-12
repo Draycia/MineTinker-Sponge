@@ -194,7 +194,6 @@ public class MineTinkerSponge {
         modifier.onConfigurationSave(modifierNode);
 
         modifierLoader.save(modifierNode);
-        System.out.println("Saving " + modifier.getKey());
     }
 
     private void loadModifierConfigValues(Modifier modifier, ConfigurationNode modifierNode) {
