@@ -18,6 +18,7 @@ import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockType;
@@ -30,13 +31,19 @@ import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.item.ItemType;
+import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
+import org.spongepowered.api.item.recipe.crafting.Ingredient;
+import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.util.TypeTokens;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 @Plugin(
@@ -191,6 +198,31 @@ public class MineTinkerSponge {
         modifierNode.getNode("modifierItem").setValue(modifier.getModifierItemType().getId());
         // TODO: Recipes
 
+        Optional<CraftingRecipe> optionalRecipe = modifier.getRecipe();
+
+        if (optionalRecipe.isPresent()) {
+            CraftingRecipe recipe = optionalRecipe.get();
+
+            if (recipe instanceof ShapedCraftingRecipe) {
+                ShapedCraftingRecipe shapedRecipe = (ShapedCraftingRecipe) recipe;
+
+                List<String> itemIds = new LinkedList<>();
+
+                for (int y = 0; y < shapedRecipe.getHeight(); y++) {
+                    for (int x = 0; x < shapedRecipe.getWidth(); x++) {
+                        itemIds.add(shapedRecipe.getIngredient(x, y).displayedItems().get(0).getType().getId());
+                    }
+                }
+
+                modifierNode.getNode("shapedRecipeIngredients").setValue(itemIds);
+                modifierNode.getNode("recipeIsShaped").setValue(true);
+            } else {
+                // TODO: Implement shapeless recipe storage
+
+                modifierNode.getNode("recipeIsShaped").setValue(false);
+            }
+        }
+
         modifier.onConfigurationSave(modifierNode);
 
         modifierLoader.save(modifierNode);
@@ -210,6 +242,34 @@ public class MineTinkerSponge {
              modifier.setModifierItemType(modifierItem.get());
         } else {
             logger.warn("No BlockType found matching input \"" + modifierItemId + "\".");
+        }
+
+        if (modifierNode.getNode("recipeIsShaped").getBoolean()) {
+            try {
+                List<String> ingredientIds = modifierNode.getNode("shapedRecipeIngredients").getList(TypeTokens.STRING_TOKEN);
+
+                ShapedCraftingRecipe.Builder recipeBuilder = ShapedCraftingRecipe.builder();
+
+                recipeBuilder = recipeBuilder.aisle("ABC", "DEF", "GHI");
+
+                for (int i = 0; i < ingredientIds.size(); i++) {
+                    Optional<ItemType> itemType = Sponge.getGame().getRegistry().getType(ItemType.class, ingredientIds.get(i));
+
+                    if (!itemType.isPresent()) {
+                        logger.warn("Invalid item id [" + ingredientIds.get(i) + "], skipping recipe! Please ensure the ID is spelled correctly.");
+                        break;
+                    }
+
+                    recipeBuilder = ((ShapedCraftingRecipe.Builder.AisleStep) recipeBuilder).where((char) (i + 65), Ingredient.of(itemType.get()));
+                }
+
+                modifier.setRecipe(((ShapedCraftingRecipe.Builder.ResultStep) recipeBuilder).result(modifier.getModifierItem()).build());
+
+            } catch (ObjectMappingException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Shapeless recipe
         }
 
         modifier.onConfigurationLoad(modifierNode);

@@ -36,22 +36,22 @@ public class Directing extends Modifier {
 
     @Override
     public String getName() {
-        return "Directing";
+        return getName("Directing");
     }
 
     @Override
     public int getMaxLevel() {
-        return 1;
+        return getMaxLevel(1);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.COMPASS;
+        return getModifierItemType(ItemTypes.COMPASS);
     }
 
     @Override
@@ -76,12 +76,12 @@ public class Directing extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
     @Override
     public String getDescription() {
-        return "Drops from breaking blocks and killing mobs will instantly be placed in your inventory.";
+        return getDescription("Drops from breaking blocks and killing mobs will instantly be placed in your inventory.");
     }
 
     public Directing(ModManager modManager) {

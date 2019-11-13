@@ -18,22 +18,22 @@ public class SilkTouch extends Modifier {
 
     @Override
     public String getName() {
-        return "Silk Touch";
+        return getName("Silk Touch");
     }
 
     @Override
     public int getMaxLevel() {
-        return 1;
+        return getMaxLevel(1);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.STRING;
+        return getModifierItemType(ItemTypes.STRING);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class SilkTouch extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

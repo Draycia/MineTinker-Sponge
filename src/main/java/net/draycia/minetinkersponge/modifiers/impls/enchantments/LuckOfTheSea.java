@@ -17,22 +17,22 @@ public class LuckOfTheSea extends Modifier {
 
     @Override
     public String getName() {
-        return "Luck of the Sea";
+        return getName("Luck of the Sea");
     }
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return getMaxLevel(3);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.COOKED_FISH;
+        return getModifierItemType(ItemTypes.COOKED_FISH);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class LuckOfTheSea extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

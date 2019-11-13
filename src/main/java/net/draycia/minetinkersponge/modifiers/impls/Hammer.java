@@ -26,22 +26,22 @@ public class Hammer extends Modifier {
 
     @Override
     public String getName() {
-        return "Hammer";
+        return getName("Hammer");
     }
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return getMaxLevel(3);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.EMERALD;
+        return getModifierItemType(ItemTypes.EMERALD);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Hammer extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
     public Hammer(ModManager modManager) {

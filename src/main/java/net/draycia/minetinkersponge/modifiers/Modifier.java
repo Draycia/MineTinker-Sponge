@@ -22,7 +22,19 @@ public abstract class Modifier {
      */
     public abstract String getName();
 
-    public void setName(String name) {}
+    private String name = null;
+
+    protected String getName(String name) {
+        if (this.name == null) {
+            return name;
+        } else {
+            return this.name;
+        }
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     /**
      *
@@ -30,7 +42,19 @@ public abstract class Modifier {
      */
     public abstract int getMaxLevel();
 
-    public void setMaxLevel(int maxLevel) {}
+    private int maxLevel = -1;
+
+    protected int getMaxLevel(int maxLevel) {
+        if (this.maxLevel == -1) {
+            return maxLevel;
+        } else {
+            return this.maxLevel;
+        }
+    }
+
+    public void setMaxLevel(int maxLevel) {
+        this.maxLevel = maxLevel;
+    }
 
     /**
      *
@@ -38,7 +62,19 @@ public abstract class Modifier {
      */
     public abstract int getLevelWeight();
 
-    public void setLevelWeight(int levelWeight) {}
+    private int levelWeight = -1;
+
+    protected int getLevelWeight(int levelWeight) {
+        if (this.levelWeight == -1) {
+            return levelWeight;
+        } else {
+            return this.levelWeight;
+        }
+    }
+
+    public void setLevelWeight(int levelWeight) {
+        this.levelWeight = levelWeight;
+    }
 
     /**
      * Returns the number of slots the item must have and will be reduced by when the modifier is applied.
@@ -58,17 +94,41 @@ public abstract class Modifier {
         return 100;
     }
 
-    public void setApplicationChance(int applicationChance) {}
+    private int applicationChance = -1;
+
+    protected int getApplicationChance(int applicationChance) {
+        if (this.applicationChance == -1) {
+            return applicationChance;
+        } else {
+            return this.applicationChance;
+        }
+    }
+
+    public void setApplicationChance(int applicationChance) {
+        this.applicationChance = applicationChance;
+    }
 
     /**
      *
      * @return A string describing the modifier
      */
     public String getDescription() {
-        return "";
+        return getDescription("");
     }
 
-    public void setDescription(String description) {}
+    private String description = "";
+
+    protected String getDescription(String description) {
+        if (this.description.isEmpty()) {
+            return description;
+        } else {
+            return this.description;
+        }
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     /**
      *
@@ -93,7 +153,19 @@ public abstract class Modifier {
      */
     public abstract ItemType getModifierItemType();
 
-    public void setModifierItemType(ItemType itemType) {}
+    private ItemType modifierItemType = null;
+
+    protected ItemType getModifierItemType(ItemType modifierItemType) {
+        if (this.modifierItemType == null) {
+            return modifierItemType;
+        } else {
+            return this.modifierItemType;
+        }
+    }
+
+    public void setModifierItemType(ItemType itemType) {
+        this.modifierItemType = itemType;
+    }
 
     /**
      * @return The list of modifiers that this one is incompatible with.
@@ -137,6 +209,20 @@ public abstract class Modifier {
      */
     public Optional<CraftingRecipe> getRecipe() {
         return Optional.empty();
+    }
+
+    private CraftingRecipe craftingRecipe = null;
+
+    protected CraftingRecipe getCraftingRecipe(CraftingRecipe craftingRecipe) {
+        if (this.craftingRecipe == null) {
+            return craftingRecipe;
+        } else {
+            return this.craftingRecipe;
+        }
+    }
+
+    public void setRecipe(CraftingRecipe recipe) {
+        this.craftingRecipe = recipe;
     }
 
     /**

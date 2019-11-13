@@ -17,22 +17,22 @@ public class Lure extends Modifier {
 
     @Override
     public String getName() {
-        return "Lure";
+        return getName("Lure");
     }
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return getMaxLevel(3);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.FISH;
+        return getModifierItemType(ItemTypes.FISH);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Lure extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

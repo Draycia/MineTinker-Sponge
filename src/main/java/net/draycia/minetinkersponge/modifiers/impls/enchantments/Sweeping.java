@@ -17,22 +17,22 @@ public class Sweeping extends Modifier {
 
     @Override
     public String getName() {
-        return "Sweeping Edge";
+        return getName("Sweeping Edge");
     }
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return getMaxLevel(3);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.PRISMARINE_CRYSTALS;
+        return getModifierItemType(ItemTypes.PRISMARINE_CRYSTALS);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Sweeping extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

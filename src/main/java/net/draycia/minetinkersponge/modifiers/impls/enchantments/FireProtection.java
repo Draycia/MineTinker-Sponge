@@ -31,22 +31,22 @@ public class FireProtection extends Modifier {
 
     @Override
     public String getName() {
-        return "Fire Protection";
+        return getName("Fire Protection");
     }
 
     @Override
     public int getMaxLevel() {
-        return 4;
+        return getMaxLevel(4);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.IRON_BLOCK;
+        return getModifierItemType(ItemTypes.IRON_BLOCK);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class FireProtection extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

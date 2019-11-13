@@ -17,22 +17,22 @@ public class Fortune extends Modifier {
 
     @Override
     public String getName() {
-        return "Fortune";
+        return getName("Fortune");
     }
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return getMaxLevel(3);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.RABBIT_FOOT;
+        return getModifierItemType(ItemTypes.RABBIT_FOOT);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Fortune extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

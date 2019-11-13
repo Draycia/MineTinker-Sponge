@@ -17,22 +17,22 @@ public class Punch extends Modifier {
 
     @Override
     public String getName() {
-        return "Punch";
+        return getName("Punch");
     }
 
     @Override
     public int getMaxLevel() {
-        return 2;
+        return getMaxLevel(2);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.BRICK;
+        return getModifierItemType(ItemTypes.BRICK);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Punch extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 

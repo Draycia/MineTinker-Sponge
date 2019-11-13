@@ -17,25 +17,25 @@ public class FeatherFalling extends Modifier {
 
     @Override
     public String getName() {
-        return "Feather Falling";
+        return getName("Feather Falling");
     }
 
     @Override
     public int getMaxLevel() {
-        // This is the effective limit of the enchantment
+        // 7 is the effective limit of the enchantment
         // In vanilla it goes up to level 4
         // But the damage reduction caps at level 7
-        return 7;
+        return 4;
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.FEATHER;
+        return getModifierItemType(ItemTypes.FEATHER);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class FeatherFalling extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

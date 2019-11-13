@@ -39,22 +39,22 @@ public class BaneOfArthropods extends Modifier {
 
     @Override
     public String getName() {
-        return "Bane Of Arthropods";
+        return getName("Bane Of Arthropods");
     }
 
     @Override
     public int getMaxLevel() {
-        return 5;
+        return getMaxLevel(5);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.FERMENTED_SPIDER_EYE;
+        return getModifierItemType(ItemTypes.FERMENTED_SPIDER_EYE);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class BaneOfArthropods extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

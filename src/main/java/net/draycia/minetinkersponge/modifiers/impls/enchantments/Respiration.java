@@ -17,22 +17,22 @@ public class Respiration extends Modifier {
 
     @Override
     public String getName() {
-        return "Respiration";
+        return getName("Respiration");
     }
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return getMaxLevel(3);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.PACKED_ICE;
+        return getModifierItemType(ItemTypes.PACKED_ICE);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Respiration extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }
