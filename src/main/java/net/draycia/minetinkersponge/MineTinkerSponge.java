@@ -338,6 +338,7 @@ public class MineTinkerSponge {
         // Custom Modifiers
         modManager.registerModifier(this, new Directing(modManager));
         modManager.registerModifier(this, new Hammer(modManager));
+        modManager.registerModifier(this, new Kinetic(modManager));
 
         // Potion Modifiers
         modManager.registerModifier(this, new Poisonous(modManager));
