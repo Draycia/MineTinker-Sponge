@@ -392,7 +392,7 @@ public class MineTinkerSponge {
 
         CommandSpec addSlots = CommandSpec.builder()
                 .description(Text.of("Increases the modifier slots of the item.."))
-                .permission("minetinker.commands.givemodifieritem")
+                .permission("minetinker.commands.addslots")
                 .executor(new AddSlotsCommand(modManager))
                 .build();
 
