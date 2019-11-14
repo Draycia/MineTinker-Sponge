@@ -34,6 +34,7 @@ import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
+import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
@@ -49,7 +50,8 @@ import java.util.Optional;
 @Plugin(
         id = "minetinker-sponge",
         name = "MineTinker-Sponge",
-        description = "Adds an alternate enchantment system and new enchantments"
+        description = "Adds an alternate enchantment system and new enchantments",
+        dependencies = @Dependency(id = "TeslaLibs", optional = true)
 )
 public class MineTinkerSponge {
 
@@ -110,7 +112,9 @@ public class MineTinkerSponge {
         registerCommands();
         registerListeners();
 
-        inventoryGUIManager = new InventoryGUIManager(this);
+        if (Sponge.getPluginManager().isLoaded("TeslaLibs")) {
+            inventoryGUIManager = new InventoryGUIManager(this);
+        }
     }
 
     @Listener
@@ -263,7 +267,7 @@ public class MineTinkerSponge {
                     recipeBuilder = ((ShapedCraftingRecipe.Builder.AisleStep) recipeBuilder).where((char) (i + 65), Ingredient.of(itemType.get()));
                 }
 
-                modifier.setRecipe(((ShapedCraftingRecipe.Builder.ResultStep) recipeBuilder).result(modifier.getModifierItem()).build());
+                modifier.setRecipe(((ShapedCraftingRecipe.Builder.ResultStep) recipeBuilder).result(modifier.getModifierItem()).id(modifier.getKey()).build());
 
             } catch (ObjectMappingException e) {
                 e.printStackTrace();
@@ -394,13 +398,15 @@ public class MineTinkerSponge {
 
         Sponge.getCommandManager().register(this, addSlots, "addslots");
 
-        CommandSpec modifiers = CommandSpec.builder()
-                .description(Text.of("Shows the modifier GUI"))
-                .permission("minetinker.commands.modifiers")
-                .executor(new ModifiersCommand(this))
-                .build();
+        if (Sponge.getPluginManager().isLoaded("TeslaLibs")) {
+            CommandSpec modifiers = CommandSpec.builder()
+                    .description(Text.of("Shows the modifier GUI"))
+                    .permission("minetinker.commands.modifiers")
+                    .executor(new ModifiersCommand(this))
+                    .build();
 
-        Sponge.getCommandManager().register(this, modifiers, "modifiers", "mods");
+            Sponge.getCommandManager().register(this, modifiers, "modifiers", "mods");
+        }
     }
 
     private void registerListeners() {
