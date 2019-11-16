@@ -24,6 +24,8 @@ public class Kinetic extends Modifier {
 
     private ModManager modManager;
 
+    private int reductionPercentPerLevel = 100;
+
     @Override
     public String getName() {
         return getName("Kinetic");
@@ -71,7 +73,8 @@ public class Kinetic extends Modifier {
 
     @Override
     public String getDescription() {
-        return getDescription("Drops from breaking blocks and killing mobs will instantly be placed in your inventory.");
+        return getDescription("Reduces damage taken from elytra collisions by %s each level.")
+                .replace("%s", "" + getReductionPercentPerLevel());
     }
 
     public Kinetic(ModManager modManager) {
@@ -96,5 +99,9 @@ public class Kinetic extends Modifier {
                 event.setCancelled(true);
             }
         }
+    }
+
+    public int getReductionPercentPerLevel() {
+        return reductionPercentPerLevel;
     }
 }
