@@ -2,6 +2,7 @@ package net.draycia.minetinkersponge.modifiers.impls;
 
 import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
+import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
@@ -24,7 +25,7 @@ public class Kinetic extends Modifier {
 
     private ModManager modManager;
 
-    private int reductionPercentPerLevel = 100;
+    private float reductionPercentPerLevel = 100.0f;
 
     @Override
     public String getName() {
@@ -77,6 +78,16 @@ public class Kinetic extends Modifier {
                 .replace("%s", "" + getReductionPercentPerLevel());
     }
 
+    @Override
+    public void onConfigurationSave(ConfigurationNode modifierNode) {
+        modifierNode.getNode("reductionPercentPerLevel").setValue(getReductionPercentPerLevel());
+    }
+
+    @Override
+    public void onConfigurationLoad(ConfigurationNode modifierNode) {
+        this.reductionPercentPerLevel = modifierNode.getNode("reductionPercentPerLevel").getInt();
+    }
+
     public Kinetic(ModManager modManager) {
         this.modManager = modManager;
     }
@@ -95,13 +106,22 @@ public class Kinetic extends Modifier {
         }
 
         if (player.getChestplate().isPresent()) {
-            if (modManager.itemHasModifier(player.getChestplate().get(), this)) {
-                event.setCancelled(true);
+            int modifierLevel = modManager.getModifierLevel(player.getChestplate().get(), this);
+
+            if (modifierLevel > 0) {
+                float reductionPercent = modifierLevel * getReductionPercentPerLevel();
+
+                if (reductionPercent >= 100) {
+                    event.setCancelled(true);
+                } else if (!(reductionPercent <= 0)) {
+                    // Don't do anything if the percentage is 0 or less
+                    event.setBaseDamage((event.getBaseDamage() / 100) * reductionPercent);
+                }
             }
         }
     }
 
-    public int getReductionPercentPerLevel() {
+    public float getReductionPercentPerLevel() {
         return reductionPercentPerLevel;
     }
 }
