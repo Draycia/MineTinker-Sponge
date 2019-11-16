@@ -10,7 +10,6 @@ import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,22 +17,22 @@ public class Looting extends Modifier {
 
     @Override
     public String getName() {
-        return "Looting";
+        return getName("Looting");
     }
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return getMaxLevel(3);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.LAPIS_ORE;
+        return getModifierItemType(ItemTypes.LAPIS_ORE);
     }
 
     @Override
@@ -57,7 +56,7 @@ public class Looting extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

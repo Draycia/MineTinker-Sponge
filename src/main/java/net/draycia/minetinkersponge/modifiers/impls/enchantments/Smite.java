@@ -12,7 +12,6 @@ import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,22 +31,22 @@ public class Smite extends Modifier {
 
     @Override
     public String getName() {
-        return "Smite";
+        return getName("Smite");
     }
 
     @Override
     public int getMaxLevel() {
-        return 5;
+        return getMaxLevel(5);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.REDSTONE;
+        return getModifierItemType(ItemTypes.REDSTONE);
     }
 
     @Override
@@ -71,7 +70,7 @@ public class Smite extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

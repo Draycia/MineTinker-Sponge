@@ -34,9 +34,9 @@ public class AddModifierCommand implements CommandExecutor {
 
             if (mainItem.isPresent() && modifier.isPresent()) {
                 if (args.getOne("amount").isPresent()) {
-                    modManager.applyModifier(mainItem.get(), modifier.get(), true, (int)args.getOne("amount").get());
+                    modManager.applyModifier(mainItem.get(), modifier.get(), true, true, (int)args.getOne("amount").get());
                 } else {
-                    modManager.applyModifier(mainItem.get(), modifier.get(), true, 1);
+                    modManager.applyModifier(mainItem.get(), modifier.get(), true, true, 1);
                 }
             }
         }

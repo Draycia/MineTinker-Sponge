@@ -11,7 +11,6 @@ import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,22 +18,22 @@ public class BlastProtection extends Modifier {
 
     @Override
     public String getName() {
-        return "Blast Protection";
+        return getName("Blast Protection");
     }
 
     @Override
     public int getMaxLevel() {
-        return 4;
+        return getMaxLevel(4);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.GUNPOWDER;
+        return getModifierItemType(ItemTypes.GUNPOWDER);
     }
 
     @Override
@@ -58,7 +57,7 @@ public class BlastProtection extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

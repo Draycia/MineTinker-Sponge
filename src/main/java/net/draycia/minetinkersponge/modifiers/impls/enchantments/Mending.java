@@ -25,22 +25,22 @@ public class Mending extends Modifier {
 
     @Override
     public String getName() {
-        return "Mending";
+        return getName("Mending");
     }
 
     @Override
     public int getMaxLevel() {
-        return 1;
+        return getMaxLevel(1);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.EXPERIENCE_BOTTLE;
+        return getModifierItemType(ItemTypes.EXPERIENCE_BOTTLE);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class Mending extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

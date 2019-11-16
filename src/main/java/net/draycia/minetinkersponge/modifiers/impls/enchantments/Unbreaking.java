@@ -10,7 +10,6 @@ import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,22 +17,22 @@ public class Unbreaking extends Modifier {
 
     @Override
     public String getName() {
-        return "Unbreaking";
+        return getName("Unbreaking");
     }
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return getMaxLevel(3);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.OBSIDIAN;
+        return getModifierItemType(ItemTypes.OBSIDIAN);
     }
 
     @Override
@@ -58,7 +57,7 @@ public class Unbreaking extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

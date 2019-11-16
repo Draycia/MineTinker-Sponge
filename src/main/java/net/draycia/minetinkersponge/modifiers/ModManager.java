@@ -23,6 +23,7 @@ import java.util.*;
 public class ModManager {
 
     private TreeMap<String, Modifier> modifiers = new TreeMap<>();
+    private Random random = new Random();
 
     public TreeMap<String, Modifier> getAllModifiers() {
         return modifiers;
@@ -126,38 +127,54 @@ public class ModManager {
      * @param amount The level to set the modifier to, or add if the item already has the modifier on it
      * @return A {@link ModifierApplicationResult result} saying if the application was successful and the new item if successful
      */
-    public ModifierApplicationResult applyModifier(ItemStack itemStack, Modifier modifier, boolean ignoreSlots, int amount) {
+    public ModifierApplicationResult applyModifier(ItemStack itemStack, Modifier modifier, boolean ignoreSlots, boolean shouldIgnoreChance, int amount) {
         // Check if the modifier is compatible with the item
         if (modifier.getCompatibleItems() != null && !modifier.getCompatibleItems().contains(itemStack.getType())) {
-            return new ModifierApplicationResult(null);
+            return new ModifierApplicationResult(null, MTConfig.RESULT_INCOMPATIBLE_TOOL);
         }
 
         if (!itemStack.get(MTKeys.IS_MINETINKER).orElse(false)) {
-            return new ModifierApplicationResult(null);
+            return new ModifierApplicationResult(null, MTConfig.RESULT_INCOMPATIBLE_TOOL);
+        }
+
+        int level = getModifierLevel(itemStack, modifier) + amount;
+
+        // Ensure the modifier level doesn't exceed the modifier's level cap
+        if (level > modifier.getMaxLevel()) {
+            return new ModifierApplicationResult(null, MTConfig.RESULT_LEVEL_CAP);
+        }
+
+        int totalCost = 0;
+
+        for (int i = level; i < amount + level; i++) {
+            totalCost += modifier.getModifierSlotCost(i);
         }
 
         // Check if the item has enough modifier slots
-        if (!ignoreSlots && getItemModifierSlots(itemStack) < amount) {
-            return new ModifierApplicationResult(null);
-        }
-
-        // Ensure the modifier level doesn't exceed the modifier's level cap
-        int targetLevel = getModifierLevel(itemStack, modifier) + amount;
-
-        if (targetLevel > modifier.getMaxLevel()) {
-            return new ModifierApplicationResult(null);
+        if (!ignoreSlots && getItemModifierSlots(itemStack) < totalCost) {
+            return new ModifierApplicationResult(null, MTConfig.RESULT_NOT_ENOUGH_SLOTS);
         }
 
         // Check if the item has any modifiers that are incompatible with the one being applied
         for (Modifier appliedModifier : getItemAppliedModifiers(itemStack)) {
             for (Class<? extends Modifier> modClass : modifier.getIncompatibleModifiers()) {
                 if (appliedModifier.getClass() == modClass) {
-                    return new ModifierApplicationResult(null);
+                    String reason = MTConfig.RESULT_INCOMPATIBLE_MODIFIER.replace("%s", appliedModifier.getName());
+
+                    return new ModifierApplicationResult(null, reason);
                 }
             }
         }
 
-        int level = getModifierLevel(itemStack, modifier) + amount;
+        if (!shouldIgnoreChance) {
+            int randomInt = random.nextInt(100);
+            int chance = modifier.getApplicationChance();
+
+            if (randomInt > chance) {
+                return new ModifierApplicationResult(itemStack, MTConfig.RESULT_RANDOM_CHANCE);
+            }
+        }
+
 
         // If the modifier applies an enchantment to the item, do so
         if (modifier.getAppliedEnchantment() != null) {
@@ -181,9 +198,9 @@ public class ModManager {
         rewriteItemLore(itemStack);
 
         // Toss back the result of the item
-        ItemStack newItem = modifier.onModifierApplication(itemStack, targetLevel);
+        ItemStack newItem = modifier.onModifierApplication(itemStack, level);
 
-        return new ModifierApplicationResult(newItem);
+        return new ModifierApplicationResult(newItem, "");
     }
 
     /**
@@ -236,7 +253,7 @@ public class ModManager {
                             level = Math.min(enchantment.getLevel(), modifier.get().getMaxLevel());
                         }
 
-                        applyModifier(itemStack, modifier.get(), true, level);
+                        applyModifier(itemStack, modifier.get(), true, true, level);
                     }
                 }
             }

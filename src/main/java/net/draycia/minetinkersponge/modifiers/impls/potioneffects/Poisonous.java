@@ -28,22 +28,22 @@ public class Poisonous extends Modifier {
 
     @Override
     public String getName() {
-        return "Poisonous";
+        return getName("Poisonous");
     }
 
     @Override
     public int getMaxLevel() {
-        return 5;
+        return getMaxLevel(5);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.POISONOUS_POTATO;
+        return getModifierItemType(ItemTypes.POISONOUS_POTATO);
     }
 
     @Override
@@ -62,7 +62,12 @@ public class Poisonous extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
+    }
+
+    @Override
+    public String getDescription() {
+        return getDescription("Applies the Poisonous potion effect to mobs that are hit. Duration = level, amplifier = 1.");
     }
 
     @Override

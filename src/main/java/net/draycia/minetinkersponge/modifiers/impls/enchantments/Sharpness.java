@@ -11,7 +11,6 @@ import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,22 +30,22 @@ public class Sharpness extends Modifier {
 
     @Override
     public String getName() {
-        return "Sharpness";
+        return getName("Sharpness");
     }
 
     @Override
     public int getMaxLevel() {
-        return 5;
+        return getMaxLevel(5);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.FLINT;
+        return getModifierItemType(ItemTypes.FLINT);
     }
 
     @Override
@@ -70,7 +69,7 @@ public class Sharpness extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

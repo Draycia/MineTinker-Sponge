@@ -40,22 +40,22 @@ public class GoldUpgrade extends Modifier {
 
     @Override
     public String getName() {
-        return "Gold Upgrade";
+        return getName("Gold Upgrade");
     }
 
     @Override
     public int getMaxLevel() {
-        return 5;
+        return getMaxLevel(5);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.GOLD_INGOT;
+        return getModifierItemType(ItemTypes.GOLD_INGOT);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class GoldUpgrade extends Modifier {
 
     @Override
     public String getDescription() {
-        return "Upgrades the item type from iron to gold when max level is reached.";
+        return getDescription("Upgrades the item type from iron to gold when max level is reached.");
     }
 
     @Override
@@ -91,7 +91,7 @@ public class GoldUpgrade extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }

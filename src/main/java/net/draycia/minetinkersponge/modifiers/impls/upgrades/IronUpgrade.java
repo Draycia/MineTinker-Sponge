@@ -40,22 +40,22 @@ public class IronUpgrade extends Modifier {
 
     @Override
     public String getName() {
-        return "Iron Upgrade";
+        return getName("Iron Upgrade");
     }
 
     @Override
     public int getMaxLevel() {
-        return 5;
+        return getMaxLevel(5);
     }
 
     @Override
     public int getLevelWeight() {
-        return 1;
+        return getLevelWeight(1);
     }
 
     @Override
     public ItemType getModifierItemType() {
-        return ItemTypes.IRON_INGOT;
+        return getModifierItemType(ItemTypes.IRON_INGOT);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class IronUpgrade extends Modifier {
 
     @Override
     public String getDescription() {
-        return "Upgrades the item type from leather/wood to iron when max level is reached.";
+        return getDescription("Upgrades the item type from leather/wood to iron when max level is reached.");
     }
 
     @Override
@@ -91,7 +91,7 @@ public class IronUpgrade extends Modifier {
                 .id(getKey())
                 .build();
 
-        return Optional.of(recipe);
+        return Optional.of(getCraftingRecipe(recipe));
     }
 
 }
