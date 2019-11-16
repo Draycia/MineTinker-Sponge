@@ -351,6 +351,9 @@ public class MineTinkerSponge {
     }
 
     private void registerCommands() {
+        // Command Root
+        CommandSpec.Builder mainCommand = CommandSpec.builder();
+
         CommandSpec addModifier = CommandSpec.builder()
                 .description(Text.of("Applies the modifier to the held item (or increments its level)."))
                 .permission("minetinker.commands.addmodifier")
@@ -359,7 +362,7 @@ public class MineTinkerSponge {
                 .executor(new AddModifierCommand(modManager))
                 .build();
 
-        Sponge.getCommandManager().register(this, addModifier, "addmod", "addmodifier");
+        mainCommand = mainCommand.child(addModifier, "addmod", "addmodifier");
 
         CommandSpec convertItem = CommandSpec.builder()
                 .description(Text.of("Converts the held item."))
@@ -367,7 +370,7 @@ public class MineTinkerSponge {
                 .executor(new ConvertItemCommand(modManager))
                 .build();
 
-        Sponge.getCommandManager().register(this, convertItem, "convertitem");
+        mainCommand = mainCommand.child(convertItem, "convertitem");
 
         CommandSpec giveModifierItem = CommandSpec.builder()
                 .description(Text.of("Gives a modifier item for the specified modifier."))
@@ -376,7 +379,7 @@ public class MineTinkerSponge {
                 .executor(new GiveModifierItemCommand(modManager))
                 .build();
 
-        Sponge.getCommandManager().register(this, giveModifierItem, "givemod", "givemodifier");
+        mainCommand = mainCommand.child(giveModifierItem, "givemod", "givemodifier");
 
         CommandSpec addLevel = CommandSpec.builder()
                 .description(Text.of("Increases the level of the item."))
@@ -384,7 +387,7 @@ public class MineTinkerSponge {
                 .executor(new AddLevelCommand(modManager))
                 .build();
 
-        Sponge.getCommandManager().register(this, addLevel, "addlevel");
+        mainCommand = mainCommand.child(addLevel, "addlevel");
 
         CommandSpec addSlots = CommandSpec.builder()
                 .description(Text.of("Increases the modifier slots of the item.."))
@@ -392,7 +395,7 @@ public class MineTinkerSponge {
                 .executor(new AddSlotsCommand(modManager))
                 .build();
 
-        Sponge.getCommandManager().register(this, addSlots, "addslots");
+        mainCommand = mainCommand.child(addSlots, "addslots");
 
         if (Sponge.getPluginManager().isLoaded("TeslaLibs")) {
             CommandSpec modifiers = CommandSpec.builder()
@@ -401,8 +404,10 @@ public class MineTinkerSponge {
                     .executor(new ModifiersCommand(this))
                     .build();
 
-            Sponge.getCommandManager().register(this, modifiers, "modifiers", "mods");
+            mainCommand = mainCommand.child(modifiers, "modifiers", "mods");
         }
+
+        Sponge.getCommandManager().register(this, mainCommand.build(), "mt", "minetinker");
     }
 
     private void registerListeners() {
