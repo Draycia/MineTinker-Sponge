@@ -91,7 +91,7 @@ public abstract class Modifier {
      * @return The chance that the modifier will successfully apply, in a range of 0-100.
      */
     public int getApplicationChance() {
-        return 100;
+        return getApplicationChance(100);
     }
 
     private int applicationChance = -1;
