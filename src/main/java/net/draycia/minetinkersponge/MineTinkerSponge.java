@@ -13,14 +13,10 @@ import net.draycia.minetinkersponge.modifiers.impls.potioneffects.Poisonous;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.DiamondUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.GoldUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.IronUpgrade;
-<<<<<<< Updated upstream
-import net.draycia.minetinkersponge.utils.*;
-=======
 import net.draycia.minetinkersponge.utils.InventoryGUIManager;
 import net.draycia.minetinkersponge.utils.ItemLevelManager;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.PlayerNameManager;
->>>>>>> Stashed changes
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
