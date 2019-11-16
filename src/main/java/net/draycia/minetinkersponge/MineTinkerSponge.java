@@ -134,10 +134,6 @@ public class MineTinkerSponge {
     }
 
     private void reloadConfig() {
-        // TODO: Modifier method that's called when configs are messed with so extra options can be registered
-        // Plugin will automatically handle config values that all modifiers share, but unique per-modifier ones
-        // will be handled by the modifier itself. Maybe have a config serializer/deserializer instead?
-
         try {
             mainConfig = configLoader.load();
 
