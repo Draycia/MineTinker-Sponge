@@ -27,6 +27,8 @@ public class ItemTypeUtils {
     private static ArrayList<ItemType> chestplateTypes = new ArrayList<>();
     private static ArrayList<ItemType> helmetTypes = new ArrayList<>();
 
+    private static ArrayList<ItemType> shieldTypes = new ArrayList<>(Collections.singletonList(ItemTypes.SHIELD));
+
     private static ArrayList<ItemType> miscArmorTypes = new ArrayList<>();
 
     private static ArrayList<ItemType> armorTypes = new ArrayList<>();
@@ -111,6 +113,8 @@ public class ItemTypeUtils {
         allTypes.addAll(chestplateTypes);
         allTypes.addAll(helmetTypes);
 
+        allTypes.addAll(shieldTypes);
+
         allTypes.addAll(miscArmorTypes);
 
         allTypes.add(ItemTypes.BOW);
@@ -167,6 +171,10 @@ public class ItemTypeUtils {
 
     public static ArrayList<ItemType> getArmorTypes() {
         return armorTypes;
+    }
+
+    public static ArrayList<ItemType> getShieldTypes() {
+        return shieldTypes;
     }
 
     public static ArrayList<ItemType> getToolTypes() {

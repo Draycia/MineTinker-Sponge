@@ -181,6 +181,8 @@ public class MineTinkerSponge {
         mainConfig.getNode("makeItemsUnbreakable").setValue(MTConfig.MAKE_UNBREAKABLE);
         mainConfig.getNode("costsAreLinear").setValue(MTConfig.COSTS_ARE_LINEAR);
         mainConfig.getNode("convertMobDrops").setValue(MTConfig.CONVERT_MOB_DROPS);
+        mainConfig.getNode("shieldXpIsDamageReduced").setValue(MTConfig.SHIELD_XP_IS_DAMAGE_REDUCED);
+        mainConfig.getNode("shieldXpPerBlock").setValue(MTConfig.SHIELD_XP_PER_BLOCK);
 
         mainConfig.getNode("resultIncompatibleModifier").setValue(MTConfig.RESULT_INCOMPATIBLE_MODIFIER);
         mainConfig.getNode("resultIncompatibleTool").setValue(MTConfig.RESULT_INCOMPATIBLE_TOOL);
@@ -298,6 +300,8 @@ public class MineTinkerSponge {
         MTConfig.MAKE_UNBREAKABLE = mainConfig.getNode("makeItemsUnbreakable").getBoolean();
         MTConfig.COSTS_ARE_LINEAR = mainConfig.getNode("costsAreLinear").getBoolean();
         MTConfig.CONVERT_MOB_DROPS = mainConfig.getNode("convertMobDrops").getBoolean();
+        MTConfig.SHIELD_XP_IS_DAMAGE_REDUCED = mainConfig.getNode("shieldXpIsDamageReduced").getBoolean();
+        MTConfig.SHIELD_XP_PER_BLOCK = mainConfig.getNode("shieldXpPerBlock").getInt();
 
         MTConfig.RESULT_INCOMPATIBLE_MODIFIER = mainConfig.getNode("resultIncompatibleModifier").getString();
         MTConfig.RESULT_INCOMPATIBLE_TOOL = mainConfig.getNode("resultIncompatibleTool").getString();

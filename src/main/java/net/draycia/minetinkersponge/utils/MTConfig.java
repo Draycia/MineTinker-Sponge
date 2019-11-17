@@ -30,6 +30,12 @@ public class MTConfig {
     // Converts mob drops into minetinker items
     public static boolean CONVERT_MOB_DROPS = true;
 
+    // Should the amount of XP given to the shield = the amount of damage reduced?
+    public static boolean SHIELD_XP_IS_DAMAGE_REDUCED = false;
+
+    // If not, how much XP should be given per successful block?
+    public static int SHIELD_XP_PER_BLOCK = 1;
+
     public static String RESULT_INCOMPATIBLE_MODIFIER = "That modifier is incompatible with %s";
     public static String RESULT_INCOMPATIBLE_TOOL = "That item is not MineTinker compatible!";
     public static String RESULT_NOT_ENOUGH_SLOTS = "That item does not have enough slots!";
