@@ -13,10 +13,7 @@ import net.draycia.minetinkersponge.modifiers.impls.potioneffects.Poisonous;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.DiamondUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.GoldUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.IronUpgrade;
-import net.draycia.minetinkersponge.utils.InventoryGUIManager;
-import net.draycia.minetinkersponge.utils.ItemLevelManager;
-import net.draycia.minetinkersponge.utils.MTConfig;
-import net.draycia.minetinkersponge.utils.PlayerNameManager;
+import net.draycia.minetinkersponge.utils.*;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
@@ -190,6 +187,19 @@ public class MineTinkerSponge {
         mainConfig.getNode("resultRandomChance").setValue(MTConfig.RESULT_RANDOM_CHANCE);
         mainConfig.getNode("resultLevelCap").setValue(MTConfig.RESULT_LEVEL_CAP);
 
+        ConfigurationNode translations = mainConfig.getNode("translations");
+
+        translations.getNode("maxLevel").setValue(MTTranslations.MAX_LEVEL);
+        translations.getNode("atAllLevels").setValue(MTTranslations.AT_ALL_LEVELS);
+        translations.getNode("blankLine").setValue(MTTranslations.BLANK_LINE);
+        translations.getNode("slotCostSeparator").setValue(MTTranslations.SLOT_COST_SEPARATOR);
+        translations.getNode("requiredSlots").setValue(MTTranslations.REQUIRED_SLOTS);
+        translations.getNode("applicableOn").setValue(MTTranslations.APPLICABLE_ON);
+        translations.getNode("appliedEnchantments").setValue(MTTranslations.APPLIED_ENCHANTMENTS);
+        translations.getNode("returnToModifiers").setValue(MTTranslations.RETURN_TO_MODIFIERS);
+        translations.getNode("modifier").setValue(MTTranslations.MODIFIER);
+        translations.getNode("minetinkerModifiers").setValue(MTTranslations.MINETINKER_MODIFIERS);
+
         configLoader.save(mainConfig);
     }
 
@@ -308,6 +318,19 @@ public class MineTinkerSponge {
         MTConfig.RESULT_NOT_ENOUGH_SLOTS = mainConfig.getNode("resultNotEnoughSlots").getString();
         MTConfig.RESULT_RANDOM_CHANCE = mainConfig.getNode("resultRandomChance").getString();
         MTConfig.RESULT_LEVEL_CAP = mainConfig.getNode("resultLevelCap").getString();
+
+        ConfigurationNode translations = mainConfig.getNode("translations");
+
+        MTTranslations.MAX_LEVEL = translations.getNode("maxLevel").getString();
+        MTTranslations.AT_ALL_LEVELS = translations.getNode("atAllLevels").getString();
+        MTTranslations.BLANK_LINE = translations.getNode("blankLine").getString();
+        MTTranslations.SLOT_COST_SEPARATOR = translations.getNode("slotCostSeparator").getString();
+        MTTranslations.REQUIRED_SLOTS = translations.getNode("requiredSlots").getString();
+        MTTranslations.APPLICABLE_ON = translations.getNode("applicableOn").getString();
+        MTTranslations.APPLIED_ENCHANTMENTS = translations.getNode("appliedEnchantments").getString();
+        MTTranslations.RETURN_TO_MODIFIERS = translations.getNode("returnToModifiers").getString();
+        MTTranslations.MODIFIER = translations.getNode("modifier").getString();
+        MTTranslations.MINETINKER_MODIFIERS = translations.getNode("minetinkerModifiers").getString();
     }
 
     private void registerModifiers() {

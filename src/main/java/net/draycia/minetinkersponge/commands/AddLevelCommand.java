@@ -30,7 +30,6 @@ public class AddLevelCommand implements CommandExecutor {
         if (mainItem.isPresent()) {
             modManager.incrementItemLevel(mainItem.get());
             modManager.rewriteItemLore(mainItem.get());
-
         }
 
         return CommandResult.success();
