@@ -5,34 +5,35 @@ import org.spongepowered.api.item.ItemTypes;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class ItemTypeUtils {
 
-    private static ArrayList<ItemType> axeTypes = new ArrayList<>();
-    private static ArrayList<ItemType> swordTypes = new ArrayList<>();
-    private static ArrayList<ItemType> bowTypes = new ArrayList<>(Collections.singletonList(ItemTypes.BOW));
+    private static List<ItemType> axeTypes = new ArrayList<>();
+    private static List<ItemType> swordTypes = new ArrayList<>();
+    private static List<ItemType> bowTypes = new ArrayList<>(Collections.singletonList(ItemTypes.BOW));
 
-    private static ArrayList<ItemType> weaponTypes = new ArrayList<>();
+    private static List<ItemType> weaponTypes = new ArrayList<>();
 
-    private static ArrayList<ItemType> hoeTypes = new ArrayList<>();
-    private static ArrayList<ItemType> shovelTypes = new ArrayList<>();
-    private static ArrayList<ItemType> pickaxeTypes = new ArrayList<>();
+    private static List<ItemType> hoeTypes = new ArrayList<>();
+    private static List<ItemType> shovelTypes = new ArrayList<>();
+    private static List<ItemType> pickaxeTypes = new ArrayList<>();
 
-    private static ArrayList<ItemType> toolTypes = new ArrayList<>();
+    private static List<ItemType> toolTypes = new ArrayList<>();
 
-    private static ArrayList<ItemType> fishingRodTypes = new ArrayList<>(Collections.singleton(ItemTypes.FISHING_ROD));
+    private static List<ItemType> fishingRodTypes = Collections.singletonList(ItemTypes.FISHING_ROD);
 
-    private static ArrayList<ItemType> bootTypes = new ArrayList<>();
-    private static ArrayList<ItemType> leggingTypes = new ArrayList<>();
-    private static ArrayList<ItemType> chestplateTypes = new ArrayList<>();
-    private static ArrayList<ItemType> helmetTypes = new ArrayList<>();
+    private static List<ItemType> bootTypes = new ArrayList<>();
+    private static List<ItemType> leggingTypes = new ArrayList<>();
+    private static List<ItemType> chestplateTypes = new ArrayList<>();
+    private static List<ItemType> helmetTypes = new ArrayList<>();
 
-    private static ArrayList<ItemType> shieldTypes = new ArrayList<>(Collections.singletonList(ItemTypes.SHIELD));
+    private static List<ItemType> shieldTypes = Collections.singletonList(ItemTypes.SHIELD);
 
-    private static ArrayList<ItemType> miscArmorTypes = new ArrayList<>();
+    private static List<ItemType> miscArmorTypes = new ArrayList<>();
 
-    private static ArrayList<ItemType> armorTypes = new ArrayList<>();
-    private static ArrayList<ItemType> allTypes = new ArrayList<>();
+    private static List<ItemType> armorTypes = new ArrayList<>();
+    private static List<ItemType> allTypes = new ArrayList<>();
 
     static {
         axeTypes.add(ItemTypes.WOODEN_AXE);
@@ -121,71 +122,71 @@ public class ItemTypeUtils {
         allTypes.add(ItemTypes.FISHING_ROD);
     }
 
-    public static ArrayList<ItemType> getAxeTypes() {
+    public static List<ItemType> getAxeTypes() {
         return axeTypes;
     }
 
-    public static ArrayList<ItemType> getHoeTypes() {
+    public static List<ItemType> getHoeTypes() {
         return hoeTypes;
     }
 
-    public static ArrayList<ItemType> getSwordTypes() {
+    public static List<ItemType> getSwordTypes() {
         return swordTypes;
     }
 
-    public static ArrayList<ItemType> getBowTypes() {
+    public static List<ItemType> getBowTypes() {
         return bowTypes;
     }
 
-    public static ArrayList<ItemType> getFishingRodTypes() {
+    public static List<ItemType> getFishingRodTypes() {
         return fishingRodTypes;
     }
 
-    public static ArrayList<ItemType> getShovelTypes() {
+    public static List<ItemType> getShovelTypes() {
         return shovelTypes;
     }
 
-    public static ArrayList<ItemType> getPickaxeTypes() {
+    public static List<ItemType> getPickaxeTypes() {
         return pickaxeTypes;
     }
 
-    public static ArrayList<ItemType> getBootTypes() {
+    public static List<ItemType> getBootTypes() {
         return bootTypes;
     }
 
-    public static ArrayList<ItemType> getLeggingTypes() {
+    public static List<ItemType> getLeggingTypes() {
         return leggingTypes;
     }
 
-    public static ArrayList<ItemType> getChestplateTypes() {
+    public static List<ItemType> getChestplateTypes() {
         return chestplateTypes;
     }
 
-    public static ArrayList<ItemType> getHelmetTypes() {
+    public static List<ItemType> getHelmetTypes() {
         return helmetTypes;
     }
 
-    public static ArrayList<ItemType> getMiscArmorTypes() {
+    public static List<ItemType> getMiscArmorTypes() {
         return miscArmorTypes;
     }
 
-    public static ArrayList<ItemType> getArmorTypes() {
+    public static List<ItemType> getArmorTypes() {
         return armorTypes;
     }
 
-    public static ArrayList<ItemType> getShieldTypes() {
+    public static List<ItemType> getShieldTypes() {
         return shieldTypes;
     }
 
-    public static ArrayList<ItemType> getToolTypes() {
+    public static List<ItemType> getToolTypes() {
         return toolTypes;
     }
 
-    public static ArrayList<ItemType> getWeaponTypes() {
+    public static List<ItemType> getWeaponTypes() {
         return weaponTypes;
     }
 
-    public static ArrayList<ItemType> getAllTypes() {
+    public static List<ItemType> getAllTypes() {
         return allTypes;
     }
 
