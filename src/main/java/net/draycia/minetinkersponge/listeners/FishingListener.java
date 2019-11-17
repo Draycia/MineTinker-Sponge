@@ -2,6 +2,7 @@ package net.draycia.minetinkersponge.listeners;
 
 import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
+import net.draycia.minetinkersponge.utils.MTConfig;
 import org.spongepowered.api.data.Transaction;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.action.FishingEvent;
@@ -18,6 +19,10 @@ public class FishingListener {
 
     @Listener
     public void onFish(FishingEvent.Stop event) {
+        if (!MTConfig.CONVERT_FISHING_LOOT) {
+            return;
+        }
+
         for (Transaction<ItemStackSnapshot> snapshot : event.getTransactions()) {
             ItemStack item = snapshot.getFinal().createStack();
 

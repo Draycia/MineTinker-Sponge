@@ -1,4 +1,4 @@
-package net.draycia.minetinkersponge.utils;
+package net.draycia.minetinkersponge.managers;
 
 import com.mcsimonflash.sponge.teslalibs.inventory.Action;
 import com.mcsimonflash.sponge.teslalibs.inventory.Element;
@@ -6,6 +6,8 @@ import com.mcsimonflash.sponge.teslalibs.inventory.Layout;
 import com.mcsimonflash.sponge.teslalibs.inventory.View;
 import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.utils.MTTranslations;
+import net.draycia.minetinkersponge.utils.StringUtils;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.DyeColors;
 import org.spongepowered.api.entity.living.player.Player;

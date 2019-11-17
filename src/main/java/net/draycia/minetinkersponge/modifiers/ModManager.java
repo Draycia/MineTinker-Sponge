@@ -4,6 +4,7 @@ import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.data.impl.*;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import net.draycia.minetinkersponge.utils.MTConfig;
+import net.draycia.minetinkersponge.utils.MTTranslations;
 import net.draycia.minetinkersponge.utils.StringUtils;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
@@ -130,18 +131,18 @@ public class ModManager {
     public ModifierApplicationResult applyModifier(ItemStack itemStack, Modifier modifier, boolean ignoreSlots, boolean shouldIgnoreChance, int amount) {
         // Check if the modifier is compatible with the item
         if (modifier.getCompatibleItems() != null && !modifier.getCompatibleItems().contains(itemStack.getType())) {
-            return new ModifierApplicationResult(null, MTConfig.RESULT_INCOMPATIBLE_TOOL);
+            return new ModifierApplicationResult(null, MTTranslations.RESULT_INCOMPATIBLE_TOOL);
         }
 
         if (!itemStack.get(MTKeys.IS_MINETINKER).orElse(false)) {
-            return new ModifierApplicationResult(null, MTConfig.RESULT_INCOMPATIBLE_TOOL);
+            return new ModifierApplicationResult(null, MTTranslations.RESULT_INCOMPATIBLE_TOOL);
         }
 
         int level = getModifierLevel(itemStack, modifier) + amount;
 
         // Ensure the modifier level doesn't exceed the modifier's level cap
         if (level > modifier.getMaxLevel()) {
-            return new ModifierApplicationResult(null, MTConfig.RESULT_LEVEL_CAP);
+            return new ModifierApplicationResult(null, MTTranslations.RESULT_LEVEL_CAP);
         }
 
         int totalCost = 0;
@@ -152,14 +153,14 @@ public class ModManager {
 
         // Check if the item has enough modifier slots
         if (!ignoreSlots && getItemModifierSlots(itemStack) < totalCost) {
-            return new ModifierApplicationResult(null, MTConfig.RESULT_NOT_ENOUGH_SLOTS);
+            return new ModifierApplicationResult(null, MTTranslations.RESULT_NOT_ENOUGH_SLOTS);
         }
 
         // Check if the item has any modifiers that are incompatible with the one being applied
         for (Modifier appliedModifier : getItemAppliedModifiers(itemStack)) {
             for (Class<? extends Modifier> modClass : modifier.getIncompatibleModifiers()) {
                 if (appliedModifier.getClass() == modClass) {
-                    String reason = MTConfig.RESULT_INCOMPATIBLE_MODIFIER.replace("%s", appliedModifier.getName());
+                    String reason = MTTranslations.RESULT_INCOMPATIBLE_MODIFIER.replace("%s", appliedModifier.getName());
 
                     return new ModifierApplicationResult(null, reason);
                 }
@@ -171,7 +172,7 @@ public class ModManager {
             int chance = modifier.getApplicationChance();
 
             if (randomInt > chance) {
-                return new ModifierApplicationResult(itemStack, MTConfig.RESULT_RANDOM_CHANCE);
+                return new ModifierApplicationResult(itemStack, MTTranslations.RESULT_RANDOM_CHANCE);
             }
         }
 

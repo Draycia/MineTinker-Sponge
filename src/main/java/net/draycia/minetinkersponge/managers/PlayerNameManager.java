@@ -1,4 +1,4 @@
-package net.draycia.minetinkersponge.utils;
+package net.draycia.minetinkersponge.managers;
 
 import net.draycia.minetinkersponge.MineTinkerSponge;
 import org.spongepowered.api.Sponge;
