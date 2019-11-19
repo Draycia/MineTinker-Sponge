@@ -1,6 +1,7 @@
 package net.draycia.minetinkersponge.mixins;
 
 import net.draycia.minetinkersponge.MineTinkerSponge;
+import net.draycia.minetinkersponge.utils.MTConfig;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
@@ -18,6 +19,10 @@ public abstract class MixinLootTable {
 
     @Inject(method = "generateLootForPools", at = @At(value = "RETURN"), locals = LocalCapture.CAPTURE_FAILSOFT)
     private void onLootGeneration(Random rand, LootContext context, CallbackInfoReturnable<List> info, List list) {
+        if (!MTConfig.CONVERT_LOOT_TABLES) {
+            return;
+        }
+
         if (MineTinkerSponge.getModManager() == null) {
             return;
         }

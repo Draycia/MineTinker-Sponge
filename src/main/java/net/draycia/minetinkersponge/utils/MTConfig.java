@@ -36,6 +36,9 @@ public class MTConfig {
     @Setting(value = "convertFishingLoot", comment = "Determines if fish / other loot fished up should be automatically converted.")
     public static boolean CONVERT_FISHING_LOOT = true;
 
+    @Setting(value = "convertLootTables", comment = "Determines if loot generated for dungeon chests should be automatically converted.")
+    public static boolean CONVERT_LOOT_TABLES = true;
+
     @Setting(value = "shieldXpIsDamageReduced", comment = "Determines if shield XP gains should equal the amount of damage blocked.")
     public static boolean SHIELD_XP_IS_DAMAGE_REDUCED = false;
 
