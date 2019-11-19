@@ -1,4 +1,4 @@
-package net.draycia.minetinkersponge.utils;
+package net.draycia.minetinkersponge.managers;
 
 import com.mcsimonflash.sponge.teslalibs.inventory.Action;
 import com.mcsimonflash.sponge.teslalibs.inventory.Element;
@@ -6,6 +6,8 @@ import com.mcsimonflash.sponge.teslalibs.inventory.Layout;
 import com.mcsimonflash.sponge.teslalibs.inventory.View;
 import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.utils.MTTranslations;
+import net.draycia.minetinkersponge.utils.StringUtils;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.DyeColors;
 import org.spongepowered.api.entity.living.player.Player;
@@ -37,7 +39,7 @@ public class InventoryGUIManager {
         int index = 0;
 
         // Loop through modifiers
-        for (Map.Entry<String, Modifier> entry : mineTinkerSponge.getModManager().getAllModifiers().entrySet()) {
+        for (Map.Entry<String, Modifier> entry : MineTinkerSponge.getModManager().getAllModifiers().entrySet()) {
             Modifier modifier = entry.getValue();
 
             // Create the item to display in the GUI
@@ -48,14 +50,14 @@ public class InventoryGUIManager {
 
             // Set the description
             if (!modifier.getDescription().isEmpty()) {
-                lore.add(Text.of(""));
+                lore.add(Text.of(MTTranslations.BLANK_LINE));
 
                 lore.addAll(StringUtils.splitString(modifier.getDescription(), 30));
             }
 
             // Show the modifier's max level
-            lore.add(Text.of(""));
-            lore.add(Text.of(TextColors.GOLD, "Max Level: ", TextColors.WHITE, modifier.getMaxLevel()));
+            lore.add(Text.of(MTTranslations.BLANK_LINE));
+            lore.add(Text.of(TextColors.GOLD, MTTranslations.MAX_LEVEL, TextColors.WHITE, modifier.getMaxLevel()));
 
             // Show the modifier slot costs
             StringBuilder slotCosts = new StringBuilder(Integer.toString(modifier.getModifierSlotCost(1)));
@@ -68,26 +70,26 @@ public class InventoryGUIManager {
                 }
 
                 if (slots.stream().distinct().count() == 1) {
-                    slotCosts.append(" at all levels.");
+                    slotCosts.append(MTTranslations.AT_ALL_LEVELS);
                 } else {
                     for (Integer slotCost : slots) {
-                        slotCosts.append(", ").append(slotCost);
+                        slotCosts.append(MTTranslations.SLOT_COST_SEPARATOR).append(slotCost);
                     }
                 }
             }
 
-            lore.add(Text.of(""));
-            lore.add(Text.of(TextColors.GRAY, "Required Slots: ", TextColors.WHITE, slotCosts.toString()));
+            lore.add(Text.of(MTTranslations.BLANK_LINE));
+            lore.add(Text.of(TextColors.GRAY, MTTranslations.REQUIRED_SLOTS, TextColors.WHITE, slotCosts.toString()));
 
             // Show the modifier's compatible items
-            lore.add(Text.of(""));
+            lore.add(Text.of(MTTranslations.BLANK_LINE));
             // TODO: Override compatibility strings in each modifier
-            lore.add(Text.of(TextColors.BLUE, "Applicable On: ", TextColors.WHITE, modifier.getCompatibilityString()));
+            lore.add(Text.of(TextColors.BLUE, MTTranslations.APPLICABLE_ON, TextColors.WHITE, modifier.getCompatibilityString()));
 
             // If the modifier applies an enchantment, say so
             if (modifier.getAppliedEnchantment() != null) {
-                lore.add(Text.of(""));
-                lore.add(Text.of(TextColors.YELLOW, "Applied Enchantments: ", TextColors.WHITE,
+                lore.add(Text.of(MTTranslations.BLANK_LINE));
+                lore.add(Text.of(TextColors.YELLOW, MTTranslations.APPLIED_ENCHANTMENTS, TextColors.WHITE,
                         TranslatableText.of(modifier.getAppliedEnchantment().getTranslation())));
             }
 
@@ -144,14 +146,14 @@ public class InventoryGUIManager {
 
                 ItemStack greenPane = ItemStack.builder().itemType(ItemTypes.STAINED_GLASS_PANE).build();
                 greenPane.offer(Keys.DYE_COLOR , DyeColors.LIME);
-                greenPane.offer(Keys.DISPLAY_NAME, Text.of("Return To Modifiers"));
+                greenPane.offer(Keys.DISPLAY_NAME, Text.of(MTTranslations.RETURN_TO_MODIFIERS));
 
                 Consumer<Action.Click> goToMain = click -> showViewToPlayer(click.getPlayer());
 
                 recipeLayout.border(Element.of(greenPane, goToMain));
 
                 View recipeView = View.builder()
-                        .property(InventoryTitle.of(Text.of("Modifier: ", modifier.getName())))
+                        .property(InventoryTitle.of(Text.of(MTTranslations.MODIFIER, modifier.getName())))
                         .build(mineTinkerSponge.getContainer());
 
                 recipeView.define(recipeLayout.build());
@@ -168,7 +170,7 @@ public class InventoryGUIManager {
         }
 
         view = View.builder()
-                .property(InventoryTitle.of(Text.of("MineTinker Modifiers")))
+                .property(InventoryTitle.of(Text.of(MTTranslations.MINETINKER_MODIFIERS)))
                 .build(mineTinkerSponge.getContainer());
 
         view.define(layout.build());

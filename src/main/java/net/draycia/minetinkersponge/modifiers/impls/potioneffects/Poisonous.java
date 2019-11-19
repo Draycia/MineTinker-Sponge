@@ -1,6 +1,6 @@
 package net.draycia.minetinkersponge.modifiers.impls.potioneffects;
 
-import net.draycia.minetinkersponge.modifiers.ModManager;
+import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;

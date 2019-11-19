@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.listeners;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.modifiers.ModManager;
+import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.modifiers.ModifierApplicationResult;
 import org.spongepowered.api.entity.living.player.Player;

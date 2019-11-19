@@ -1,6 +1,6 @@
 package net.draycia.minetinkersponge.commands;
 
-import net.draycia.minetinkersponge.modifiers.ModManager;
+import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;

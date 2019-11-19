@@ -1,6 +1,6 @@
 package net.draycia.minetinkersponge.modifiers.impls.upgrades;
 
-import net.draycia.minetinkersponge.modifiers.ModManager;
+import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;

@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.listeners;
 
 import net.draycia.minetinkersponge.data.MTKeys;
-import net.draycia.minetinkersponge.modifiers.ModManager;
+import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.item.inventory.InteractInventoryEvent;

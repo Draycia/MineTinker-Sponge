@@ -2,6 +2,7 @@ package net.draycia.minetinkersponge.modifiers;
 
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.data.impl.ModifierIdentifierData;
+import net.draycia.minetinkersponge.managers.ModManager;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.ItemType;

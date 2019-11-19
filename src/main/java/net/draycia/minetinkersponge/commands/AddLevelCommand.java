@@ -1,6 +1,6 @@
 package net.draycia.minetinkersponge.commands;
 
-import net.draycia.minetinkersponge.modifiers.ModManager;
+import net.draycia.minetinkersponge.managers.ModManager;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
@@ -30,7 +30,6 @@ public class AddLevelCommand implements CommandExecutor {
         if (mainItem.isPresent()) {
             modManager.incrementItemLevel(mainItem.get());
             modManager.rewriteItemLore(mainItem.get());
-
         }
 
         return CommandResult.success();

@@ -12,7 +12,7 @@ public class ModifierApplicationResult {
      *
      * @param itemStack The resulting item from the operation. If null, {@link #wasSuccess()} will return false.
      */
-    ModifierApplicationResult(ItemStack itemStack, String reason) {
+    public ModifierApplicationResult(ItemStack itemStack, String reason) {
         this.itemStack = itemStack;
         this.wasSuccess = itemStack != null;
         this.reason = reason;
