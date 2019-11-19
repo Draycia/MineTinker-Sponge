@@ -107,7 +107,7 @@ public class MineTinkerSponge {
 
         registerListeners();
 
-        if (Sponge.getPluginManager().isLoaded("TeslaLibs")) {
+        if (Sponge.getPluginManager().isLoaded("teslalibs")) {
             inventoryGUIManager = new InventoryGUIManager(this);
         }
     }
