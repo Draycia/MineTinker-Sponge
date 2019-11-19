@@ -84,11 +84,6 @@ public class Directing extends Modifier {
         return getDescription("Drops from breaking blocks and killing mobs will instantly be placed in your inventory.");
     }
 
-    @Override
-    public String getDescription() {
-        return "Drops from breaking blocks and killing mobs will instantly be placed in your inventory.";
-    }
-
     public Directing(ModManager modManager) {
         this.modManager = modManager;
     }

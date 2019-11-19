@@ -7,7 +7,6 @@ import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
-import org.spongepowered.api.item.enchantment.EnchantmentTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.text.Text;
@@ -130,14 +129,6 @@ public abstract class Modifier {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    /**
-     *
-     * @return A string describing the modifier
-     */
-    public String getDescription() {
-        return "";
     }
 
     /**
