@@ -63,7 +63,7 @@ public class CommandManager {
 
         mainCommand = mainCommand.child(addSlots, "addslots");
 
-        if (Sponge.getPluginManager().isLoaded("TeslaLibs")) {
+        if (Sponge.getPluginManager().isLoaded("teslalibs")) {
             CommandSpec modifiers = CommandSpec.builder()
                     .description(Text.of("Shows the modifier GUI"))
                     .permission("minetinker.commands.modifiers")
