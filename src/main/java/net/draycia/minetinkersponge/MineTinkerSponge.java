@@ -32,7 +32,7 @@ import java.nio.file.Path;
         id = "minetinker-sponge",
         name = "MineTinker-Sponge",
         description = "Adds an alternate enchantment system and new enchantments",
-        dependencies = @Dependency(id = "TeslaLibs", optional = true)
+        dependencies = @Dependency(id = "teslalibs", optional = true)
 )
 public class MineTinkerSponge {
 
