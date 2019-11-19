@@ -1,6 +1,6 @@
 package net.draycia.minetinkersponge.modifiers.impls;
 
-import net.draycia.minetinkersponge.modifiers.ModManager;
+import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.CompositeUnmodifiableList;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;

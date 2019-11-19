@@ -1,12 +1,10 @@
 package net.draycia.minetinkersponge;
 
 import com.google.inject.Inject;
-import net.draycia.minetinkersponge.commands.*;
 import net.draycia.minetinkersponge.data.DataRegistrar;
 import net.draycia.minetinkersponge.listeners.*;
 import net.draycia.minetinkersponge.managers.*;
-import net.draycia.minetinkersponge.modifiers.ModManager;
-import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.impls.*;
 import net.draycia.minetinkersponge.modifiers.impls.enchantments.*;
 import net.draycia.minetinkersponge.modifiers.impls.potioneffects.InstantDamage;
@@ -14,40 +12,21 @@ import net.draycia.minetinkersponge.modifiers.impls.potioneffects.Poisonous;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.DiamondUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.GoldUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.IronUpgrade;
-import net.draycia.minetinkersponge.utils.*;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
-import ninja.leaping.configurate.objectmapping.ObjectMapper;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.block.BlockType;
-import org.spongepowered.api.block.BlockTypes;
-import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.item.ItemType;
-import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
-import org.spongepowered.api.item.recipe.crafting.Ingredient;
-import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.util.TypeTokens;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
 
 @Plugin(
         id = "minetinker-sponge",

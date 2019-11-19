@@ -1,6 +1,5 @@
 package net.draycia.minetinkersponge.managers;
 
-import net.draycia.minetinkersponge.modifiers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.MTTranslations;

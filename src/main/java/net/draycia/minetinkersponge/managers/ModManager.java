@@ -1,7 +1,9 @@
-package net.draycia.minetinkersponge.modifiers;
+package net.draycia.minetinkersponge.managers;
 
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.data.impl.*;
+import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.modifiers.ModifierApplicationResult;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.MTTranslations;
