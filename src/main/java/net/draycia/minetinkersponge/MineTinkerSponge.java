@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import net.draycia.minetinkersponge.data.DataRegistrar;
 import net.draycia.minetinkersponge.listeners.*;
 import net.draycia.minetinkersponge.managers.*;
-import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.impls.*;
 import net.draycia.minetinkersponge.modifiers.impls.enchantments.*;
 import net.draycia.minetinkersponge.modifiers.impls.potioneffects.InstantDamage;

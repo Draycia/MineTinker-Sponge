@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.5.7",
+  "package": "net.draycia.minetinkersponge.mixins",
+  "refmap": "mixins.minetinkersponge.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "server": [
+    "MixinLootTable"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
