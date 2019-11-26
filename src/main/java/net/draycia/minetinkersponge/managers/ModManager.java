@@ -8,6 +8,7 @@ import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.MTTranslations;
 import net.draycia.minetinkersponge.utils.StringUtils;
+import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.value.ValueContainer;
@@ -283,12 +284,12 @@ public class ModManager {
 
     /**
      *
-     * @param itemStack The item that contains modifiers
+     * @param valueContainer The object implementing {@link ValueContainer} that contains modifiers
      * @param modifier The modifier to get the level of
      * @return The level of the modifier
      */
-    public int getModifierLevel(ItemStack itemStack, Modifier modifier) {
-        return getItemModifierLevels(itemStack).getOrDefault(modifier.getKey(), 0);
+    public <T extends ValueContainer> int getModifierLevel(T valueContainer, Modifier modifier) {
+        return getItemModifierLevels(valueContainer).getOrDefault(modifier.getKey(), 0);
     }
 
     /**
@@ -305,11 +306,11 @@ public class ModManager {
     }
 
     /**
-     * @param itemStack The {@link ItemStack} to get the modifier levels of
+     * @param valueContainer The object implementing {@link ValueContainer} to get the modifier levels of
      * @return A map containing the key of each modifier and its corresponding level
      */
-    public Map<String, Integer> getItemModifierLevels(ItemStack itemStack) {
-        return itemStack.get(MTKeys.ITEM_MODIFIERS).orElse(new HashMap<>());
+    public <T extends ValueContainer> Map<String, Integer> getItemModifierLevels(T valueContainer) {
+        return (Map<String, Integer>) valueContainer.get(MTKeys.ITEM_MODIFIERS).orElse(new HashMap<>());
     }
 
     public List<Modifier> getItemAppliedModifiers(ItemStack itemStack) {
