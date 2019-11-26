@@ -53,15 +53,17 @@ public class DamageListener {
 
         if (giveShieldXP) {
             Optional<ItemStack> mainHand = player.getItemInHand(HandTypes.MAIN_HAND);
-            Optional<ItemStack> offHand = player.getItemInHand(HandTypes.OFF_HAND);
 
             if (mainHand.isPresent()) {
                 modManager.addExperience(mainHand.get(), experienceToGive);
+            } else {
+                Optional<ItemStack> offHand = player.getItemInHand(HandTypes.OFF_HAND);
+
+                if (offHand.isPresent()) {
+                    modManager.addExperience(offHand.get(), experienceToGive);
+                }
             }
 
-            if (offHand.isPresent()) {
-                modManager.addExperience(offHand.get(), experienceToGive);
-            }
         }
 
         DamageType type = source.getType();
