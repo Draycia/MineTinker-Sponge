@@ -15,8 +15,6 @@ public class ItemTypeUtils {
         for (ItemType itemType : Sponge.getGame().getRegistry().getAllOf(ItemType.class)) {
             // TODO: Blacklist in config
             // TODO: Allow additional entries to be made in each modifier's config
-            // TODO: Check to make sure objects aren't being created each time compatibility is being checked.
-            //           Note: The ImmutableList could be passed into (Later: Implement) setters
             if (itemType.getId().split(":")[1].matches(pattern)) {
                 itemTypeList.add(itemType);
             }
