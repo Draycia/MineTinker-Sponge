@@ -16,6 +16,11 @@ import java.util.Optional;
 public class Respiration extends Modifier {
 
     @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.HELMETS;
+    }
+
+    @Override
     public String getName() {
         return getName("Respiration");
     }
@@ -33,11 +38,6 @@ public class Respiration extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.PACKED_ICE);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getHelmetTypes();
     }
 
     @Override

@@ -1,7 +1,9 @@
 package net.draycia.minetinkersponge.modifiers.impls;
 
+import com.google.common.collect.ImmutableList;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
@@ -24,8 +26,20 @@ import java.util.Optional;
 public class Kinetic extends Modifier {
 
     private ModManager modManager;
-
     private float reductionPercentPerLevel = 100.0f;
+    private static List<ItemType> compatibleTypes;
+
+    static {
+        compatibleTypes = ImmutableList.<ItemType>builder()
+                .add(ItemTypes.ELYTRA)
+                .build();
+    }
+
+    @Override
+    public List<ItemType> getCompatibleItems() {
+        return compatibleTypes;
+    }
+
 
     @Override
     public String getName() {
@@ -45,11 +59,6 @@ public class Kinetic extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.ANVIL);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return Collections.singletonList(ItemTypes.ELYTRA);
     }
 
     @Override

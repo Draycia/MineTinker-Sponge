@@ -16,6 +16,11 @@ import java.util.Optional;
 
 public class Sharpness extends Modifier {
 
+    @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.SWORDS;
+    }
+
     private static List<Class<? extends Modifier>> incompatibleTypes = new ArrayList<>();
 
     static {
@@ -46,11 +51,6 @@ public class Sharpness extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.FLINT);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getSwordTypes();
     }
 
     @Override

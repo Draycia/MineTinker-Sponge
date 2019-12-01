@@ -133,7 +133,7 @@ public class ModManager {
      */
     public ModifierApplicationResult applyModifier(ItemStack itemStack, Modifier modifier, boolean ignoreSlots, boolean shouldIgnoreChance, int amount) {
         // Check if the modifier is compatible with the item
-        if (modifier.getCompatibleItems() != null && !modifier.getCompatibleItems().contains(itemStack.getType())) {
+        if (modifier.getCompatibleItems() != null && !modifier.isCompatibleWithItem(itemStack.getType())) {
             return new ModifierApplicationResult(null, MTTranslations.RESULT_INCOMPATIBLE_TOOL);
         }
 
@@ -213,7 +213,7 @@ public class ModManager {
      */
     public void convertItemStack(ItemStack itemStack, boolean canExceedMaxLevel) {
         // Check if the item is compatible with the plugin
-        if (!ItemTypeUtils.getAllTypes().contains(itemStack.getType())) {
+        if (!ItemTypeUtils.ALL_TYPES.contains(itemStack.getType())) {
             return;
         }
 

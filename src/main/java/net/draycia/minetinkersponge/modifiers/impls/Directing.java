@@ -1,8 +1,8 @@
 package net.draycia.minetinkersponge.modifiers.impls;
 
+import com.google.common.collect.ImmutableList;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
-import net.draycia.minetinkersponge.utils.CompositeUnmodifiableList;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
@@ -12,6 +12,7 @@ import org.spongepowered.api.entity.Item;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.cause.EventContext;
+import org.spongepowered.api.event.cause.EventContextKey;
 import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.item.inventory.DropItemEvent;
 import org.spongepowered.api.item.ItemType;
@@ -27,12 +28,33 @@ import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 public class Directing extends Modifier {
 
     private ModManager modManager;
+    private static List<ItemType> compatibleTypes;
+
+    static {
+        // TODO: Bow Support
+        // TODO: Fishing Rod Support
+        compatibleTypes = ImmutableList.<ItemType>builder()
+                .addAll(ItemTypeUtils.PICKAXES)
+                .addAll(ItemTypeUtils.AXES)
+                .addAll(ItemTypeUtils.SHOVELS)
+                .addAll(ItemTypeUtils.HOES)
+                .addAll(ItemTypeUtils.FISHING_RODS)
+                .addAll(ItemTypeUtils.SWORDS)
+                .addAll(ItemTypeUtils.BOWS)
+                .build();
+    }
+
+    @Override
+    public List<ItemType> getCompatibleItems() {
+        return compatibleTypes;
+    }
 
     @Override
     public String getName() {
@@ -52,11 +74,6 @@ public class Directing extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.COMPASS);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return new CompositeUnmodifiableList<>(ItemTypeUtils.getToolTypes(), ItemTypeUtils.getWeaponTypes());
     }
 
     @Override
@@ -88,12 +105,23 @@ public class Directing extends Modifier {
         this.modManager = modManager;
     }
 
+    private ImmutableList<EventContextKey> whitelistedContexts = ImmutableList.<EventContextKey>builder()
+            .add(EventContextKeys.BLOCK_HIT)
+            .add(EventContextKeys.SPAWN_TYPE)
+            .build();
+
     @Listener
     public void onItemDrop(DropItemEvent.Destruct event) {
         EventContext context = event.getContext();
 
+        System.out.println("=====");
+
+        for (EventContextKey key : context.keySet()) {
+            System.out.println(key.getName());
+        }
+
         // Check if contexts contains blocks being broken or entities being killed
-        if (context.containsKey(EventContextKeys.BLOCK_HIT) || context.containsKey(EventContextKeys.SPAWN_TYPE)) {
+        if (!Collections.disjoint(context.keySet(), whitelistedContexts)) {
             Optional<Player> player = event.getCause().first(Player.class);
 
             // Check if the player is the cause

@@ -1,5 +1,6 @@
 package net.draycia.minetinkersponge.modifiers.impls.potioneffects;
 
+import com.google.common.collect.ImmutableList;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
@@ -25,6 +26,20 @@ import java.util.Optional;
 public class Poisonous extends Modifier {
 
     private ModManager modManager;
+    private static List<ItemType> compatibleTypes;
+
+    static {
+        // TODO: Bow Support
+        compatibleTypes = ImmutableList.<ItemType>builder()
+                .addAll(ItemTypeUtils.SWORDS)
+                .addAll(ItemTypeUtils.AXES)
+                .build();
+    }
+
+    @Override
+    public List<ItemType> getCompatibleItems() {
+        return compatibleTypes;
+    }
 
     @Override
     public String getName() {
@@ -44,11 +59,6 @@ public class Poisonous extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.POISONOUS_POTATO);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getWeaponTypes();
     }
 
     @Override
@@ -80,7 +90,7 @@ public class Poisonous extends Modifier {
     }
 
     @Listener
-    public void onItemDrop(DamageEntityEvent event) {
+    public void onEntityDamagedByEntity(DamageEntityEvent event) {
         if (!(event.getTargetEntity() instanceof Living)) {
             return;
         }

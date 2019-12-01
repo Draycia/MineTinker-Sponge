@@ -16,6 +16,11 @@ import java.util.Optional;
 public class FireAspect extends Modifier {
 
     @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.SWORDS;
+    }
+
+    @Override
     public String getName() {
         return getName("Fire Aspect");
     }
@@ -33,11 +38,6 @@ public class FireAspect extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.BLAZE_POWDER);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getSwordTypes();
     }
 
     @Override

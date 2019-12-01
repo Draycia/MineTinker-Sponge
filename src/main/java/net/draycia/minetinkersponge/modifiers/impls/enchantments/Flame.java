@@ -16,6 +16,11 @@ import java.util.Optional;
 public class Flame extends Modifier {
 
     @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.BOWS;
+    }
+
+    @Override
     public String getName() {
         return getName("Flame");
     }
@@ -33,11 +38,6 @@ public class Flame extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.BLAZE_ROD);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getBowTypes();
     }
 
     @Override

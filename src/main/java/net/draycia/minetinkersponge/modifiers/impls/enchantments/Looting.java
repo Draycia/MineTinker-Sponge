@@ -16,6 +16,11 @@ import java.util.Optional;
 public class Looting extends Modifier {
 
     @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.SWORDS;
+    }
+
+    @Override
     public String getName() {
         return getName("Looting");
     }
@@ -33,11 +38,6 @@ public class Looting extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.LAPIS_ORE);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getSwordTypes();
     }
 
     @Override

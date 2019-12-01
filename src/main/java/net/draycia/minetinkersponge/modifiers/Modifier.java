@@ -13,7 +13,9 @@ import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 public abstract class Modifier {
 
@@ -144,6 +146,10 @@ public abstract class Modifier {
      * @return A list of compatible ItemTypes. Or null if the modifier can go on any item.
      */
     public abstract List<ItemType> getCompatibleItems();
+
+    public boolean isCompatibleWithItem(ItemType itemType) {
+        return getCompatibleItems().contains(itemType);
+    }
 
     public String getCompatibilityString() {
         return "Everything";

@@ -16,6 +16,11 @@ import java.util.Optional;
 public class VanishingCurse extends Modifier {
 
     @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.ALL_TYPES;
+    }
+
+    @Override
     public String getName() {
         return getName("Curse of Vanishing");
     }
@@ -33,11 +38,6 @@ public class VanishingCurse extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.ENDER_EYE);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getAllTypes();
     }
 
     @Override

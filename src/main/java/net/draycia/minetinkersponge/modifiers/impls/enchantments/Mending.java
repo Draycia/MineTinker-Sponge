@@ -16,6 +16,12 @@ import java.util.Optional;
 
 public class Mending extends Modifier {
 
+    @Override
+    public List<ItemType> getCompatibleItems() {
+        // Some entries in getAllTypes aren't repairable (and plugin makes things unbreakable)
+        return ItemTypeUtils.ALL_TYPES;
+    }
+
     private static List<Class<? extends Modifier>> incompatibleTypes = Collections.singletonList(Infinity.class);
 
     @Override
@@ -41,12 +47,6 @@ public class Mending extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.EXPERIENCE_BOTTLE);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        // Some entries in getAllTypes aren't repairable (and plugin makes things unbreakable)
-        return ItemTypeUtils.getAllTypes();
     }
 
     @Override

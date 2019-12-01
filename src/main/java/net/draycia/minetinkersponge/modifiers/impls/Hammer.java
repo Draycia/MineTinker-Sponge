@@ -1,22 +1,18 @@
 package net.draycia.minetinkersponge.modifiers.impls;
 
-import com.flowpowered.math.vector.Vector3i;
+import com.google.common.collect.ImmutableList;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
-import net.draycia.minetinkersponge.utils.CompositeUnmodifiableList;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.block.BlockType;
-import org.spongepowered.api.data.Transaction;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
-import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.item.ItemType;
@@ -37,6 +33,21 @@ public class Hammer extends Modifier {
 
     private ModManager modManager;
     private ArrayList<BlockType> blacklistedBlocks = new ArrayList<>();
+    private static List<ItemType> compatibleTypes;
+
+    static {
+        compatibleTypes = ImmutableList.<ItemType>builder()
+                .addAll(ItemTypeUtils.PICKAXES)
+                .addAll(ItemTypeUtils.AXES)
+                .addAll(ItemTypeUtils.SHOVELS)
+                .addAll(ItemTypeUtils.HOES)
+                .build();
+    }
+
+    @Override
+    public List<ItemType> getCompatibleItems() {
+        return compatibleTypes;
+    }
 
     @Override
     public String getName() {
@@ -56,11 +67,6 @@ public class Hammer extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.EMERALD);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return new CompositeUnmodifiableList<>(ItemTypeUtils.getToolTypes(), ItemTypeUtils.getHoeTypes());
     }
 
     @Override

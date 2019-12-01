@@ -16,6 +16,11 @@ import java.util.Optional;
 public class AquaAffinity extends Modifier {
 
     @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.HELMETS;
+    }
+
+    @Override
     public String getName() {
         return getName("Aqua Affinity");
     }
@@ -33,11 +38,6 @@ public class AquaAffinity extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.PRISMARINE_SHARD);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getHelmetTypes();
     }
 
     @Override

@@ -16,6 +16,11 @@ import java.util.Optional;
 public class LuckOfTheSea extends Modifier {
 
     @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.FISHING_RODS;
+    }
+
+    @Override
     public String getName() {
         return getName("Luck of the Sea");
     }
@@ -33,11 +38,6 @@ public class LuckOfTheSea extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.COOKED_FISH);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getFishingRodTypes();
     }
 
     @Override

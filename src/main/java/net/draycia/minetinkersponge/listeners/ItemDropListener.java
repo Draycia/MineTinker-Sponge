@@ -37,7 +37,7 @@ public class ItemDropListener {
 
             Item item = (Item)entity;
 
-            if (!ItemTypeUtils.getAllTypes().contains(item.getItemType())) {
+            if (!ItemTypeUtils.ALL_TYPES.contains(item.getItemType())) {
                 continue;
             }
 

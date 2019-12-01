@@ -21,6 +21,7 @@ public class IronUpgrade extends Modifier {
     private static HashMap<ItemType, ItemType> conversions = new HashMap<>();
 
     static {
+        // TODO: Mod support?
         conversions.put(ItemTypes.WOODEN_SHOVEL, ItemTypes.IRON_SHOVEL);
         conversions.put(ItemTypes.WOODEN_AXE, ItemTypes.IRON_AXE);
         conversions.put(ItemTypes.WOODEN_HOE, ItemTypes.IRON_HOE);

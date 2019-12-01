@@ -65,17 +65,20 @@ public class ItemLevelManager {
             ItemType itemType = itemStack.getType();
 
             // Set the slot's level to the higher of the two
-            if (ItemTypeUtils.getHelmetTypes().contains(itemType)) {
+            if (ItemTypeUtils.HELMETS.contains(itemType)) {
                 helmet = Math.max(helmet, itemLevel);
-            } else if (ItemTypeUtils.getChestplateTypes().contains(itemType)) {
+            } else if (ItemTypeUtils.CHESTPLATES.contains(itemType)) {
                 chestplate = Math.max(chestplate, itemLevel);
-            } else if (ItemTypeUtils.getLeggingTypes().contains(itemType)) {
+            } else if (ItemTypeUtils.LEGGINGS.contains(itemType)) {
                 leggings = Math.max(leggings, itemLevel);
-            } else if (ItemTypeUtils.getBootTypes().contains(itemType)) {
+            } else if (ItemTypeUtils.BOOTS.contains(itemType)) {
                 boots = Math.max(boots, itemLevel);
-            } else if (ItemTypeUtils.getWeaponTypes().contains(itemType)) {
-                weapon = Math.max(weapon, itemLevel);
             }
+
+            // TODO: Include weapons
+//            else if (ItemTypeUtils.getWeaponTypes().contains(itemType)) {
+//                weapon = Math.max(weapon, itemLevel);
+//            }
         }
 
         // Return the result

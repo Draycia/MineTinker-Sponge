@@ -1,5 +1,6 @@
 package net.draycia.minetinkersponge.modifiers.impls.enchantments;
 
+import com.google.common.collect.ImmutableList;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.item.ItemType;
@@ -14,6 +15,21 @@ import java.util.List;
 import java.util.Optional;
 
 public class Efficiency extends Modifier {
+
+    private static List<ItemType> compatibleTypes;
+
+    static {
+        compatibleTypes = ImmutableList.<ItemType>builder()
+                .addAll(ItemTypeUtils.PICKAXES)
+                .addAll(ItemTypeUtils.AXES)
+                .addAll(ItemTypeUtils.SHOVELS)
+                .build();
+    }
+
+    @Override
+    public List<ItemType> getCompatibleItems() {
+        return compatibleTypes;
+    }
 
     @Override
     public String getName() {
@@ -33,11 +49,6 @@ public class Efficiency extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.REDSTONE);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getToolTypes();
     }
 
     @Override
