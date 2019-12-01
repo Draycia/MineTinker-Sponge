@@ -6,6 +6,7 @@ import org.spongepowered.api.item.ItemType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ItemTypeUtils {
 
@@ -15,7 +16,7 @@ public class ItemTypeUtils {
         for (ItemType itemType : Sponge.getGame().getRegistry().getAllOf(ItemType.class)) {
             // TODO: Blacklist in config
             // TODO: Allow additional entries to be made in each modifier's config
-            if (itemType.getId().split(":")[1].matches(pattern)) {
+            if (Pattern.compile(pattern).matcher(itemType.getId().split(":")[1]).find()) {
                 itemTypeList.add(itemType);
             }
         }
