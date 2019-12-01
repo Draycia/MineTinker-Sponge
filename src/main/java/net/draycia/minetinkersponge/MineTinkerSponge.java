@@ -177,6 +177,7 @@ public class MineTinkerSponge {
 
     private void registerListeners() {
         Sponge.getEventManager().registerListeners(this, new BlockBreakListener(modManager));
+        Sponge.getEventManager().registerListeners(this, new InventoryListener(modManager));
         Sponge.getEventManager().registerListeners(this, new InteractListener(modManager));
         Sponge.getEventManager().registerListeners(this, new ItemDropListener(modManager));
         Sponge.getEventManager().registerListeners(this, new FishingListener(modManager));
