@@ -114,12 +114,6 @@ public class Directing extends Modifier {
     public void onItemDrop(DropItemEvent.Destruct event) {
         EventContext context = event.getContext();
 
-        System.out.println("=====");
-
-        for (EventContextKey key : context.keySet()) {
-            System.out.println(key.getName());
-        }
-
         // Check if contexts contains blocks being broken or entities being killed
         if (!Collections.disjoint(context.keySet(), whitelistedContexts)) {
             Optional<Player> player = event.getCause().first(Player.class);
