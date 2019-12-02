@@ -4,6 +4,7 @@ import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.modifiers.ModifierApplicationResult;
+import net.draycia.minetinkersponge.utils.MTConfig;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.filter.cause.First;
@@ -108,6 +109,14 @@ public class AnvilListener {
         }
 
         if (!event.getSlot().isPresent() || !event.getSlot().get().peek().isPresent()) {
+            return;
+        }
+
+        // TODO: config option
+
+        if (MTConfig.DISABLE_ENCHANTED_BOOKS && right.getType() == ItemTypes.ENCHANTED_BOOK) {
+            output.set(ItemStack.empty());
+
             return;
         }
 
