@@ -183,6 +183,7 @@ public class MineTinkerSponge {
         Sponge.getEventManager().registerListeners(this, new FishingListener(modManager));
         Sponge.getEventManager().registerListeners(this, new DamageListener(modManager));
         Sponge.getEventManager().registerListeners(this, new AnvilListener(modManager));
+        Sponge.getEventManager().registerListeners(this, new EnchantingTableListener());
         Sponge.getEventManager().registerListeners(this, modManager);
     }
 
