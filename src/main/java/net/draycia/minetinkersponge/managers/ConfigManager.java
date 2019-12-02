@@ -88,6 +88,10 @@ public class ConfigManager {
                     saveDefaultModifierValues(modifier, modifierNode, modifierLoader);
                 } else {
                     loadModifierConfigValues(modifier, modifierNode);
+
+                    if (!modifierNode.getNode("enabled").getBoolean()) {
+                        modManager.unregisterModifier(modifier);
+                    }
                 }
             }
         } catch (IOException exception) {
@@ -130,6 +134,7 @@ public class ConfigManager {
                                            ConfigurationLoader modifierLoader) throws IOException {
 
         modifierNode.getNode("name").setValue(modifier.getName());
+        modifierNode.getNode("enabled").setValue(true);
         modifierNode.getNode("maxLevel").setValue(modifier.getMaxLevel());
         modifierNode.getNode("levelWeight").setValue(modifier.getLevelWeight());
         modifierNode.getNode("applicationChance").setValue(modifier.getApplicationChance());
@@ -169,6 +174,7 @@ public class ConfigManager {
 
     private void loadModifierConfigValues(Modifier modifier, ConfigurationNode modifierNode) {
         modifier.setName(modifierNode.getNode("name").getString());
+        modifier.setEnabled(modifierNode.getNode("enabled").getBoolean());
         modifier.setMaxLevel(modifierNode.getNode("maxLevel").getInt());
         modifier.setLevelWeight(modifierNode.getNode("levelWeight").getInt());
         modifier.setApplicationChance(modifierNode.getNode("applicationChance").getInt());

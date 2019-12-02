@@ -63,6 +63,10 @@ public class ModManager {
          return true;
     }
 
+    public void unregisterModifier(Modifier modifier) {
+        modifiers.remove(modifier.getKey());
+    }
+
     /**
      * Gets the modifier with the matching key
      * @param key The key of the modifier

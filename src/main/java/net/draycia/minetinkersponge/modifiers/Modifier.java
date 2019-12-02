@@ -39,6 +39,17 @@ public abstract class Modifier {
         this.name = name;
     }
 
+    // Sets if the modifier is enabled/disabled
+    private boolean isEnabled = true;
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
     /**
      *
      * @return The highest level this modifier can be on items
