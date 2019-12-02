@@ -89,6 +89,9 @@ public class ConfigManager {
                 } else {
                     loadModifierConfigValues(modifier, modifierNode);
 
+                    // TODO: Don't even construct the modifier instance if it's disabled
+                    // TODO: Dynamically load in default modifiers and their configs
+                    //    Modifier config names share the modifier's key name
                     if (!modifierNode.getNode("enabled").getBoolean()) {
                         modManager.unregisterModifier(modifier);
                     }
