@@ -94,6 +94,7 @@ public class ConfigManager {
                     //    Modifier config names share the modifier's key name
                     if (!modifierNode.getNode("enabled").getBoolean()) {
                         modManager.unregisterModifier(modifier);
+                        Sponge.getEventManager().unregisterListeners(modifier);
                     }
                 }
             }
