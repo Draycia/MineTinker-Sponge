@@ -8,7 +8,7 @@ import org.spongepowered.api.event.block.InteractBlockEvent;
 public class EnchantingTableListener {
 
     @Listener
-    public void onInteract(InteractBlockEvent.Primary event) {
+    public void onInteract(InteractBlockEvent.Secondary event) {
         if (!MTConfig.DISABLE_ENCHANTING_TABLES) {
             return;
         }
