@@ -8,6 +8,7 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.text.Text;
 
 import java.util.Optional;
 
@@ -28,8 +29,11 @@ public class AddSlotsCommand implements CommandExecutor {
         Optional<ItemStack> mainItem = ((Player)src).getItemInHand(HandTypes.MAIN_HAND);
 
         if (mainItem.isPresent()) {
-            modManager.incrementItemModifierSlots(mainItem.get());
-            modManager.rewriteItemLore(mainItem.get());
+            ItemStack item = mainItem.get();
+            Integer amount = args.<Integer>getOne(Text.of("amount")).orElse(1);
+
+            modManager.setItemModifierSlots(item, modManager.getItemModifierSlots(item) + amount);
+            modManager.rewriteItemLore(item);
         }
 
         return CommandResult.success();
