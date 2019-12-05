@@ -113,13 +113,13 @@ public class MineTinkerSponge {
 
     @Listener
     public void onGameStarted(GameStartingServerEvent event) {
-        playerNameManager.onGameStarted();
-        playerNameManager.startScheduler();
+        //playerNameManager.onGameStarted();
+        //playerNameManager.startScheduler();
     }
 
     @Listener
     public void onGameStopped(GameStoppingServerEvent event) {
-        playerNameManager.onGameStopped();
+        //playerNameManager.onGameStopped();
     }
 
     @Listener
