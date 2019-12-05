@@ -71,7 +71,7 @@ public class Grounding extends Modifier {
         ShapedCraftingRecipe recipe = ShapedCraftingRecipe.builder()
                 .aisle("IFI", "FCF", "IFI")
                 .where('F', Ingredient.of(ItemTypes.FEATHER))
-                .where('r', Ingredient.of(ItemTypes.REDSTONE))
+                .where('C', Ingredient.of(ItemTypes.REDSTONE))
                 .where('I', Ingredient.of(ItemTypes.IRON_BLOCK))
                 .result(getModifierItem())
                 .id(getKey())
