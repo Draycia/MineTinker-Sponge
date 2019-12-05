@@ -30,6 +30,10 @@ public class ItemDropListener {
             return;
         }
 
+        if (event.getContext().containsKey(EventContextKeys.OWNER)) {
+            return;
+        }
+
         for (Entity entity : event.getEntities()) {
             if (!(entity instanceof Item)) {
                 continue;
