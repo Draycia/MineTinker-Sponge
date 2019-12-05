@@ -30,6 +30,7 @@ public class ItemDropListener {
             return;
         }
 
+        // Prevent player equipment from being dropped
         if (event.getContext().containsKey(EventContextKeys.OWNER)) {
             return;
         }
