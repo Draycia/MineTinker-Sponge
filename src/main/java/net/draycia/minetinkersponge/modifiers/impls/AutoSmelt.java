@@ -98,14 +98,18 @@ public class AutoSmelt extends Modifier {
         // Check if contexts contains blocks being broken or entities being killed
         if (context.containsKey(EventContextKeys.BLOCK_HIT)) {
             // Get the item in the player's main hand
-            context.get(EventContextKeys.USED_ITEM).ifPresent(itemStack -> {
-                // Check if the item used has this modifier (directing)
-                if (modManager.itemHasModifier(itemStack, this)) {
-                    List<Item> itemsToRemove = new LinkedList<>();
+            context.get(EventContextKeys.USED_ITEM)
+                .filter(itemStack -> modManager.itemHasModifier(itemStack, this))
+                .ifPresent(itemStack -> {
                     List<Item> itemsToAdd = new LinkedList<>();
 
+                    Entity entity;
+                    Iterator<Entity> entityIterator = event.getEntities().iterator();
+
                     // Loop through all entities dropped
-                    for (Entity entity : event.getEntities()) {
+                    while (entityIterator.hasNext()) {
+                        entity = entityIterator.next();
+
                         if (entity instanceof Item) {
                             Item item = (Item) entity;
 
@@ -126,16 +130,15 @@ public class AutoSmelt extends Modifier {
                                     itemEntity.offer(Keys.REPRESENTED_ITEM, newItemStack.createSnapshot());
 
                                     itemsToAdd.add((Item)itemEntity);
-                                    itemsToRemove.add(item);
+
+                                    entityIterator.remove();
                                 }
                             }
                         }
                     }
 
-                    event.getEntities().removeAll(itemsToRemove);
                     event.getEntities().addAll(itemsToAdd);
-                }
-            });
+                });
         }
     }
 }
