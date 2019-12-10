@@ -13,14 +13,12 @@ import org.spongepowered.api.entity.Item;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.cause.EventContext;
-import org.spongepowered.api.event.cause.EventContextKey;
 import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.item.inventory.DropItemEvent;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
@@ -32,16 +30,15 @@ import java.util.*;
 public class AutoSmelt extends Modifier {
 
     private ModManager modManager;
-    private static List<ItemType> compatibleTypes;
 
-    static {
-        // TODO: Bow Support
-        // TODO: Fishing Rod Support
-        compatibleTypes = ImmutableList.<ItemType>builder()
+    private List<ItemType> compatibleTypes = ImmutableList.<ItemType>builder()
                 .addAll(ItemTypeUtils.PICKAXES)
                 .addAll(ItemTypeUtils.AXES)
                 .addAll(ItemTypeUtils.SHOVELS)
                 .build();
+
+    public AutoSmelt(ModManager modManager) {
+        this.modManager = modManager;
     }
 
     @Override
@@ -94,26 +91,16 @@ public class AutoSmelt extends Modifier {
         return getDescription("Drops from breaking blocks will instantly be smelted.");
     }
 
-    public AutoSmelt(ModManager modManager) {
-        this.modManager = modManager;
-    }
-
-    private ImmutableList<EventContextKey> whitelistedContexts = ImmutableList.<EventContextKey>builder()
-            .add(EventContextKeys.BLOCK_HIT)
-            .build();
-
     @Listener
     public void onItemDrop(DropItemEvent.Destruct event, @First Player player) {
         EventContext context = event.getContext();
 
         // Check if contexts contains blocks being broken or entities being killed
-        if (!Collections.disjoint(context.keySet(), whitelistedContexts)) {
+        if (context.containsKey(EventContextKeys.BLOCK_HIT)) {
             // Get the item in the player's main hand
-            Optional<ItemStackSnapshot> itemStack = context.get(EventContextKeys.USED_ITEM);
-
-            if (itemStack.isPresent()) {
+            context.get(EventContextKeys.USED_ITEM).ifPresent(itemStack -> {
                 // Check if the item used has this modifier (directing)
-                if (modManager.itemHasModifier(itemStack.get(), this)) {
+                if (modManager.itemHasModifier(itemStack, this)) {
                     List<Item> itemsToRemove = new LinkedList<>();
                     List<Item> itemsToAdd = new LinkedList<>();
 
@@ -148,7 +135,7 @@ public class AutoSmelt extends Modifier {
                     event.getEntities().removeAll(itemsToRemove);
                     event.getEntities().addAll(itemsToAdd);
                 }
-            }
+            });
         }
     }
 }
