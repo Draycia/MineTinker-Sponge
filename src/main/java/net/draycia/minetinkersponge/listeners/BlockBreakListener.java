@@ -22,16 +22,10 @@ public class BlockBreakListener {
 
     @Listener
     public void onBlockBreak(ChangeBlockEvent.Break event, @Root Player player) {
-        Optional<HandType> handType = event.getContext().get(EventContextKeys.USED_HAND);
-
-        if (handType.isPresent()) {
-            Optional<ItemStack> itemStack = player.getItemInHand(handType.get());
-
-            if (itemStack.isPresent()) {
-                if (itemStack.get().get(MTKeys.IS_MINETINKER).isPresent()) {
-                    modManager.addExperience(itemStack.get(), 1);
-                }
-            }
-        }
+        event.getContext().get(EventContextKeys.USED_HAND)
+                .flatMap(player::getItemInHand)
+                .filter(itemStack -> itemStack.get(MTKeys.IS_MINETINKER).orElse(false))
+                .ifPresent(itemStack -> modManager.addExperience(itemStack, 1));
     }
+
 }

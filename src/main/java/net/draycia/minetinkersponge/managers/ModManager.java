@@ -34,11 +34,7 @@ public class ModManager {
 
     @Listener
     public void onRecipeRegisterReady(GameRegistryEvent.Register<CraftingRecipe> event) {
-        for (Modifier modifier : modifiers.values()) {
-            if (modifier.getRecipe().isPresent()) {
-                event.register(modifier.getRecipe().get());
-            }
-        }
+        modifiers.values().forEach(modifier -> modifier.getRecipe().ifPresent(event::register));
     }
 
     /**
@@ -103,15 +99,9 @@ public class ModManager {
      * @return If the object contains the modifier
      */
     private <T extends ValueContainer> boolean dataHolderHasModifier(T valueContainer, Modifier modifier) {
-        if (valueContainer.get(MTKeys.IS_MINETINKER).isPresent()) {
-            Optional<Map<String, Integer>> modifiers = valueContainer.get(MTKeys.ITEM_MODIFIERS);
-
-            if (modifiers.isPresent()) {
-                return modifiers.get().containsKey(modifier.getKey());
-            }
-        }
-
-        return false;
+        return ((Optional<Map<String, Integer>>) valueContainer.get(MTKeys.ITEM_MODIFIERS))
+                .map(map -> map.containsKey(modifier.getKey()))
+                .orElse(false);
     }
 
     /**
@@ -249,19 +239,17 @@ public class ModManager {
 
             if (enchantments.isPresent()) {
                 for (Enchantment enchantment : enchantments.get()) {
-                    Optional<Modifier> modifier = getFirstModifierByEnchantment(enchantment.getType());
-
-                    if (modifier.isPresent()) {
+                    getFirstModifierByEnchantment(enchantment.getType()).ifPresent(modifier -> {
                         int level;
 
                         if (MTConfig.CONVERT_EXCEEDS_MAX_LEVEL) {
                             level = enchantment.getLevel();
                         } else {
-                            level = Math.min(enchantment.getLevel(), modifier.get().getMaxLevel());
+                            level = Math.min(enchantment.getLevel(), modifier.getMaxLevel());
                         }
 
-                        applyModifier(itemStack, modifier.get(), true, true, level);
-                    }
+                        applyModifier(itemStack, modifier, true, true, level);
+                    });
                 }
             }
         }
@@ -357,12 +345,10 @@ public class ModManager {
 
         Optional<Integer> level = itemStack.get(MTKeys.MINETINKER_LEVEL);
 
-        if (level.isPresent()) {
-            lore.add(Text.builder()
-                    .append(Text.builder().append(Text.of("Item Level: ")).color(TextColors.GOLD).build())
-                    .append(Text.builder().append(Text.of(level.get())).color(TextColors.WHITE).build())
-                    .build());
-        }
+        level.ifPresent(integer -> lore.add(Text.builder()
+                .append(Text.builder().append(Text.of("Item Level: ")).color(TextColors.GOLD).build())
+                .append(Text.builder().append(Text.of(integer)).color(TextColors.WHITE).build())
+                .build()));
 
         Optional<Integer> experience = itemStack.get(MTKeys.MINETINKER_XP);
 
@@ -379,12 +365,10 @@ public class ModManager {
 
         Optional<Integer> slots = itemStack.get(MTKeys.MINETINKER_SLOTS);
 
-        if (slots.isPresent()) {
-            lore.add(Text.builder()
-                    .append(Text.builder().append(Text.of("Mod Slots: ")).color(TextColors.GOLD).build())
-                    .append(Text.builder().append(Text.of(slots.get())).color(TextColors.WHITE).build())
-                    .build());
-        }
+        slots.ifPresent(integer -> lore.add(Text.builder()
+                .append(Text.builder().append(Text.of("Mod Slots: ")).color(TextColors.GOLD).build())
+                .append(Text.builder().append(Text.of(integer)).color(TextColors.WHITE).build())
+                .build()));
 
         itemStack.offer(Keys.ITEM_LORE, lore);
     }
@@ -474,12 +458,8 @@ public class ModManager {
      * @return The amount of experience the item needs to get in order to level up
      */
     public double getExperienceRequiredToLevel(ItemStack itemStack) {
-        Optional<Integer> level = itemStack.get(MTKeys.MINETINKER_LEVEL);
-
-        if (level.isPresent()) {
-            return 100 * (Math.pow(2, level.get() - 1));
-        }
-
-        return 0;
+        return itemStack.get(MTKeys.MINETINKER_LEVEL)
+                .map(integer -> 100 * (Math.pow(2, integer - 1)))
+                .orElse(0.0);
     }
 }

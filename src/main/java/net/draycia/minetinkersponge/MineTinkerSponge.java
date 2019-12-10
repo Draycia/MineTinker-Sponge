@@ -58,7 +58,6 @@ public class MineTinkerSponge {
     private static ModManager modManager = null;
 
     private ItemLevelManager itemLevelManager;
-    private PlayerNameManager playerNameManager;
     private InventoryGUIManager inventoryGUIManager;
     private CommandManager commandManager;
     private ConfigManager configManager;
@@ -99,7 +98,6 @@ public class MineTinkerSponge {
         configManager.reloadConfig();
 
         itemLevelManager = new ItemLevelManager(modManager);
-        playerNameManager = new PlayerNameManager(this);
         commandManager = new CommandManager(this);
 
         commandManager.registerCommands();
@@ -109,17 +107,6 @@ public class MineTinkerSponge {
         if (Sponge.getPluginManager().isLoaded("teslalibs")) {
             inventoryGUIManager = new InventoryGUIManager(this);
         }
-    }
-
-    @Listener
-    public void onGameStarted(GameStartingServerEvent event) {
-        //playerNameManager.onGameStarted();
-        //playerNameManager.startScheduler();
-    }
-
-    @Listener
-    public void onGameStopped(GameStoppingServerEvent event) {
-        //playerNameManager.onGameStopped();
     }
 
     @Listener

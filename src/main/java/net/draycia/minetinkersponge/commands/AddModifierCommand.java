@@ -9,6 +9,8 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 import java.util.Optional;
 
@@ -26,20 +28,20 @@ public class AddModifierCommand implements CommandExecutor {
             return CommandResult.empty();
         }
 
-        Optional<Object> modifierName = args.getOne("modifier");
-
-        if (modifierName.isPresent()) {
-            Optional<Modifier> modifier = modManager.getModifier((String)(modifierName.get()));
+        args.<String>getOne("modifier").ifPresent(modifierName -> {
+            Optional<Modifier> optionalModifier = modManager.getModifier(modifierName);
             Optional<ItemStack> mainItem = ((Player)src).getItemInHand(HandTypes.MAIN_HAND);
 
-            if (mainItem.isPresent() && modifier.isPresent()) {
+            mainItem.flatMap(itemStack -> optionalModifier).ifPresent(modifier -> {
                 if (args.getOne("amount").isPresent()) {
-                    modManager.applyModifier(mainItem.get(), modifier.get(), true, true, (int)args.getOne("amount").get());
+                    modManager.applyModifier(mainItem.get(), modifier, true, true, (int)args.getOne("amount").get());
                 } else {
-                    modManager.applyModifier(mainItem.get(), modifier.get(), true, true, 1);
+                    modManager.applyModifier(mainItem.get(), modifier, true, true, 1);
                 }
-            }
-        }
+
+                src.sendMessage(Text.of(TextColors.GREEN, "Added modifier ", modifier.getName(), "!"));
+            });
+        });
 
         return CommandResult.success();
     }

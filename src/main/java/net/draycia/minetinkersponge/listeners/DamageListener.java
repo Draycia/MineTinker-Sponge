@@ -72,18 +72,16 @@ public class DamageListener {
             EquipmentInventory inventory = player.getInventory().query(QueryOperationTypes.INVENTORY_TYPE.of(EquipmentInventory.class));
 
             for (Inventory slot : inventory.slots()) {
-                Optional<ItemStack> item = slot.peek();
+                slot.peek().ifPresent(itemStack -> {
+                    Boolean isMineTinker = itemStack.get(MTKeys.IS_MINETINKER).orElse(false);
 
-                if (item.isPresent()) {
-                    ItemStack itemStack = item.get();
-
-                    Optional<Boolean> isMineTinker = itemStack.get(MTKeys.IS_MINETINKER);
-
-                    if (isMineTinker.isPresent() && isMineTinker.get()) {
+                    if (isMineTinker) {
                         modManager.addExperience(itemStack, 1);
                         slot.set(itemStack); // This is necessary. I assume somewhere the item is copied.
                     }
-                }
+
+                });
+
             }
         }
     }

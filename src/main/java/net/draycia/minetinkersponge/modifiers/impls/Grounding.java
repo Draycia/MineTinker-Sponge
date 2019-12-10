@@ -91,11 +91,7 @@ public class Grounding extends Modifier {
         // TODO: Option to change damage modifier
         // TODO: Option to transfer damage taken instead, config % per level
 
-        if (!(event.getTargetEntity() instanceof Player)) {
-            return;
-        }
-
-        if (source.getType() != DamageTypes.FALL) {
+        if (!(event.getTargetEntity() instanceof Player) || source.getType() != DamageTypes.FALL) {
             return;
         }
 
@@ -108,13 +104,7 @@ public class Grounding extends Modifier {
         }
 
         for (Entity entity : player.getNearbyEntities(10)) {
-            // Don't damage the player
-            if (entity == player) {
-                continue;
-            }
-
-            // Don't damage item frames etc
-            if (!(entity instanceof Living)) {
+            if (entity == player || !(entity instanceof Living)) {
                 continue;
             }
 

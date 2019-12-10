@@ -14,6 +14,7 @@ import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.InventoryArchetypes;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.inventory.property.SlotPos;
 import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
 import org.spongepowered.api.item.inventory.slot.InputSlot;
 import org.spongepowered.api.item.inventory.slot.OutputSlot;
@@ -34,42 +35,26 @@ public class AnvilListener {
             return;
         }
 
-        ItemStack input = event.getLeft().createStack();
+        event.getLeft().createStack().get(MTKeys.IS_MINETINKER)
+                .flatMap(state -> event.getRight().createStack().get(MTKeys.MODIFIER_ID))
+                .flatMap(modifierId -> modManager.getModifier(modifierId))
+                .ifPresent(modifier -> {
 
-        Optional<Boolean> isMineTinker = input.get(MTKeys.IS_MINETINKER);
+            ItemStack left = event.getLeft().createStack();
+            ItemStack right = event.getRight().createStack();
 
-        if (!isMineTinker.isPresent() || !isMineTinker.get()) {
-            return;
-        }
+            int slots = modManager.getItemModifierSlots(left);
+            int quantity = right.getQuantity();
 
-        Optional<String> modifierId = event.getRight().createStack().get(MTKeys.MODIFIER_ID);
+            int amount = Math.min(slots, quantity);
 
-        if (!modifierId.isPresent()) {
-            return;
-        }
+            ModifierApplicationResult result = modManager.applyModifier(left, modifier, false, true, amount);
 
-        Optional<Modifier> optionalModifier = modManager.getModifier(modifierId.get());
-
-        if (!optionalModifier.isPresent()) {
-            return;
-        }
-
-        Modifier modifier = optionalModifier.get();
-
-        ItemStack left = event.getLeft().createStack();
-        ItemStack right = event.getRight().createStack();
-
-        int slots = modManager.getItemModifierSlots(left);
-        int quantity = right.getQuantity();
-
-        int amount = Math.min(slots, quantity);
-
-        ModifierApplicationResult result = modManager.applyModifier(left, modifier, false, true, amount);
-
-        if (result.wasSuccess()) {
-            event.getResult().setCustom(result.getItemStack().createSnapshot());
-            event.getResult().setValid(true);
-        }
+            if (result.wasSuccess()) {
+                event.getResult().setCustom(result.getItemStack().createSnapshot());
+                event.getResult().setValid(true);
+            }
+        });
     }
 
     @Listener
@@ -78,86 +63,58 @@ public class AnvilListener {
             return;
         }
 
+        Inventory inventory = event.getTargetInventory();
+
         Inventory input = event.getTargetInventory().query(QueryOperationTypes.INVENTORY_TYPE.of(InputSlot.class));
-
-        ItemStack left = null;
-        ItemStack right = null;
-        ItemStack result = null;
-
-        for (Inventory slot : input.slots()) {
-            Optional<ItemStack> itemStack = slot.peek();
-
-            if (itemStack.isPresent()) {
-                if (left == null) {
-                    left = itemStack.get();
-                } else if (right == null) {
-                    right = itemStack.get();
-                }
-            }
-        }
-
         Inventory output = event.getTargetInventory().query(QueryOperationTypes.INVENTORY_TYPE.of(OutputSlot.class));
 
-        Optional<ItemStack> outputItem = output.peek();
-
-        if (outputItem.isPresent()) {
-            result = outputItem.get();
-        }
+        ItemStack left = inventory.query(SlotPos.of(0)).peek().orElse(null);
+        ItemStack right = inventory.query(SlotPos.of(1)).peek().orElse(null);
+        ItemStack result = output.peek().orElse(null);
 
         if (left == null || right == null || result == null) {
             return;
         }
 
-        if (!event.getSlot().isPresent() || !event.getSlot().get().peek().isPresent()) {
-            return;
-        }
+        event.getSlot().flatMap(Inventory::peek).ifPresent(slotPeek -> {
+            if (MTConfig.DISABLE_ENCHANTED_BOOKS && right.getType() == ItemTypes.ENCHANTED_BOOK) {
+                output.set(ItemStack.empty());
+
+                return;
+            }
+
+            if (slotPeek.equalTo(result)) {
+                right.get(MTKeys.MODIFIER_ID).flatMap(modifierId -> modManager.getModifier(modifierId)).ifPresent(modifier -> {
+                    int slots = modManager.getItemModifierSlots(left);
+                    int quantity = right.getQuantity();
+
+                    int amount = Math.min(slots, quantity);
+
+                    ModifierApplicationResult applicationResult = modManager.applyModifier(left, modifier, false, false, amount);
+
+                    if (applicationResult.wasSuccess()) {
+                        event.getCursorTransaction().setValid(true);
+                        event.getCursorTransaction().setCustom(applicationResult.getItemStack().createSnapshot());
+
+                        boolean isSecond = false;
+
+                        for (Inventory slot : input.slots()) {
+                            if (isSecond) {
+                                right.setQuantity(right.getQuantity() - amount);
+                                slot.set(right);
+                            } else {
+                                slot.set(ItemStack.builder().itemType(ItemTypes.AIR).quantity(1).build());
+                                isSecond = true;
+                            }
+                        }
+
+                        output.set(ItemStack.builder().itemType(ItemTypes.AIR).quantity(1).build());
+                    }
+                });
+            }
+        });
 
         // TODO: config option
 
-        if (MTConfig.DISABLE_ENCHANTED_BOOKS && right.getType() == ItemTypes.ENCHANTED_BOOK) {
-            output.set(ItemStack.empty());
-
-            return;
-        }
-
-        if (event.getSlot().get().peek().get().equalTo(result)) {
-            Optional<String> modifierId = right.get(MTKeys.MODIFIER_ID);
-
-            if (!modifierId.isPresent()) {
-                return;
-            }
-
-            Optional<Modifier> modifier = modManager.getModifier(modifierId.get());
-
-            int slots = modManager.getItemModifierSlots(left);
-            int quantity = right.getQuantity();
-
-            int amount = Math.min(slots, quantity);
-
-            if (!modifier.isPresent()) {
-                return;
-            }
-
-            ModifierApplicationResult applicationResult = modManager.applyModifier(left, modifier.get(), false, false, amount);
-
-            if (applicationResult.wasSuccess()) {
-                event.getCursorTransaction().setValid(true);
-                event.getCursorTransaction().setCustom(applicationResult.getItemStack().createSnapshot());
-
-                boolean isSecond = false;
-
-                for (Inventory slot : input.slots()) {
-                    if (isSecond) {
-                        right.setQuantity(right.getQuantity() - amount);
-                        slot.set(right);
-                    } else {
-                        slot.set(ItemStack.builder().itemType(ItemTypes.AIR).quantity(1).build());
-                        isSecond = true;
-                    }
-                }
-
-                output.set(ItemStack.builder().itemType(ItemTypes.AIR).quantity(1).build());
-            }
-        }
     }
 }

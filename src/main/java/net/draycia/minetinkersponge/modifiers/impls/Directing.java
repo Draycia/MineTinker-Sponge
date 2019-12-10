@@ -14,6 +14,7 @@ import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.event.cause.EventContextKey;
 import org.spongepowered.api.event.cause.EventContextKeys;
+import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.item.inventory.DropItemEvent;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
@@ -111,54 +112,46 @@ public class Directing extends Modifier {
             .build();
 
     @Listener
-    public void onItemDrop(DropItemEvent.Destruct event) {
+    public void onItemDrop(DropItemEvent.Destruct event, @First Player player) {
         EventContext context = event.getContext();
 
         // Check if contexts contains blocks being broken or entities being killed
         if (!Collections.disjoint(context.keySet(), whitelistedContexts)) {
-            Optional<Player> player = event.getCause().first(Player.class);
+            // Get the item in the player's main hand
+            context.get(EventContextKeys.USED_ITEM)
+                    .filter(itemStack -> modManager.itemHasModifier(itemStack, this))
+                    .ifPresent(itemStack -> {
+                // Get the player's grid inventory
+                Inventory inventory = player.getInventory()
+                        .query(QueryOperationTypes.INVENTORY_TYPE.of(MainPlayerInventory.class));
 
-            // Check if the player is the cause
-            if (player.isPresent()) {
-                // Get the item in the player's main hand
-                Optional<ItemStackSnapshot> itemStack = context.get(EventContextKeys.USED_ITEM);
+                // Loop through all entities dropped
+                for (Entity entity : event.getEntities()) {
+                    if (entity instanceof Item) {
+                        Item item = (Item) entity;
 
-                if (itemStack.isPresent()) {
-                    // Check if the item used has this modifier (directing)
-                    if (modManager.itemHasModifier(itemStack.get(), this)) {
-                        // Get the player's grid inventory
-                        Inventory inventory = player.get().getInventory()
-                                .query(QueryOperationTypes.INVENTORY_TYPE.of(MainPlayerInventory.class));
+                        // And put each in the player's inventory
+                        if (item.item().exists()) {
+                            ItemStack itemToGive = item.item().get().createStack();
 
-                        // Loop through all entities dropped
-                        for (Entity entity : event.getEntities()) {
-                            if (entity instanceof Item) {
-                                Item item = (Item) entity;
+                            if (inventory.canFit(itemToGive)) {
+                                inventory.offer(itemToGive);
+                            } else {
+                                // If the player can't fit the item in their inventory, drop it next to them
+                                Location<World> location = player.getLocation();
 
-                                // And put each in the player's inventory
-                                if (item.item().exists()) {
-                                    ItemStack itemToGive = item.item().get().createStack();
+                                Entity itemEntity = location.createEntity(EntityTypes.ITEM);
+                                itemEntity.offer(Keys.ACTIVE_ITEM, item.item().get());
 
-                                    if (inventory.canFit(itemToGive)) {
-                                        inventory.offer(itemToGive);
-                                    } else {
-                                        // If the player can't fit the item in their inventory, drop it next to them
-                                        Location<World> location = player.get().getLocation();
-
-                                        Entity itemEntity = location.createEntity(EntityTypes.ITEM);
-                                        itemEntity.offer(Keys.ACTIVE_ITEM, item.item().get());
-
-                                        location.spawnEntity(itemEntity);
-                                    }
-                                }
+                                location.spawnEntity(itemEntity);
                             }
                         }
-
-                        // Cancel the drops
-                        event.setCancelled(true);
                     }
                 }
-            }
+
+                // Cancel the drops
+                event.setCancelled(true);
+            });
         }
     }
 }

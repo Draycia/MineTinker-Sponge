@@ -144,13 +144,8 @@ public class ConfigManager {
         modifierNode.getNode("applicationChance").setValue(modifier.getApplicationChance());
         modifierNode.getNode("description").setValue(modifier.getDescription());
         modifierNode.getNode("modifierItem").setValue(modifier.getModifierItemType().getId());
-        // TODO: Recipes
 
-        Optional<CraftingRecipe> optionalRecipe = modifier.getRecipe();
-
-        if (optionalRecipe.isPresent()) {
-            CraftingRecipe recipe = optionalRecipe.get();
-
+        modifier.getRecipe().ifPresent(recipe -> {
             if (recipe instanceof ShapedCraftingRecipe) {
                 ShapedCraftingRecipe shapedRecipe = (ShapedCraftingRecipe) recipe;
 
@@ -169,7 +164,7 @@ public class ConfigManager {
 
                 modifierNode.getNode("recipeIsShaped").setValue(false);
             }
-        }
+        });
 
         modifier.onConfigurationSave(modifierNode);
 
