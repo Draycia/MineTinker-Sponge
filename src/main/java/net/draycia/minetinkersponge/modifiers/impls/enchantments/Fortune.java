@@ -1,5 +1,6 @@
 package net.draycia.minetinkersponge.modifiers.impls.enchantments;
 
+import com.google.common.collect.ImmutableList;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.item.ItemType;
@@ -14,6 +15,22 @@ import java.util.List;
 import java.util.Optional;
 
 public class Fortune extends Modifier {
+
+    private static List<ItemType> compatibleTypes;
+
+    static {
+        compatibleTypes = ImmutableList.<ItemType>builder()
+                .addAll(ItemTypeUtils.PICKAXES)
+                .addAll(ItemTypeUtils.AXES)
+                .addAll(ItemTypeUtils.HOES)
+                .build();
+    }
+
+    @Override
+    public List<ItemType> getCompatibleItems() {
+        return compatibleTypes;
+    }
+
 
     @Override
     public String getName() {
@@ -33,11 +50,6 @@ public class Fortune extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.RABBIT_FOOT);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getToolTypes();
     }
 
     @Override

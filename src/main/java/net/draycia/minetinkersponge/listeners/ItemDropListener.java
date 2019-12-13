@@ -30,6 +30,11 @@ public class ItemDropListener {
             return;
         }
 
+        // Prevent player equipment from being dropped
+        if (event.getContext().containsKey(EventContextKeys.OWNER)) {
+            return;
+        }
+
         for (Entity entity : event.getEntities()) {
             if (!(entity instanceof Item)) {
                 continue;
@@ -37,7 +42,7 @@ public class ItemDropListener {
 
             Item item = (Item)entity;
 
-            if (!ItemTypeUtils.getAllTypes().contains(item.getItemType())) {
+            if (!ItemTypeUtils.ALL_TYPES.contains(item.getItemType())) {
                 continue;
             }
 

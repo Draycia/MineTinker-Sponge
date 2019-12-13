@@ -25,12 +25,10 @@ public class AddLevelCommand implements CommandExecutor {
             return CommandResult.empty();
         }
 
-        Optional<ItemStack> mainItem = ((Player)src).getItemInHand(HandTypes.MAIN_HAND);
-
-        if (mainItem.isPresent()) {
-            modManager.incrementItemLevel(mainItem.get());
-            modManager.rewriteItemLore(mainItem.get());
-        }
+        ((Player)src).getItemInHand(HandTypes.MAIN_HAND).ifPresent(itemStack -> {
+            modManager.incrementItemLevel(itemStack);
+            modManager.rewriteItemLore(itemStack);
+        });
 
         return CommandResult.success();
     }

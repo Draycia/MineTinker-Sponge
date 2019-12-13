@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.modifiers.impls.enchantments;
 
+import com.google.common.collect.ImmutableList;
 import net.draycia.minetinkersponge.modifiers.Modifier;
-import net.draycia.minetinkersponge.utils.CompositeUnmodifiableList;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
@@ -18,10 +18,24 @@ import java.util.Optional;
 public class FireProtection extends Modifier {
 
     private static List<Class<? extends Modifier>> incompatibleTypes = new ArrayList<>();
+    private static List<ItemType> compatibleTypes;
 
     static {
         incompatibleTypes.add(Protection.class);
         incompatibleTypes.add(ProjectileProtection.class);
+        incompatibleTypes.add(BlastProtection.class);
+
+        compatibleTypes = ImmutableList.<ItemType>builder()
+                .addAll(ItemTypeUtils.HELMETS)
+                .addAll(ItemTypeUtils.CHESTPLATES)
+                .addAll(ItemTypeUtils.LEGGINGS)
+                .addAll(ItemTypeUtils.BOOTS)
+                .build();
+    }
+
+    @Override
+    public List<ItemType> getCompatibleItems() {
+        return compatibleTypes;
     }
 
     @Override
@@ -47,11 +61,6 @@ public class FireProtection extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.IRON_BLOCK);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return new CompositeUnmodifiableList<>(ItemTypeUtils.getArmorTypes(), ItemTypeUtils.getMiscArmorTypes());
     }
 
     @Override

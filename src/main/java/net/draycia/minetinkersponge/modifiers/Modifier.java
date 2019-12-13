@@ -37,6 +37,17 @@ public abstract class Modifier {
         this.name = name;
     }
 
+    // Sets if the modifier is enabled/disabled
+    private boolean isEnabled = true;
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
     /**
      *
      * @return The highest level this modifier can be on items
@@ -144,6 +155,10 @@ public abstract class Modifier {
      * @return A list of compatible ItemTypes. Or null if the modifier can go on any item.
      */
     public abstract List<ItemType> getCompatibleItems();
+
+    public boolean isCompatibleWithItem(ItemType itemType) {
+        return getCompatibleItems().contains(itemType);
+    }
 
     public String getCompatibilityString() {
         return "Everything";

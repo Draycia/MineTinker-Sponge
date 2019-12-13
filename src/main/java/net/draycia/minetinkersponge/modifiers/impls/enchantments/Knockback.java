@@ -16,6 +16,11 @@ import java.util.Optional;
 public class Knockback extends Modifier {
 
     @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.SWORDS;
+    }
+
+    @Override
     public String getName() {
         return getName("Knockback");
     }
@@ -33,11 +38,6 @@ public class Knockback extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.TNT);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getSwordTypes();
     }
 
     @Override

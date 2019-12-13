@@ -16,6 +16,11 @@ import java.util.Optional;
 public class Sweeping extends Modifier {
 
     @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.SWORDS;
+    }
+
+    @Override
     public String getName() {
         return getName("Sweeping Edge");
     }
@@ -33,11 +38,6 @@ public class Sweeping extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.PRISMARINE_CRYSTALS);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getSwordTypes();
     }
 
     @Override

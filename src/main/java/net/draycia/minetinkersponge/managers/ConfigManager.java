@@ -88,6 +88,14 @@ public class ConfigManager {
                     saveDefaultModifierValues(modifier, modifierNode, modifierLoader);
                 } else {
                     loadModifierConfigValues(modifier, modifierNode);
+
+                    // TODO: Don't even construct the modifier instance if it's disabled
+                    // TODO: Dynamically load in default modifiers and their configs
+                    //    Modifier config names share the modifier's key name
+                    if (!modifierNode.getNode("enabled").getBoolean()) {
+                        modManager.unregisterModifier(modifier);
+                        Sponge.getEventManager().unregisterListeners(modifier);
+                    }
                 }
             }
         } catch (IOException exception) {
@@ -130,18 +138,14 @@ public class ConfigManager {
                                            ConfigurationLoader modifierLoader) throws IOException {
 
         modifierNode.getNode("name").setValue(modifier.getName());
+        modifierNode.getNode("enabled").setValue(true);
         modifierNode.getNode("maxLevel").setValue(modifier.getMaxLevel());
         modifierNode.getNode("levelWeight").setValue(modifier.getLevelWeight());
         modifierNode.getNode("applicationChance").setValue(modifier.getApplicationChance());
         modifierNode.getNode("description").setValue(modifier.getDescription());
         modifierNode.getNode("modifierItem").setValue(modifier.getModifierItemType().getId());
-        // TODO: Recipes
 
-        Optional<CraftingRecipe> optionalRecipe = modifier.getRecipe();
-
-        if (optionalRecipe.isPresent()) {
-            CraftingRecipe recipe = optionalRecipe.get();
-
+        modifier.getRecipe().ifPresent(recipe -> {
             if (recipe instanceof ShapedCraftingRecipe) {
                 ShapedCraftingRecipe shapedRecipe = (ShapedCraftingRecipe) recipe;
 
@@ -160,7 +164,7 @@ public class ConfigManager {
 
                 modifierNode.getNode("recipeIsShaped").setValue(false);
             }
-        }
+        });
 
         modifier.onConfigurationSave(modifierNode);
 
@@ -169,6 +173,7 @@ public class ConfigManager {
 
     private void loadModifierConfigValues(Modifier modifier, ConfigurationNode modifierNode) {
         modifier.setName(modifierNode.getNode("name").getString());
+        modifier.setEnabled(modifierNode.getNode("enabled").getBoolean());
         modifier.setMaxLevel(modifierNode.getNode("maxLevel").getInt());
         modifier.setLevelWeight(modifierNode.getNode("levelWeight").getInt());
         modifier.setApplicationChance(modifierNode.getNode("applicationChance").getInt());

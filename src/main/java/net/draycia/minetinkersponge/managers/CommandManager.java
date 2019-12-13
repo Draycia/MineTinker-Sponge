@@ -58,6 +58,7 @@ public class CommandManager {
         CommandSpec addSlots = CommandSpec.builder()
                 .description(Text.of("Increases the modifier slots of the item.."))
                 .permission("minetinker.commands.addslots")
+                .arguments(GenericArguments.optional(GenericArguments.integer(Text.of("amount"))))
                 .executor(new AddSlotsCommand(modManager))
                 .build();
 

@@ -100,7 +100,7 @@ public class InventoryGUIManager {
                 itemStack.offer(Keys.DISPLAY_NAME, Text.of(TextColors.GREEN, modifier.getName()));
 
                 Layout.Builder recipeLayout = Layout.builder()
-                        .dimension(InventoryDimension.of(9, 4));
+                        .dimension(InventoryDimension.of(9, 5));
 
                 CraftingRecipe recipe = modifier.getRecipe().get();
 

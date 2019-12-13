@@ -58,7 +58,6 @@ public class MineTinkerSponge {
     private static ModManager modManager = null;
 
     private ItemLevelManager itemLevelManager;
-    private PlayerNameManager playerNameManager;
     private InventoryGUIManager inventoryGUIManager;
     private CommandManager commandManager;
     private ConfigManager configManager;
@@ -99,7 +98,6 @@ public class MineTinkerSponge {
         configManager.reloadConfig();
 
         itemLevelManager = new ItemLevelManager(modManager);
-        playerNameManager = new PlayerNameManager(this);
         commandManager = new CommandManager(this);
 
         commandManager.registerCommands();
@@ -109,17 +107,6 @@ public class MineTinkerSponge {
         if (Sponge.getPluginManager().isLoaded("teslalibs")) {
             inventoryGUIManager = new InventoryGUIManager(this);
         }
-    }
-
-    @Listener
-    public void onGameStarted(GameStartingServerEvent event) {
-        playerNameManager.onGameStarted();
-        playerNameManager.startScheduler();
-    }
-
-    @Listener
-    public void onGameStopped(GameStoppingServerEvent event) {
-        playerNameManager.onGameStopped();
     }
 
     @Listener
@@ -161,7 +148,9 @@ public class MineTinkerSponge {
         modManager.registerModifier(this, new VanishingCurse());
 
         // Custom Modifiers
+        modManager.registerModifier(this, new AutoSmelt(modManager));
         modManager.registerModifier(this, new Directing(modManager));
+        modManager.registerModifier(this, new Grounding(modManager));
         modManager.registerModifier(this, new Hammer(modManager));
         modManager.registerModifier(this, new Kinetic(modManager));
 
@@ -183,6 +172,7 @@ public class MineTinkerSponge {
         Sponge.getEventManager().registerListeners(this, new FishingListener(modManager));
         Sponge.getEventManager().registerListeners(this, new DamageListener(modManager));
         Sponge.getEventManager().registerListeners(this, new AnvilListener(modManager));
+        Sponge.getEventManager().registerListeners(this, new EnchantingTableListener());
         Sponge.getEventManager().registerListeners(this, modManager);
     }
 

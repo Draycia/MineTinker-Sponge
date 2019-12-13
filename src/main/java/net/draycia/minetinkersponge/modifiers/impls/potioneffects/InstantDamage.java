@@ -1,8 +1,8 @@
 package net.draycia.minetinkersponge.modifiers.impls.potioneffects;
 
+import com.google.common.collect.ImmutableList;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
-import net.draycia.minetinkersponge.utils.CompositeUnmodifiableList;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.manipulator.mutable.PotionEffectData;
@@ -26,6 +26,20 @@ import java.util.Optional;
 public class InstantDamage extends Modifier {
 
     private ModManager modManager;
+    private static List<ItemType> compatibleTypes;
+
+    static {
+        // TODO: Bow Support
+        compatibleTypes = ImmutableList.<ItemType>builder()
+                .addAll(ItemTypeUtils.SWORDS)
+                .addAll(ItemTypeUtils.AXES)
+                .build();
+    }
+
+    @Override
+    public List<ItemType> getCompatibleItems() {
+        return compatibleTypes;
+    }
 
     @Override
     public String getName() {
@@ -45,11 +59,6 @@ public class InstantDamage extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.COAL);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return new CompositeUnmodifiableList<>(ItemTypeUtils.getSwordTypes(), ItemTypeUtils.getAxeTypes());
     }
 
     @Override
@@ -81,7 +90,7 @@ public class InstantDamage extends Modifier {
     }
 
     @Listener
-    public void onItemDrop(DamageEntityEvent event) {
+    public void onEntityDamagedByEntity(DamageEntityEvent event) {
         if (!(event.getTargetEntity() instanceof Living)) {
             return;
         }

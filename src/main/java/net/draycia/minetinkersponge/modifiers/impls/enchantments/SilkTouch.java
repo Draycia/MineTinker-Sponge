@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.modifiers.impls.enchantments;
 
+import com.google.common.collect.ImmutableList;
 import net.draycia.minetinkersponge.modifiers.Modifier;
-import net.draycia.minetinkersponge.utils.CompositeUnmodifiableList;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
@@ -15,6 +15,21 @@ import java.util.List;
 import java.util.Optional;
 
 public class SilkTouch extends Modifier {
+
+    private static List<ItemType> compatibleTypes;
+
+    static {
+        compatibleTypes = ImmutableList.<ItemType>builder()
+                .addAll(ItemTypeUtils.PICKAXES)
+                .addAll(ItemTypeUtils.AXES)
+                .addAll(ItemTypeUtils.SHOVELS)
+                .build();
+    }
+
+    @Override
+    public List<ItemType> getCompatibleItems() {
+        return compatibleTypes;
+    }
 
     @Override
     public String getName() {
@@ -34,16 +49,6 @@ public class SilkTouch extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.STRING);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        // Lol
-        return new CompositeUnmodifiableList<>(
-                new CompositeUnmodifiableList<>(
-                        ItemTypeUtils.getPickaxeTypes(),
-                        ItemTypeUtils.getAxeTypes()),
-                        ItemTypeUtils.getShovelTypes());
     }
 
     @Override

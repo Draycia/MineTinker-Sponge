@@ -16,6 +16,11 @@ import java.util.Optional;
 public class Punch extends Modifier {
 
     @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.BOWS;
+    }
+
+    @Override
     public String getName() {
         return getName("Punch");
     }
@@ -33,11 +38,6 @@ public class Punch extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.BRICK);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getBowTypes();
     }
 
     @Override

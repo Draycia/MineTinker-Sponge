@@ -26,7 +26,7 @@ public class FishingListener {
         for (Transaction<ItemStackSnapshot> snapshot : event.getTransactions()) {
             ItemStack item = snapshot.getFinal().createStack();
 
-            if (ItemTypeUtils.getAllTypes().contains(item.getType())) {
+            if (ItemTypeUtils.ALL_TYPES.contains(item.getType())) {
                 modManager.convertItemStack(item, true);
                 snapshot.setCustom(item.createSnapshot());
             }

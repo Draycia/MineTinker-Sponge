@@ -21,6 +21,7 @@ public class DiamondUpgrade extends Modifier {
     private static HashMap<ItemType, ItemType> conversions = new HashMap<>();
 
     static {
+        // TODO: Mod support?
         conversions.put(ItemTypes.GOLDEN_SHOVEL, ItemTypes.DIAMOND_SHOVEL);
         conversions.put(ItemTypes.GOLDEN_AXE, ItemTypes.DIAMOND_AXE);
         conversions.put(ItemTypes.GOLDEN_HOE, ItemTypes.DIAMOND_HOE);

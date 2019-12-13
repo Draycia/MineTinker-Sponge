@@ -1,14 +1,9 @@
 package net.draycia.minetinkersponge.listeners;
 
-import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.item.inventory.InteractInventoryEvent;
-import org.spongepowered.api.item.inventory.Inventory;
-import org.spongepowered.api.item.inventory.ItemStack;
-
-import java.util.Optional;
+import org.spongepowered.api.event.item.inventory.CraftItemEvent;
 
 public class InventoryListener {
 
@@ -19,20 +14,14 @@ public class InventoryListener {
     }
 
     @Listener
-    public void onInventoryOpen(InteractInventoryEvent.Open event) {
-        for (Inventory inventory : event.getTargetInventory().slots()) {
-            Optional<ItemStack> itemStack = inventory.peek();
+    public void onItemCraft(CraftItemEvent.Preview event) {
+        event.getPreview().getSlot().peek()
+                .filter(itemStack -> ItemTypeUtils.ALL_TYPES.contains(itemStack.getType()))
+                .ifPresent(itemStack -> {
 
-            if (!itemStack.isPresent()) {
-                continue;
-            }
-
-            if (ItemTypeUtils.getAllTypes().contains(itemStack.get().getType())) {
-                if (!itemStack.get().get(MTKeys.IS_MINETINKER).orElse(false)) {
-                    modManager.convertItemStack(itemStack.get(), true);
-                }
-            }
-        }
+                modManager.convertItemStack(itemStack, true);
+                event.getPreview().setCustom(itemStack);
+        });
     }
 
 }

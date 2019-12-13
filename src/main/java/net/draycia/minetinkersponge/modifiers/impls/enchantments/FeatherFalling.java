@@ -16,6 +16,11 @@ import java.util.Optional;
 public class FeatherFalling extends Modifier {
 
     @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.BOOTS;
+    }
+
+    @Override
     public String getName() {
         return getName("Feather Falling");
     }
@@ -36,11 +41,6 @@ public class FeatherFalling extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.FEATHER);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getBootTypes();
     }
 
     @Override

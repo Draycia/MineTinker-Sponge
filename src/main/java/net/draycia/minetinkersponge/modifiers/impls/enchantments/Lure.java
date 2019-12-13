@@ -16,6 +16,11 @@ import java.util.Optional;
 public class Lure extends Modifier {
 
     @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.FISHING_RODS;
+    }
+
+    @Override
     public String getName() {
         return getName("Lure");
     }
@@ -33,11 +38,6 @@ public class Lure extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.FISH);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getFishingRodTypes();
     }
 
     @Override

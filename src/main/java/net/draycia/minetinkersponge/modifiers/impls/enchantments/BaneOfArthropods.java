@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.modifiers.impls.enchantments;
 
+import com.google.common.collect.ImmutableList;
 import net.draycia.minetinkersponge.modifiers.Modifier;
-import net.draycia.minetinkersponge.utils.CompositeUnmodifiableList;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
@@ -18,13 +18,16 @@ import java.util.Optional;
 public class BaneOfArthropods extends Modifier {
 
     private static List<Class<? extends Modifier>> incompatibleTypes = new ArrayList<>();
-    private static List<ItemType> compatibleItems;
+    private static List<ItemType> compatibleTypes;
 
     static {
         incompatibleTypes.add(Sharpness.class);
         incompatibleTypes.add(Smite.class);
 
-        compatibleItems = new CompositeUnmodifiableList<>(ItemTypeUtils.getSwordTypes(), ItemTypeUtils.getAxeTypes());
+        compatibleTypes = ImmutableList.<ItemType>builder()
+                .addAll(ItemTypeUtils.SWORDS)
+                .addAll(ItemTypeUtils.AXES)
+                .build();
     }
 
     @Override
@@ -34,7 +37,7 @@ public class BaneOfArthropods extends Modifier {
 
     @Override
     public List<ItemType> getCompatibleItems() {
-        return compatibleItems;
+        return compatibleTypes;
     }
 
     @Override

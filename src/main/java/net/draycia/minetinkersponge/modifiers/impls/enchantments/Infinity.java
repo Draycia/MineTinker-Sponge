@@ -16,6 +16,11 @@ import java.util.Optional;
 
 public class Infinity extends Modifier {
 
+    @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.BOWS;
+    }
+
     private static List<Class<? extends Modifier>> incompatibleTypes = Collections.singletonList(Mending.class);
 
     @Override
@@ -41,11 +46,6 @@ public class Infinity extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.ENDER_PEARL);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getBowTypes();
     }
 
     @Override

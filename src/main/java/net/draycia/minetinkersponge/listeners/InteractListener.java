@@ -44,30 +44,21 @@ public class InteractListener {
         }
 
         // Get the item used in the event
-        Optional<ItemStack> item = player.getItemInHand(event.getHandType());
-
-        if (item.isPresent()) {
-            ItemStack itemStack = item.get();
-
+        player.getItemInHand(event.getHandType()).ifPresent(itemStack -> {
             // Check if the item is an enchanted book
             if (itemStack.getType() != ItemTypes.ENCHANTED_BOOK) {
                 return;
             }
 
-            Optional<List<Enchantment>> enchantments = itemStack.get(Keys.STORED_ENCHANTMENTS);
-
-            if (enchantments.isPresent()) {
-                List<Enchantment> enchants = enchantments.get();
+            itemStack.get(Keys.STORED_ENCHANTMENTS).ifPresent(enchantments -> {
                 List<Enchantment> enchantsToRemove = new ArrayList<>();
 
                 // Loop through all enchantments the book has
-                for (Enchantment enchantment : enchants) {
+                for (Enchantment enchantment : enchantments) {
                     // Try to find any modifier that applies the enchantment
-                    Optional<Modifier> modifier = modManager.getFirstModifierByEnchantment(enchantment.getType());
-
-                    if (modifier.isPresent()) {
+                    modManager.getFirstModifierByEnchantment(enchantment.getType()).ifPresent(modifier -> {
                         // Give the player the modifier
-                        ItemStack modifierItem = modifier.get().getModifierItem(enchantment.getLevel());
+                        ItemStack modifierItem = modifier.getModifierItem(enchantment.getLevel());
 
                         // If the player can fit the modifier in their inventory, give them it directly
                         Inventory inventory = player.getInventory()
@@ -87,19 +78,18 @@ public class InteractListener {
 
                         // Remove the enchantment from the item
                         enchantsToRemove.add(enchantment);
-                    }
+                    });
                 }
 
-                enchants.removeAll(enchantsToRemove);
+                enchantments.removeAll(enchantsToRemove);
 
-                if (enchants.isEmpty()) {
+                if (enchantments.isEmpty()) {
                     player.setItemInHand(event.getHandType(), ItemStack.empty());
                 } else {
-                    itemStack.offer(Keys.STORED_ENCHANTMENTS, enchants);
+                    itemStack.offer(Keys.STORED_ENCHANTMENTS, enchantments);
                 }
-
-            }
-        }
+            });
+        });
     }
 
 }

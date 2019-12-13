@@ -16,6 +16,11 @@ import java.util.Optional;
 public class FrostWalker extends Modifier {
 
     @Override
+    public List<ItemType> getCompatibleItems() {
+        return ItemTypeUtils.BOOTS;
+    }
+
+    @Override
     public String getName() {
         return getName("Frost Walker");
     }
@@ -33,11 +38,6 @@ public class FrostWalker extends Modifier {
     @Override
     public ItemType getModifierItemType() {
         return getModifierItemType(ItemTypes.ICE);
-    }
-
-    @Override
-    public List<ItemType> getCompatibleItems() {
-        return ItemTypeUtils.getBootTypes();
     }
 
     @Override
