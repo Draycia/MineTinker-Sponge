@@ -6,6 +6,7 @@ import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.Item;
@@ -20,7 +21,6 @@ import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.inventory.entity.MainPlayerInventory;
 import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
@@ -39,7 +39,6 @@ public class Directing extends Modifier {
     private static List<ItemType> compatibleTypes;
 
     static {
-        // TODO: Bow Support
         // TODO: Fishing Rod Support
         compatibleTypes = ImmutableList.<ItemType>builder()
                 .addAll(ItemTypeUtils.PICKAXES)
@@ -112,6 +111,37 @@ public class Directing extends Modifier {
             .build();
 
     @Listener
+    public void onItemDrop(DropItemEvent.Destruct event) {
+        EventContext context = event.getContext();
+
+        if (context.containsKey(EventContextKeys.USED_ITEM) || context.containsKey(EventContextKeys.USED_HAND)) {
+            return;
+        }
+
+        context.get(EventContextKeys.OWNER).ifPresent(owner -> {
+            Optional<ItemStack> mainHand = owner.getItemInHand(HandTypes.MAIN_HAND);
+            Optional<ItemStack> offHand = owner.getItemInHand(HandTypes.OFF_HAND);
+
+            ItemStack itemStack = null;
+
+            if (mainHand.isPresent() && modManager.itemHasModifier(mainHand.get(), this)) {
+                itemStack = mainHand.get();
+            } else if (offHand.isPresent() && modManager.itemHasModifier(offHand.get(), this)){
+                itemStack = offHand.get();
+            }
+
+            Optional<Player> optionalPlayer = owner.getPlayer();
+
+            if (itemStack != null && optionalPlayer.isPresent()) {
+                transferDrops(optionalPlayer.get(), event.getEntities());
+
+                // Cancel the drops
+                event.setCancelled(true);
+            }
+        });
+    }
+
+    @Listener
     public void onItemDrop(DropItemEvent.Destruct event, @First Player player) {
         EventContext context = event.getContext();
 
@@ -121,37 +151,42 @@ public class Directing extends Modifier {
             context.get(EventContextKeys.USED_ITEM)
                     .filter(itemStack -> modManager.itemHasModifier(itemStack, this))
                     .ifPresent(itemStack -> {
-                // Get the player's grid inventory
-                Inventory inventory = player.getInventory()
-                        .query(QueryOperationTypes.INVENTORY_TYPE.of(MainPlayerInventory.class));
 
-                // Loop through all entities dropped
-                for (Entity entity : event.getEntities()) {
-                    if (entity instanceof Item) {
-                        Item item = (Item) entity;
-
-                        // And put each in the player's inventory
-                        if (item.item().exists()) {
-                            ItemStack itemToGive = item.item().get().createStack();
-
-                            if (inventory.canFit(itemToGive)) {
-                                inventory.offer(itemToGive);
-                            } else {
-                                // If the player can't fit the item in their inventory, drop it next to them
-                                Location<World> location = player.getLocation();
-
-                                Entity itemEntity = location.createEntity(EntityTypes.ITEM);
-                                itemEntity.offer(Keys.ACTIVE_ITEM, item.item().get());
-
-                                location.spawnEntity(itemEntity);
-                            }
-                        }
-                    }
-                }
+                transferDrops(player, event.getEntities());
 
                 // Cancel the drops
                 event.setCancelled(true);
             });
+        }
+    }
+
+    private void transferDrops(Player player, List<Entity> entities) {
+        // Get the player's grid inventory
+        Inventory inventory = player.getInventory()
+                .query(QueryOperationTypes.INVENTORY_TYPE.of(MainPlayerInventory.class));
+
+        // Loop through all entities dropped
+        for (Entity entity : entities) {
+            if (entity instanceof Item) {
+                Item item = (Item) entity;
+
+                // And put each in the player's inventory
+                if (item.item().exists()) {
+                    ItemStack itemToGive = item.item().get().createStack();
+
+                    if (inventory.canFit(itemToGive)) {
+                        inventory.offer(itemToGive);
+                    } else {
+                        // If the player can't fit the item in their inventory, drop it next to them
+                        Location<World> location = player.getLocation();
+
+                        Entity itemEntity = location.createEntity(EntityTypes.ITEM);
+                        itemEntity.offer(Keys.ACTIVE_ITEM, item.item().get());
+
+                        location.spawnEntity(itemEntity);
+                    }
+                }
+            }
         }
     }
 }
