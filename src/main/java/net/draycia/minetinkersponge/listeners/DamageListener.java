@@ -5,7 +5,10 @@ import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.cause.EventContextKey;
+import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.cause.entity.damage.DamageFunction;
 import org.spongepowered.api.event.cause.entity.damage.DamageModifierTypes;
 import org.spongepowered.api.event.cause.entity.damage.DamageType;
@@ -17,6 +20,7 @@ import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.equipment.EquipmentInventory;
 import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
+import org.spongepowered.api.service.context.Context;
 
 import java.util.Optional;
 
@@ -30,7 +34,21 @@ public class DamageListener {
 
     @Listener
     public void onPlayerDamage(DamageEntityEvent event, @Root DamageSource source) {
+        if (event.getFinalDamage() <= 0) {
+            return;
+        }
+
         if (!(event.getTargetEntity() instanceof Player)) {
+            event.getContext().get(EventContextKeys.OWNER)
+                    .flatMap(User::getPlayer)
+                    .flatMap(player -> player.getItemInHand(HandTypes.MAIN_HAND))
+                    .ifPresent(mainHand -> {
+
+                if (mainHand.get(MTKeys.IS_MINETINKER).orElse(false)) {
+                    modManager.addExperience(mainHand, 1);
+                }
+            });
+
             return;
         }
 
