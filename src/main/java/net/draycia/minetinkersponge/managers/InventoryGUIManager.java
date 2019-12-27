@@ -5,6 +5,7 @@ import com.mcsimonflash.sponge.teslalibs.inventory.Element;
 import com.mcsimonflash.sponge.teslalibs.inventory.Layout;
 import com.mcsimonflash.sponge.teslalibs.inventory.View;
 import net.draycia.minetinkersponge.MineTinkerSponge;
+import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.MTTranslations;
 import net.draycia.minetinkersponge.utils.StringUtils;
@@ -31,15 +32,24 @@ import java.util.function.Consumer;
 
 public class InventoryGUIManager {
 
-    private View view;
+    private static View view;
+    private static InventoryGUIManager inventoryGUIManager = null;
 
-    public InventoryGUIManager(MineTinkerSponge mineTinkerSponge) {
+    public static InventoryGUIManager getInstance() {
+        if (inventoryGUIManager == null) {
+            inventoryGUIManager = new InventoryGUIManager();
+        }
+
+        return inventoryGUIManager;
+    }
+
+    private InventoryGUIManager() {
         Layout.Builder layout = Layout.builder();
 
         int index = 0;
 
         // Loop through modifiers
-        for (Map.Entry<String, Modifier> entry : MineTinkerSponge.getModManager().getAllModifiers().entrySet()) {
+        for (Map.Entry<String, Modifier> entry : ModManager.getInstance().getAllModifiers().entrySet()) {
             Modifier modifier = entry.getValue();
 
             // Create the item to display in the GUI
@@ -93,12 +103,13 @@ public class InventoryGUIManager {
                         TranslatableText.of(modifier.getAppliedEnchantment().getTranslation())));
             }
 
+            // Set the lore and display name of the item
+            itemStack.offer(Keys.ITEM_LORE, lore);
+            itemStack.offer(Keys.DISPLAY_NAME, Text.of(TextColors.GREEN, modifier.getName()));
+            itemStack.offer(MTKeys.MODIFIER_ID, modifier.getKey());
+
             // If the modifier has a recipe, create a sub-GUI for it
             if (modifier.getRecipe().isPresent()) {
-                // Set the lore and display name of the item
-                itemStack.offer(Keys.ITEM_LORE, lore);
-                itemStack.offer(Keys.DISPLAY_NAME, Text.of(TextColors.GREEN, modifier.getName()));
-
                 Layout.Builder recipeLayout = Layout.builder()
                         .dimension(InventoryDimension.of(9, 5));
 
@@ -154,7 +165,7 @@ public class InventoryGUIManager {
 
                 View recipeView = View.builder()
                         .property(InventoryTitle.of(Text.of(MTTranslations.MODIFIER, modifier.getName())))
-                        .build(mineTinkerSponge.getContainer());
+                        .build(MineTinkerSponge.getContainer());
 
                 recipeView.define(recipeLayout.build());
 
@@ -171,7 +182,7 @@ public class InventoryGUIManager {
 
         view = View.builder()
                 .property(InventoryTitle.of(Text.of(MTTranslations.MINETINKER_MODIFIERS)))
-                .build(mineTinkerSponge.getContainer());
+                .build(MineTinkerSponge.getContainer());
 
         view.define(layout.build());
     }

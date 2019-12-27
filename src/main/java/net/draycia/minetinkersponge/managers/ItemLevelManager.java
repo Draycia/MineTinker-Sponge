@@ -1,5 +1,6 @@
 package net.draycia.minetinkersponge.managers;
 
+import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
@@ -13,19 +14,13 @@ import java.util.Optional;
 
 public class ItemLevelManager {
 
-    private ModManager modManager;
-
-    public ItemLevelManager(ModManager modManager) {
-        this.modManager = modManager;
-    }
-
     /**
      *
      * @param player The player to get the combat level of
      * @param average If the returned number should be an average of all 5 slots, if false the returned number is a sum
      * @return The calculated combat level of the player
      */
-    public int getPlayerCombatLevel(Player player, boolean average) {
+    public static int getPlayerCombatLevel(Player player, boolean average) {
         int helmet = 0;
         int chestplate = 0;
         int leggings = 0;
@@ -47,6 +42,8 @@ public class ItemLevelManager {
             if (!itemStack.get(MTKeys.IS_MINETINKER).orElse(false)) {
                 continue;
             }
+
+            ModManager modManager = ModManager.getInstance();
 
             // Calculate the item's effective level
             Map<String, Integer> itemModifierLevels = modManager.getItemModifierLevels(itemStack);
@@ -82,11 +79,9 @@ public class ItemLevelManager {
         }
 
         // Return the result
-        if (average) {
-            return (helmet + chestplate + leggings + boots + weapon) / 5;
-        } else {
-            return (helmet + chestplate + leggings + boots + weapon);
-        }
+        int sum = (helmet + chestplate + leggings + boots + weapon);
+
+        return average ? sum / 5 : sum;
     }
 
 }

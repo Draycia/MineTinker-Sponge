@@ -14,11 +14,7 @@ import java.util.Optional;
 
 public class BlockBreakListener {
 
-    private ModManager modManager;
-
-    public BlockBreakListener(ModManager modManager) {
-        this.modManager = modManager;
-    }
+    private ModManager modManager = ModManager.getInstance();
 
     @Listener
     public void onBlockBreak(ChangeBlockEvent.Break event, @Root Player player) {

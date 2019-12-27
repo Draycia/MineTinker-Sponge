@@ -7,11 +7,7 @@ import org.spongepowered.api.event.item.inventory.CraftItemEvent;
 
 public class InventoryListener {
 
-    private ModManager modManager;
-
-    public InventoryListener(ModManager modManager) {
-        this.modManager = modManager;
-    }
+    private ModManager modManager = ModManager.getInstance();
 
     @Listener
     public void onItemCraft(CraftItemEvent.Preview event) {

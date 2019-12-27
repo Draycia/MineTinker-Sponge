@@ -25,11 +25,7 @@ import java.util.Optional;
 
 public class InteractListener {
 
-    private ModManager modManager;
-
-    public InteractListener(ModManager modManager) {
-        this.modManager = modManager;
-    }
+    private ModManager modManager = ModManager.getInstance();
 
     @Listener
     public void onBlockInteract(InteractBlockEvent.Secondary event, @Root Player player) {

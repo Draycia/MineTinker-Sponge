@@ -11,11 +11,7 @@ import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 
 public class FishingListener {
 
-    private ModManager modManager;
-
-    public FishingListener(ModManager modManager) {
-        this.modManager = modManager;
-    }
+    private ModManager modManager = ModManager.getInstance();
 
     @Listener
     public void onFish(FishingEvent.Stop event) {

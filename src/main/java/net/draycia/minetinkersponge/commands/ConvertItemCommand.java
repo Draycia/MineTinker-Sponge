@@ -13,11 +13,7 @@ import java.util.Optional;
 
 public class ConvertItemCommand implements CommandExecutor {
 
-    private ModManager modManager;
-
-    public ConvertItemCommand(ModManager modManager) {
-        this.modManager = modManager;
-    }
+    private ModManager modManager = ModManager.getInstance();
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) {

@@ -23,11 +23,7 @@ import java.util.Optional;
 
 public class AnvilListener {
 
-    private ModManager modManager;
-
-    public AnvilListener(ModManager modManager) {
-        this.modManager = modManager;
-    }
+    private ModManager modManager = ModManager.getInstance();
 
     @Listener
     public void onAnvilUpdate(UpdateAnvilEvent event) {

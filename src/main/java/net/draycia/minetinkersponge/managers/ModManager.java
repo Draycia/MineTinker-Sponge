@@ -32,6 +32,16 @@ public class ModManager {
         return modifiers;
     }
 
+    private static ModManager modManager = null;
+
+    public static ModManager getInstance() {
+        if (modManager == null) {
+            modManager = new ModManager();
+        }
+
+        return modManager;
+    }
+
     @Listener
     public void onRecipeRegisterReady(GameRegistryEvent.Register<CraftingRecipe> event) {
         modifiers.values().forEach(modifier -> modifier.getRecipe().ifPresent(event::register));

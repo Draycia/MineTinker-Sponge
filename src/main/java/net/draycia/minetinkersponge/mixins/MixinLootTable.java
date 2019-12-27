@@ -1,6 +1,6 @@
 package net.draycia.minetinkersponge.mixins;
 
-import net.draycia.minetinkersponge.MineTinkerSponge;
+import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.storage.loot.LootContext;
@@ -23,12 +23,8 @@ public abstract class MixinLootTable {
             return;
         }
 
-        if (MineTinkerSponge.getModManager() == null) {
-            return;
-        }
-
         for (ItemStack itemStack : (List<ItemStack>)list) {
-            MineTinkerSponge.getModManager().convertItemStack(((org.spongepowered.api.item.inventory.ItemStack)(Object)itemStack), true);
+            ModManager.getInstance().convertItemStack(((org.spongepowered.api.item.inventory.ItemStack)(Object)itemStack), true);
         }
     }
 

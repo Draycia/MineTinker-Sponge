@@ -53,59 +53,37 @@ public class MineTinkerSponge {
     @Inject
     private Logger logger;
 
-    private ConfigurationNode mainConfig;
-
-    private static ModManager modManager = null;
-
-    private ItemLevelManager itemLevelManager;
-    private InventoryGUIManager inventoryGUIManager;
-    private CommandManager commandManager;
     private ConfigManager configManager;
 
-    public static ModManager getModManager() {
-        return modManager;
+    private static PluginContainer pluginContainer = null;
+    private static MineTinkerSponge mineTinkerSponge = null;
+
+    public static PluginContainer getContainer() {
+        return pluginContainer;
     }
 
-    public ItemLevelManager getItemLevelManager() {
-        return itemLevelManager;
-    }
-
-    public InventoryGUIManager getInventoryGUIManager() {
-        return inventoryGUIManager;
-    }
-
-    public CommandManager getCommandManager() {
-        return commandManager;
-    }
-
-    public ConfigManager getConfigManager() {
-        return configManager;
-    }
-
-    public PluginContainer getContainer() {
-        return container;
+    public static MineTinkerSponge getInstance() {
+        return mineTinkerSponge;
     }
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
         DataRegistrar.registerDataManipulators();
 
-        modManager = new ModManager();
+        mineTinkerSponge = this;
+        pluginContainer = container;
 
         registerModifiers();
 
-        configManager = new ConfigManager(configDir, defaultConfig, configLoader, logger, modManager);
+        configManager = new ConfigManager(configDir, defaultConfig, configLoader, logger, ModManager.getInstance());
         configManager.reloadConfig();
 
-        itemLevelManager = new ItemLevelManager(modManager);
-        commandManager = new CommandManager(this);
-
-        commandManager.registerCommands();
+        CommandManager.registerCommands();
 
         registerListeners();
 
         if (Sponge.getPluginManager().isLoaded("teslalibs")) {
-            inventoryGUIManager = new InventoryGUIManager(this);
+            InventoryGUIManager.getInstance();
         }
     }
 
@@ -115,6 +93,8 @@ public class MineTinkerSponge {
     }
 
     private void registerModifiers() {
+        ModManager modManager = ModManager.getInstance();
+
         // Enchantment Modifiers
         modManager.registerModifier(this, new AquaAffinity());
         modManager.registerModifier(this, new BaneOfArthropods());
@@ -165,15 +145,15 @@ public class MineTinkerSponge {
     }
 
     private void registerListeners() {
-        Sponge.getEventManager().registerListeners(this, new BlockBreakListener(modManager));
-        Sponge.getEventManager().registerListeners(this, new InventoryListener(modManager));
-        Sponge.getEventManager().registerListeners(this, new InteractListener(modManager));
-        Sponge.getEventManager().registerListeners(this, new ItemDropListener(modManager));
-        Sponge.getEventManager().registerListeners(this, new FishingListener(modManager));
-        Sponge.getEventManager().registerListeners(this, new DamageListener(modManager));
-        Sponge.getEventManager().registerListeners(this, new AnvilListener(modManager));
         Sponge.getEventManager().registerListeners(this, new EnchantingTableListener());
-        Sponge.getEventManager().registerListeners(this, modManager);
+        Sponge.getEventManager().registerListeners(this, new BlockBreakListener());
+        Sponge.getEventManager().registerListeners(this, new InventoryListener());
+        Sponge.getEventManager().registerListeners(this, new InteractListener());
+        Sponge.getEventManager().registerListeners(this, new ItemDropListener());
+        Sponge.getEventManager().registerListeners(this, new FishingListener());
+        Sponge.getEventManager().registerListeners(this, new DamageListener());
+        Sponge.getEventManager().registerListeners(this, new AnvilListener());
+        Sponge.getEventManager().registerListeners(this, ModManager.getInstance());
     }
 
 }

@@ -14,11 +14,7 @@ import org.spongepowered.api.item.inventory.ItemStack;
 
 public class ItemDropListener {
 
-    private ModManager modManager;
-
-    public ItemDropListener(ModManager modManager) {
-        this.modManager = modManager;
-    }
+    private ModManager modManager = ModManager.getInstance();
 
     @Listener(order = Order.EARLY)
     public void onItemDrop(DropItemEvent.Destruct event) {

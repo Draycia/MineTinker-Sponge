@@ -26,11 +26,7 @@ import java.util.Optional;
 
 public class DamageListener {
 
-    private ModManager modManager;
-
-    public DamageListener(ModManager modManager) {
-        this.modManager = modManager;
-    }
+    private ModManager modManager = ModManager.getInstance();
 
     @Listener
     public void onPlayerDamage(DamageEntityEvent event, @Root DamageSource source) {
