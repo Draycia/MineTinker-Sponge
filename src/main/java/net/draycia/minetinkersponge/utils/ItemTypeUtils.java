@@ -3,6 +3,8 @@ package net.draycia.minetinkersponge.utils;
 import com.google.common.collect.ImmutableList;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.item.ItemType;
+import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.recipe.crafting.CraftingRecipeRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,4 +64,24 @@ public class ItemTypeUtils {
             .addAll(SWORDS).addAll(BOWS).addAll(HELMETS).addAll(CHESTPLATES).addAll(LEGGINGS)
             .addAll(BOOTS).addAll(SHIELDS)
             .build();
+
+    public static int getMaterialCost(ItemType itemType) {
+        String id = itemType.getId();
+
+        if (id.contains("chestplate")) {
+            return 8; // Chestplate
+        } else if (id.contains("leggings")) {
+            return 7; // Leggings
+        } else if (id.contains("helmet")) {
+            return 5; // Helmet
+        } else if (id.contains("boots")) {
+            return 4; // Boots
+        } else if (id.contains("axe")) {
+            return 3; // Pickaxe and Axe
+        } else if (id.contains("sword") || id.contains("hoe")) {
+            return 2; // Sword and Hoe
+        } else {
+            return 1; // Shovel
+        }
+    }
 }

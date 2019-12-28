@@ -147,7 +147,7 @@ public class ModManager {
         int level = getModifierLevel(itemStack, modifier) + amount;
 
         // Ensure the modifier level doesn't exceed the modifier's level cap
-        if (level > modifier.getMaxLevel()) {
+        if (modifier.getMaxLevel() != -1 && level > modifier.getMaxLevel()) {
             return new ModifierApplicationResult(null, MTTranslations.RESULT_LEVEL_CAP);
         }
 

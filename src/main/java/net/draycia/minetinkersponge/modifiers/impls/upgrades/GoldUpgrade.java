@@ -2,6 +2,7 @@ package net.draycia.minetinkersponge.modifiers.impls.upgrades;
 
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
@@ -46,7 +47,7 @@ public class GoldUpgrade extends Modifier {
 
     @Override
     public int getMaxLevel() {
-        return getMaxLevel(5);
+        return getMaxLevel(-1);
     }
 
     @Override
@@ -68,7 +69,9 @@ public class GoldUpgrade extends Modifier {
     public ItemStack onModifierApplication(ItemStack itemStack, int level) {
         modManager.incrementItemModifierSlots(itemStack);
 
-        if (level >= getMaxLevel() && conversions.containsKey(itemStack.getType())) {
+        int desiredLevel = ItemTypeUtils.getMaterialCost(itemStack.getType());
+
+        if (level >= desiredLevel && conversions.containsKey(itemStack.getType())) {
             return ItemStack.builder()
                     .from(itemStack)
                     .itemType(conversions.get(itemStack.getType()))
