@@ -90,7 +90,6 @@ public class GoldUpgrade extends Modifier {
     public Optional<CraftingRecipe> getRecipe() {
         ShapelessCraftingRecipe recipe = ShapelessCraftingRecipe.builder()
                 .addIngredient(Ingredient.of(ItemTypes.GOLD_INGOT))
-                .addIngredient(Ingredient.of(ItemTypes.GOLD_INGOT))
                 .result(getModifierItem())
                 .id(getKey())
                 .build();

@@ -90,7 +90,6 @@ public class IronUpgrade extends Modifier {
     public Optional<CraftingRecipe> getRecipe() {
         ShapelessCraftingRecipe recipe = ShapelessCraftingRecipe.builder()
                 .addIngredient(Ingredient.of(ItemTypes.IRON_INGOT))
-                .addIngredient(Ingredient.of(ItemTypes.IRON_INGOT))
                 .result(getModifierItem())
                 .id(getKey())
                 .build();

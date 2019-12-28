@@ -90,7 +90,6 @@ public class DiamondUpgrade extends Modifier {
     public Optional<CraftingRecipe> getRecipe() {
         ShapelessCraftingRecipe recipe = ShapelessCraftingRecipe.builder()
                 .addIngredient(Ingredient.of(ItemTypes.DIAMOND))
-                .addIngredient(Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
                 .id(getKey())
                 .build();
