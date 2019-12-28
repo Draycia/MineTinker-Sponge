@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.Entity;
@@ -19,9 +18,12 @@ import org.spongepowered.api.event.item.inventory.DropItemEvent;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
+import org.spongepowered.api.item.recipe.smelting.SmeltingRecipeRegistry;
+import org.spongepowered.api.item.recipe.smelting.SmeltingResult;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -30,6 +32,8 @@ import java.util.*;
 public class AutoSmelt extends Modifier {
 
     private ModManager modManager;
+
+    private SmeltingRecipeRegistry smeltingRegistry = Sponge.getGame().getRegistry().getSmeltingRecipeRegistry();
 
     private List<ItemType> compatibleTypes = ImmutableList.<ItemType>builder()
                 .addAll(ItemTypeUtils.PICKAXES)
@@ -117,11 +121,11 @@ public class AutoSmelt extends Modifier {
                             if (item.item().exists()) {
                                 ItemStack itemToGive = item.item().get().createStack();
 
-                                net.minecraft.item.Item nmsItem = ((net.minecraft.item.ItemStack)(Object)itemToGive).getItem();
-                                net.minecraft.item.ItemStack nmsStack = new net.minecraft.item.ItemStack(nmsItem, 1, 32767);
-                                ItemStack newItemStack = (ItemStack)(Object)FurnaceRecipes.instance().getSmeltingResult(nmsStack);
+                                Optional<ItemStackSnapshot> resultingItem = getSmeltingResult(itemToGive);
 
-                                if (!newItemStack.isEmpty()) {
+                                resultingItem.ifPresent(smeltingResult -> {
+                                    ItemStack newItemStack = smeltingResult.createStack();
+
                                     newItemStack.setQuantity(itemToGive.getQuantity());
 
                                     Location<World> location = item.getLocation();
@@ -132,7 +136,7 @@ public class AutoSmelt extends Modifier {
                                     itemsToAdd.add((Item)itemEntity);
 
                                     entityIterator.remove();
-                                }
+                                });
                             }
                         }
                     }
@@ -140,5 +144,9 @@ public class AutoSmelt extends Modifier {
                     event.getEntities().addAll(itemsToAdd);
                 });
         }
+    }
+
+    private Optional<ItemStackSnapshot> getSmeltingResult(ItemStack itemStack) {
+        return smeltingRegistry.getResult(itemStack.createSnapshot()).map(SmeltingResult::getResult);
     }
 }
