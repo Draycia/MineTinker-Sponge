@@ -1,14 +1,18 @@
 package net.draycia.minetinkersponge.listeners;
 
+import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.managers.ModManager;
-import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.modifiers.ModifierApplicationResult;
 import net.draycia.minetinkersponge.utils.MTConfig;
+import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.InteractBlockEvent;
+import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.enchantment.Enchantment;
@@ -16,19 +20,19 @@ import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.entity.MainPlayerInventory;
 import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
+import org.spongepowered.api.util.Tristate;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class InteractListener {
 
     private ModManager modManager = ModManager.getInstance();
 
     @Listener
-    public void onBlockInteract(InteractBlockEvent.Secondary event, @Root Player player) {
+    public void onBookConvert(InteractBlockEvent.Secondary event, @Root Player player) {
         // Ensure the player has permission to convert enchantments to modifiers
         if (!player.hasPermission("minetinker.convertenchants")) {
             return;
@@ -86,6 +90,41 @@ public class InteractListener {
                 }
             });
         });
+    }
+
+    @Listener
+    public void onModifierApply(InteractBlockEvent.Secondary event, @Root Player player) {
+        if (event.getTargetBlock().getState().getType() != BlockTypes.BOOKSHELF) {
+            event.getContext().get(EventContextKeys.USED_ITEM).ifPresent(item -> {
+                if (item.get(MTKeys.IS_MINETINKER).orElse(false) || item.get(MTKeys.MODIFIER_ID).isPresent()) {
+                    event.setCancelled(true);
+                    event.setUseBlockResult(Tristate.FALSE);
+                    event.setUseItemResult(Tristate.FALSE);
+                }
+            });
+
+            return;
+        }
+
+        // TODO: Method to ifPresent numerous optionals?
+
+        player.getItemInHand(HandTypes.MAIN_HAND).ifPresent(mainHandItem -> {
+            player.getItemInHand(HandTypes.OFF_HAND).ifPresent(offHandItem -> {
+                if (offHandItem.get(MTKeys.IS_MINETINKER).orElse(false)) {
+                    mainHandItem.get(MTKeys.MODIFIER_ID).flatMap(modifierId -> modManager.getModifier(modifierId)).ifPresent(modifier -> {
+                        ModifierApplicationResult result = modManager.applyModifier(offHandItem, modifier, false, false, 1);
+
+                        if (result.wasSuccess()) {
+                            mainHandItem.setQuantity(mainHandItem.getQuantity() - 1);
+                        }
+                    });
+                }
+            });
+        });
+
+        event.setCancelled(true);
+        event.setUseBlockResult(Tristate.FALSE);
+        event.setUseItemResult(Tristate.FALSE);
     }
 
 }

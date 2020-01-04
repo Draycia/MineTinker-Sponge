@@ -182,7 +182,6 @@ public class ModManager {
             }
         }
 
-
         // If the modifier applies an enchantment to the item, do so
         if (modifier.getAppliedEnchantment() != null) {
             Optional<List<Enchantment>> enchantments = itemStack.get(Keys.ITEM_ENCHANTMENTS);
@@ -232,6 +231,7 @@ public class ModManager {
         itemStack.offer(MTKeys.MINETINKER_XP, 0);
         itemStack.offer(MTKeys.MINETINKER_LEVEL, 1);
         itemStack.offer(MTKeys.MINETINKER_SLOTS, 1);
+        itemStack.offer(MTKeys.ITEM_MODIFIERS, new HashMap<>());
 
         // Optionally hide enchantments
         if (MTConfig.HIDE_ENCHANTMENTS) {
