@@ -49,13 +49,21 @@ public class CommandManager {
         mainCommand = mainCommand.child(addLevel, "addlevel");
 
         CommandSpec addSlots = CommandSpec.builder()
-                .description(Text.of("Increases the modifier slots of the item.."))
+                .description(Text.of("Increases the modifier slots of the item."))
                 .permission("minetinker.commands.addslots")
                 .arguments(GenericArguments.optional(GenericArguments.integer(Text.of("amount"))))
                 .executor(new AddSlotsCommand())
                 .build();
 
         mainCommand = mainCommand.child(addSlots, "addslots");
+
+        CommandSpec version = CommandSpec.builder()
+                .description(Text.of("Gets the version of the plugin"))
+                .permission("minetinker.commands.version")
+                .executor(new VersionCommand())
+                .build();
+
+        mainCommand = mainCommand.child(version, "version", "v");
 
         if (Sponge.getPluginManager().isLoaded("teslalibs")) {
             CommandSpec modifiers = CommandSpec.builder()
