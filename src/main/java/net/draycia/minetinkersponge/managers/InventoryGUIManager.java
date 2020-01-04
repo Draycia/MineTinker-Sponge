@@ -1,5 +1,6 @@
 package net.draycia.minetinkersponge.managers;
 
+import com.google.inject.Inject;
 import com.mcsimonflash.sponge.teslalibs.inventory.Action;
 import com.mcsimonflash.sponge.teslalibs.inventory.Element;
 import com.mcsimonflash.sponge.teslalibs.inventory.Layout;
@@ -32,24 +33,17 @@ import java.util.function.Consumer;
 
 public class InventoryGUIManager {
 
-    private static View view;
-    private static InventoryGUIManager inventoryGUIManager = null;
+    private View view;
 
-    public static InventoryGUIManager getInstance() {
-        if (inventoryGUIManager == null) {
-            inventoryGUIManager = new InventoryGUIManager();
-        }
+    @Inject private MineTinkerSponge plugin;
 
-        return inventoryGUIManager;
-    }
-
-    private InventoryGUIManager() {
+    public InventoryGUIManager() {
         Layout.Builder layout = Layout.builder();
 
         int index = 0;
 
         // Loop through modifiers
-        for (Map.Entry<String, Modifier> entry : ModManager.getInstance().getAllModifiers().entrySet()) {
+        for (Map.Entry<String, Modifier> entry : ModManager.getAllModifiers().entrySet()) {
             Modifier modifier = entry.getValue();
 
             // Create the item to display in the GUI
@@ -165,7 +159,7 @@ public class InventoryGUIManager {
 
                 View recipeView = View.builder()
                         .property(InventoryTitle.of(Text.of(MTTranslations.MODIFIER, modifier.getName())))
-                        .build(MineTinkerSponge.getContainer());
+                        .build(plugin.getContainer());
 
                 recipeView.define(recipeLayout.build());
 
@@ -182,7 +176,7 @@ public class InventoryGUIManager {
 
         view = View.builder()
                 .property(InventoryTitle.of(Text.of(MTTranslations.MINETINKER_MODIFIERS)))
-                .build(MineTinkerSponge.getContainer());
+                .build(plugin.getContainer());
 
         view.define(layout.build());
     }

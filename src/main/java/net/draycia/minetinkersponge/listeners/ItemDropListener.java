@@ -14,8 +14,6 @@ import org.spongepowered.api.item.inventory.ItemStack;
 
 public class ItemDropListener {
 
-    private ModManager modManager = ModManager.getInstance();
-
     @Listener(order = Order.EARLY)
     public void onItemDrop(DropItemEvent.Destruct event) {
         if (!MTConfig.CONVERT_MOB_DROPS) {
@@ -44,7 +42,7 @@ public class ItemDropListener {
 
             ItemStack newItem = item.item().get().createStack();
 
-            modManager.convertItemStack(newItem, true);
+            ModManager.convertItemStack(newItem, true);
 
             entity.offer(Keys.REPRESENTED_ITEM, newItem.createSnapshot());
         }

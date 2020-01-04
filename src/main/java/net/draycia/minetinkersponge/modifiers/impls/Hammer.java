@@ -31,7 +31,6 @@ import java.util.Optional;
 
 public class Hammer extends Modifier {
 
-    private ModManager modManager;
     private ArrayList<BlockType> blacklistedBlocks = new ArrayList<>();
     private static List<ItemType> compatibleTypes;
 
@@ -89,10 +88,6 @@ public class Hammer extends Modifier {
         return Optional.of(getCraftingRecipe(recipe));
     }
 
-    public Hammer(ModManager modManager) {
-        this.modManager = modManager;
-    }
-
     @Override
     public void onConfigurationSave(ConfigurationNode modifierNode) {
         List<String> entries = new ArrayList<>();
@@ -144,11 +139,11 @@ public class Hammer extends Modifier {
         // TODO: Unsafe
         Location<World> location = event.getTransactions().get(0).getOriginal().getLocation().get();
 
-        if (!modManager.itemHasModifier(itemStack, this)) {
+        if (!ModManager.itemHasModifier(itemStack, this)) {
             return;
         }
 
-        int level = modManager.getModifierLevel(itemStack, this);
+        int level = ModManager.getModifierLevel(itemStack, this);
 
         // TODO: Variable width and height
         // TODO: Account for which block face the player broke

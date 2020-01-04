@@ -1,18 +1,13 @@
 package net.draycia.minetinkersponge.commands;
 
 import net.draycia.minetinkersponge.managers.ModManager;
-import net.draycia.minetinkersponge.modifiers.Modifier;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 
-import java.util.Optional;
-
 public class GiveModifierItemCommand implements CommandExecutor {
-
-    private ModManager modManager = ModManager.getInstance();
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) {
@@ -21,7 +16,7 @@ public class GiveModifierItemCommand implements CommandExecutor {
         }
 
         args.<String>getOne("modifier")
-                .flatMap(modifierName -> modManager.getModifier((modifierName)))
+                .flatMap(modifierName -> ModManager.getModifier((modifierName)))
                 .ifPresent(value -> ((Player) src).getInventory().offer(value.getModifierItem()));
 
         return CommandResult.success();

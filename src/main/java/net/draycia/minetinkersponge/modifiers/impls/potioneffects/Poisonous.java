@@ -25,7 +25,6 @@ import java.util.Optional;
 
 public class Poisonous extends Modifier {
 
-    private ModManager modManager;
     private static List<ItemType> compatibleTypes;
 
     static {
@@ -85,10 +84,6 @@ public class Poisonous extends Modifier {
         Sponge.getEventManager().registerListeners(plugin, this);
     }
 
-    public Poisonous(ModManager modManager) {
-        this.modManager = modManager;
-    }
-
     @Listener
     public void onEntityDamagedByEntity(DamageEntityEvent event) {
         if (!(event.getTargetEntity() instanceof Living)) {
@@ -101,8 +96,8 @@ public class Poisonous extends Modifier {
             Optional<ItemStack> itemStack = player.get().getItemInHand(HandTypes.MAIN_HAND);
 
             if (itemStack.isPresent()) {
-                if (modManager.itemHasModifier(itemStack.get(), this)) {
-                    int level = modManager.getModifierLevel(itemStack.get(), this);
+                if (ModManager.itemHasModifier(itemStack.get(), this)) {
+                    int level = ModManager.getModifierLevel(itemStack.get(), this);
 
                     PotionEffectData potionEffects = event.getTargetEntity().getOrCreate(PotionEffectData.class).get();
                     potionEffects.addElement(PotionEffect.builder().potionType(PotionEffectTypes.POISON).duration(level * 20).amplifier(1).build());

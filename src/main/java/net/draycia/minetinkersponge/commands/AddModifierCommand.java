@@ -16,8 +16,6 @@ import java.util.Optional;
 
 public class AddModifierCommand implements CommandExecutor {
 
-    private ModManager modManager = ModManager.getInstance();
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) {
         if (!(src instanceof Player)) {
@@ -25,14 +23,14 @@ public class AddModifierCommand implements CommandExecutor {
         }
 
         args.<String>getOne("modifier").ifPresent(modifierName -> {
-            Optional<Modifier> optionalModifier = modManager.getModifier(modifierName);
+            Optional<Modifier> optionalModifier = ModManager.getModifier(modifierName);
             Optional<ItemStack> mainItem = ((Player)src).getItemInHand(HandTypes.MAIN_HAND);
 
             mainItem.flatMap(itemStack -> optionalModifier).ifPresent(modifier -> {
                 if (args.getOne("amount").isPresent()) {
-                    modManager.applyModifier(mainItem.get(), modifier, true, true, (int)args.getOne("amount").get());
+                    ModManager.applyModifier(mainItem.get(), modifier, true, true, (int)args.getOne("amount").get());
                 } else {
-                    modManager.applyModifier(mainItem.get(), modifier, true, true, 1);
+                    ModManager.applyModifier(mainItem.get(), modifier, true, true, 1);
                 }
 
                 src.sendMessage(Text.of(TextColors.GREEN, "Added modifier ", modifier.getName(), "!"));

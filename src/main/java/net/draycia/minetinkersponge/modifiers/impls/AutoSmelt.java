@@ -31,8 +31,6 @@ import java.util.*;
 
 public class AutoSmelt extends Modifier {
 
-    private ModManager modManager;
-
     private SmeltingRecipeRegistry smeltingRegistry = Sponge.getGame().getRegistry().getSmeltingRecipeRegistry();
 
     private List<ItemType> compatibleTypes = ImmutableList.<ItemType>builder()
@@ -40,10 +38,6 @@ public class AutoSmelt extends Modifier {
                 .addAll(ItemTypeUtils.AXES)
                 .addAll(ItemTypeUtils.SHOVELS)
                 .build();
-
-    public AutoSmelt(ModManager modManager) {
-        this.modManager = modManager;
-    }
 
     @Override
     public List<ItemType> getCompatibleItems() {
@@ -103,7 +97,7 @@ public class AutoSmelt extends Modifier {
         if (context.containsKey(EventContextKeys.BLOCK_HIT)) {
             // Get the item in the player's main hand
             context.get(EventContextKeys.USED_ITEM)
-                .filter(itemStack -> modManager.itemHasModifier(itemStack, this))
+                .filter(itemStack -> ModManager.itemHasModifier(itemStack, this))
                 .ifPresent(itemStack -> {
                     List<Item> itemsToAdd = new LinkedList<>();
 

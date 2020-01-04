@@ -24,7 +24,7 @@ public abstract class MixinLootTable {
         }
 
         for (ItemStack itemStack : (List<ItemStack>)list) {
-            ModManager.getInstance().convertItemStack(((org.spongepowered.api.item.inventory.ItemStack)(Object)itemStack), true);
+            ModManager.convertItemStack(((org.spongepowered.api.item.inventory.ItemStack)(Object)itemStack), true);
         }
     }
 

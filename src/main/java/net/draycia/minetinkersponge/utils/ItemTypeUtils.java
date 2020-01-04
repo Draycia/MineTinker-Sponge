@@ -3,8 +3,6 @@ package net.draycia.minetinkersponge.utils;
 import com.google.common.collect.ImmutableList;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.item.ItemType;
-import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.item.recipe.crafting.CraftingRecipeRegistry;
 
 import java.util.ArrayList;
 import java.util.List;

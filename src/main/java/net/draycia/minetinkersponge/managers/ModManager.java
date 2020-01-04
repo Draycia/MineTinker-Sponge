@@ -25,21 +25,11 @@ import java.util.*;
 
 public class ModManager {
 
-    private TreeMap<String, Modifier> modifiers = new TreeMap<>();
-    private Random random = new Random();
+    private static TreeMap<String, Modifier> modifiers = new TreeMap<>();
+    private static Random random = new Random();
 
-    public TreeMap<String, Modifier> getAllModifiers() {
+    public static TreeMap<String, Modifier> getAllModifiers() {
         return modifiers;
-    }
-
-    private static ModManager modManager = null;
-
-    public static ModManager getInstance() {
-        if (modManager == null) {
-            modManager = new ModManager();
-        }
-
-        return modManager;
     }
 
     @Listener
@@ -53,7 +43,7 @@ public class ModManager {
      * @param modifier The modifier instance to register
      * @return If the registration was a success. My return false if a modifier with the key already exists.
      */
-    public boolean registerModifier(Object plugin, Modifier modifier) {
+    public static boolean registerModifier(Object plugin, Modifier modifier) {
         // Only allow one modifier to have the same key, first come first serve.
          if (modifiers.containsKey(modifier.getKey())) {
              return false;
@@ -68,7 +58,7 @@ public class ModManager {
          return true;
     }
 
-    public void unregisterModifier(Modifier modifier) {
+    public static void unregisterModifier(Modifier modifier) {
         modifiers.remove(modifier.getKey());
     }
 
@@ -77,7 +67,7 @@ public class ModManager {
      * @param key The key of the modifier
      * @return The modifier
      */
-    public Optional<Modifier> getModifier(String key) {
+    public static Optional<Modifier> getModifier(String key) {
         return Optional.ofNullable(modifiers.get(key));
     }
 
@@ -87,7 +77,7 @@ public class ModManager {
      * @param modifier The modifier
      * @return True if the item has the modifier
      */
-    public boolean itemHasModifier(ItemStack itemStack, Modifier modifier) {
+    public static boolean itemHasModifier(ItemStack itemStack, Modifier modifier) {
         return dataHolderHasModifier(itemStack, modifier);
     }
 
@@ -97,7 +87,7 @@ public class ModManager {
      * @param modifier The modifier
      * @return True if the item has the modifier
      */
-    public boolean itemHasModifier(ItemStackSnapshot itemStack, Modifier modifier) {
+    public static boolean itemHasModifier(ItemStackSnapshot itemStack, Modifier modifier) {
         return dataHolderHasModifier(itemStack, modifier);
     }
 
@@ -108,7 +98,7 @@ public class ModManager {
      * @param <T> An object that extends {@link ValueContainer}, and thus implements {@link ValueContainer#get(Key)}
      * @return If the object contains the modifier
      */
-    private <T extends ValueContainer> boolean dataHolderHasModifier(T valueContainer, Modifier modifier) {
+    public static <T extends ValueContainer> boolean dataHolderHasModifier(T valueContainer, Modifier modifier) {
         return ((Optional<Map<String, Integer>>) valueContainer.get(MTKeys.ITEM_MODIFIERS))
                 .map(map -> map.containsKey(modifier.getKey()))
                 .orElse(false);
@@ -119,7 +109,7 @@ public class ModManager {
      * @param itemStack The item to remove the modifier from
      * @param modifier The modifier to be removed from the item
      */
-    public void removeModifier(ItemStack itemStack, Modifier modifier) {
+    public static void removeModifier(ItemStack itemStack, Modifier modifier) {
         Map<String, Integer> modifiers = getItemModifierLevels(itemStack);
 
         modifiers.remove(modifier.getKey());
@@ -134,7 +124,7 @@ public class ModManager {
      * @param amount The level to set the modifier to, or add if the item already has the modifier on it
      * @return A {@link ModifierApplicationResult result} saying if the application was successful and the new item if successful
      */
-    public ModifierApplicationResult applyModifier(ItemStack itemStack, Modifier modifier, boolean ignoreSlots, boolean shouldIgnoreChance, int amount) {
+    public static ModifierApplicationResult applyModifier(ItemStack itemStack, Modifier modifier, boolean ignoreSlots, boolean shouldIgnoreChance, int amount) {
         // Check if the modifier is compatible with the item
         if (modifier.getCompatibleItems() != null && !modifier.isCompatibleWithItem(itemStack.getType())) {
             return new ModifierApplicationResult(null, MTTranslations.RESULT_INCOMPATIBLE_TOOL);
@@ -213,7 +203,7 @@ public class ModManager {
      *
      * @param itemStack The item to add data to and make compatible
      */
-    public void convertItemStack(ItemStack itemStack, boolean canExceedMaxLevel) {
+    public static void convertItemStack(ItemStack itemStack, boolean canExceedMaxLevel) {
         // Check if the item is compatible with the plugin
         if (!ItemTypeUtils.ALL_TYPES.contains(itemStack.getType())) {
             return;
@@ -273,7 +263,7 @@ public class ModManager {
      * @param enchantment The enchantment that the returned modifier will apply to items
      * @return The first modifier found that applies the desired enchantment
      */
-    public Optional<Modifier> getFirstModifierByEnchantment(EnchantmentType enchantment) {
+    public static Optional<Modifier> getFirstModifierByEnchantment(EnchantmentType enchantment) {
         for (Modifier modifier : modifiers.values()) {
             if (modifier.getAppliedEnchantment() != null && modifier.getAppliedEnchantment() == enchantment) {
                 return Optional.of(modifier);
@@ -289,7 +279,7 @@ public class ModManager {
      * @param modifier The modifier to get the level of
      * @return The level of the modifier
      */
-    public <T extends ValueContainer> int getModifierLevel(T valueContainer, Modifier modifier) {
+    public static <T extends ValueContainer> int getModifierLevel(T valueContainer, Modifier modifier) {
         return getItemModifierLevels(valueContainer).getOrDefault(modifier.getKey(), 0);
     }
 
@@ -298,7 +288,7 @@ public class ModManager {
      * @param modifier The {@link Modifier} to apply to the item
      * @param amount The level to set the modifier to on the item
      */
-    public void setModifierLevel(ItemStack itemStack, Modifier modifier, int amount) {
+    public static void setModifierLevel(ItemStack itemStack, Modifier modifier, int amount) {
         Map<String, Integer> itemModifierLevels = getItemModifierLevels(itemStack);
 
         itemModifierLevels.put(modifier.getKey(), amount);
@@ -310,11 +300,11 @@ public class ModManager {
      * @param valueContainer The object implementing {@link ValueContainer} to get the modifier levels of
      * @return A map containing the key of each modifier and its corresponding level
      */
-    public <T extends ValueContainer> Map<String, Integer> getItemModifierLevels(T valueContainer) {
+    public static <T extends ValueContainer> Map<String, Integer> getItemModifierLevels(T valueContainer) {
         return (Map<String, Integer>) valueContainer.get(MTKeys.ITEM_MODIFIERS).orElse(new HashMap<>());
     }
 
-    public List<Modifier> getItemAppliedModifiers(ItemStack itemStack) {
+    public static List<Modifier> getItemAppliedModifiers(ItemStack itemStack) {
         ArrayList<Modifier> modifiers = new ArrayList<>();
 
         for (Map.Entry<String, Integer> entry : getItemModifierLevels(itemStack).entrySet()) {
@@ -328,7 +318,7 @@ public class ModManager {
      *
      * @param itemStack The item to have its lore updated
      */
-    public void rewriteItemLore(ItemStack itemStack) {
+    public static void rewriteItemLore(ItemStack itemStack) {
         Map<String, Integer> itemModifierLevels = getItemModifierLevels(itemStack);
 
         ArrayList<Text> lore = new ArrayList<>();
@@ -388,7 +378,7 @@ public class ModManager {
      * @param itemStack The item to give experience to
      * @param experience The amount of experience to give.
      */
-    public void addExperience(ItemStack itemStack, int experience) {
+    public static void addExperience(ItemStack itemStack, int experience) {
         Optional<Integer> current = itemStack.get(MTKeys.MINETINKER_XP);
 
         if (current.isPresent()) {
@@ -410,7 +400,7 @@ public class ModManager {
      *
      * @param itemStack The item to increment the level of
      */
-    public boolean incrementItemLevel(ItemStack itemStack) {
+    public static boolean incrementItemLevel(ItemStack itemStack) {
         Optional<Integer> level = itemStack.get(MTKeys.MINETINKER_LEVEL);
 
         if (level.isPresent()) {
@@ -434,7 +424,7 @@ public class ModManager {
      *
      * @param itemStack The item to increment the modifier slot amount of
      */
-    public void incrementItemModifierSlots(ItemStack itemStack) {
+    public static void incrementItemModifierSlots(ItemStack itemStack) {
         Optional<Integer> slots = itemStack.get(MTKeys.MINETINKER_SLOTS);
 
         if (slots.isPresent()) {
@@ -449,7 +439,7 @@ public class ModManager {
      * @param itemStack The item to set the modifier slot count of
      * @param level The amount of slots the item will have
      */
-    public void setItemModifierSlots(ItemStack itemStack, int level) {
+    public static void setItemModifierSlots(ItemStack itemStack, int level) {
         itemStack.offer(MTKeys.MINETINKER_SLOTS, level);
     }
 
@@ -458,7 +448,7 @@ public class ModManager {
      * @param itemStack The item to get the number of slots from
      * @return The amount of slots the item has
      */
-    public int getItemModifierSlots(ItemStack itemStack) {
+    public static int getItemModifierSlots(ItemStack itemStack) {
         return itemStack.get(MTKeys.MINETINKER_SLOTS).orElse(0);
     }
 
@@ -467,7 +457,7 @@ public class ModManager {
      * @param itemStack The item to get the remaining experience from
      * @return The amount of experience the item needs to get in order to level up
      */
-    public double getExperienceRequiredToLevel(ItemStack itemStack) {
+    public static double getExperienceRequiredToLevel(ItemStack itemStack) {
         return itemStack.get(MTKeys.MINETINKER_LEVEL)
                 .map(integer -> 100 * (Math.pow(2, integer - 1)))
                 .orElse(0.0);

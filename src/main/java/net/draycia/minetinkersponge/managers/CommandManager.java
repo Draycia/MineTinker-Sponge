@@ -1,5 +1,6 @@
 package net.draycia.minetinkersponge.managers;
 
+import com.google.inject.Inject;
 import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.commands.*;
 import org.spongepowered.api.Sponge;
@@ -9,7 +10,9 @@ import org.spongepowered.api.text.Text;
 
 public class CommandManager {
 
-    public static void registerCommands() {
+    @Inject private MineTinkerSponge plugin;
+
+    public CommandManager() {
         // Command Root
         CommandSpec.Builder mainCommand = CommandSpec.builder();
 
@@ -75,7 +78,7 @@ public class CommandManager {
             mainCommand = mainCommand.child(modifiers, "modifiers", "mods");
         }
 
-        Sponge.getCommandManager().register(MineTinkerSponge.getContainer(), mainCommand.build(), "mt", "minetinker");
+        Sponge.getCommandManager().register(plugin.getContainer(), mainCommand.build(), "mt", "minetinker");
     }
 
 }

@@ -11,8 +11,6 @@ import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 
 public class FishingListener {
 
-    private ModManager modManager = ModManager.getInstance();
-
     @Listener
     public void onFish(FishingEvent.Stop event) {
         if (!MTConfig.CONVERT_FISHING_LOOT) {
@@ -23,7 +21,7 @@ public class FishingListener {
             ItemStack item = snapshot.getFinal().createStack();
 
             if (ItemTypeUtils.ALL_TYPES.contains(item.getType())) {
-                modManager.convertItemStack(item, true);
+                ModManager.convertItemStack(item, true);
                 snapshot.setCustom(item.createSnapshot());
             }
         }

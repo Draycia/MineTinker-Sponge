@@ -13,8 +13,6 @@ import java.util.Optional;
 
 public class ConvertItemCommand implements CommandExecutor {
 
-    private ModManager modManager = ModManager.getInstance();
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) {
         if (!(src instanceof Player)) {
@@ -23,7 +21,7 @@ public class ConvertItemCommand implements CommandExecutor {
 
         Optional<ItemStack> mainItem = ((Player)src).getItemInHand(HandTypes.MAIN_HAND);
 
-        mainItem.ifPresent(itemStack -> modManager.convertItemStack(itemStack, src.hasPermission("minetinker.commands.convertitem.exceedcap")));
+        mainItem.ifPresent(itemStack -> ModManager.convertItemStack(itemStack, src.hasPermission("minetinker.commands.convertitem.exceedcap")));
 
         return CommandResult.success();
     }

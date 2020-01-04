@@ -25,8 +25,6 @@ import java.util.Optional;
 
 public class Grounding extends Modifier {
 
-    private ModManager modManager;
-
     private List<ItemType> compatibleTypes = ImmutableList.<ItemType>builder()
             .addAll(ItemTypeUtils.BOOTS)
             .build();
@@ -81,10 +79,6 @@ public class Grounding extends Modifier {
         return getDescription("Damages nearby entities and knocks them back when you take fall damage.");
     }
 
-    public Grounding(ModManager modManager) {
-        this.modManager = modManager;
-    }
-
     @Listener
     public void onPlayerDamage(DamageEntityEvent event, @Root DamageSource source) {
         // TODO: Scale damage off of level
@@ -99,7 +93,7 @@ public class Grounding extends Modifier {
         Vector3d playerPosition = player.getPosition();
 
         // Ensure the player has boots with the modifier
-        if (!player.getBoots().isPresent() || !modManager.itemHasModifier(player.getBoots().get(), this)) {
+        if (!player.getBoots().isPresent() || !ModManager.itemHasModifier(player.getBoots().get(), this)) {
             return;
         }
 

@@ -7,15 +7,13 @@ import org.spongepowered.api.event.item.inventory.CraftItemEvent;
 
 public class InventoryListener {
 
-    private ModManager modManager = ModManager.getInstance();
-
     @Listener
     public void onItemCraft(CraftItemEvent.Preview event) {
         event.getPreview().getSlot().peek()
                 .filter(itemStack -> ItemTypeUtils.ALL_TYPES.contains(itemStack.getType()))
                 .ifPresent(itemStack -> {
 
-                modManager.convertItemStack(itemStack, true);
+                ModManager.convertItemStack(itemStack, true);
                 event.getPreview().setCustom(itemStack);
         });
     }

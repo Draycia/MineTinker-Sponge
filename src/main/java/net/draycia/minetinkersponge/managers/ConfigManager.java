@@ -1,5 +1,6 @@
 package net.draycia.minetinkersponge.managers;
 
+import com.google.inject.Inject;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.MTTranslations;
@@ -14,7 +15,6 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.item.ItemType;
-import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 import org.spongepowered.api.util.TypeTokens;
@@ -33,14 +33,14 @@ public class ConfigManager {
     private ConfigurationLoader<CommentedConfigurationNode> configLoader;
     private ConfigurationNode mainConfig;
     private Logger logger;
-    private ModManager modManager;
 
-    public ConfigManager(Path configDir, Path defaultConfig, ConfigurationLoader<CommentedConfigurationNode> configLoader, Logger logger, ModManager modManager) {
+    @Inject ModManager ModManager;
+
+    public ConfigManager(Path configDir, Path defaultConfig, ConfigurationLoader<CommentedConfigurationNode> configLoader, Logger logger) {
         this.configDir = configDir;
         this.defaultConfig = defaultConfig;
         this.configLoader = configLoader;
         this.logger = logger;
-        this.modManager = modManager;
     }
 
     public void reloadConfig() {
@@ -79,7 +79,7 @@ public class ConfigManager {
             }
 
             // Modifier configurations
-            for (Modifier modifier : modManager.getAllModifiers().values()) {
+            for (Modifier modifier : ModManager.getAllModifiers().values()) {
                 File modifierFile = new File(modifierDirectory, modifier.getKey() + ".conf");
                 ConfigurationLoader<CommentedConfigurationNode> modifierLoader = HoconConfigurationLoader.builder().setFile(modifierFile).build();
                 ConfigurationNode modifierNode = modifierLoader.load();
@@ -93,7 +93,7 @@ public class ConfigManager {
                     // TODO: Dynamically load in default modifiers and their configs
                     //    Modifier config names share the modifier's key name
                     if (!modifierNode.getNode("enabled").getBoolean()) {
-                        modManager.unregisterModifier(modifier);
+                        ModManager.unregisterModifier(modifier);
                         Sponge.getEventManager().unregisterListeners(modifier);
                     }
                 }

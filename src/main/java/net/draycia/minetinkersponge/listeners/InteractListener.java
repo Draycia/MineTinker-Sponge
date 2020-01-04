@@ -29,8 +29,6 @@ import java.util.List;
 
 public class InteractListener {
 
-    private ModManager modManager = ModManager.getInstance();
-
     @Listener
     public void onBookConvert(InteractBlockEvent.Secondary event, @Root Player player) {
         // Ensure the player has permission to convert enchantments to modifiers
@@ -56,7 +54,7 @@ public class InteractListener {
                 // Loop through all enchantments the book has
                 for (Enchantment enchantment : enchantments) {
                     // Try to find any modifier that applies the enchantment
-                    modManager.getFirstModifierByEnchantment(enchantment.getType()).ifPresent(modifier -> {
+                    ModManager.getFirstModifierByEnchantment(enchantment.getType()).ifPresent(modifier -> {
                         // Give the player the modifier
                         ItemStack modifierItem = modifier.getModifierItem(enchantment.getLevel());
 
@@ -111,8 +109,8 @@ public class InteractListener {
         player.getItemInHand(HandTypes.MAIN_HAND).ifPresent(mainHandItem -> {
             player.getItemInHand(HandTypes.OFF_HAND).ifPresent(offHandItem -> {
                 if (offHandItem.get(MTKeys.IS_MINETINKER).orElse(false)) {
-                    mainHandItem.get(MTKeys.MODIFIER_ID).flatMap(modifierId -> modManager.getModifier(modifierId)).ifPresent(modifier -> {
-                        ModifierApplicationResult result = modManager.applyModifier(offHandItem, modifier, false, false, 1);
+                    mainHandItem.get(MTKeys.MODIFIER_ID).flatMap(ModManager::getModifier).ifPresent(modifier -> {
+                        ModifierApplicationResult result = ModManager.applyModifier(offHandItem, modifier, false, false, 1);
 
                         if (result.wasSuccess()) {
                             mainHandItem.setQuantity(mainHandItem.getQuantity() - 1);

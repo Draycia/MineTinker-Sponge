@@ -1,6 +1,7 @@
 package net.draycia.minetinkersponge;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import net.draycia.minetinkersponge.data.DataRegistrar;
 import net.draycia.minetinkersponge.listeners.*;
 import net.draycia.minetinkersponge.managers.*;
@@ -53,36 +54,31 @@ public class MineTinkerSponge {
     private Logger logger;
 
     private ConfigManager configManager;
+    private InventoryGUIManager guiManager = null;
 
-    private static PluginContainer pluginContainer = null;
-    private static MineTinkerSponge mineTinkerSponge = null;
-
-    public static PluginContainer getContainer() {
-        return pluginContainer;
-    }
-
-    public static MineTinkerSponge getInstance() {
-        return mineTinkerSponge;
+    public PluginContainer getContainer() {
+        return container;
     }
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
-        DataRegistrar.registerDataManipulators();
+        SimpleBinderModule module = new SimpleBinderModule(this);
+        Injector injector = module.createInjector();
+        injector.injectMembers(this);
 
-        mineTinkerSponge = this;
-        pluginContainer = container;
+        DataRegistrar.registerDataManipulators();
 
         registerModifiers();
 
-        configManager = new ConfigManager(configDir, defaultConfig, configLoader, logger, ModManager.getInstance());
+        configManager = new ConfigManager(configDir, defaultConfig, configLoader, logger);
         configManager.reloadConfig();
 
-        CommandManager.registerCommands();
+        new CommandManager();
 
         registerListeners();
 
         if (Sponge.getPluginManager().isLoaded("teslalibs")) {
-            InventoryGUIManager.getInstance();
+            guiManager = new InventoryGUIManager();
         }
     }
 
@@ -92,55 +88,53 @@ public class MineTinkerSponge {
     }
 
     private void registerModifiers() {
-        ModManager modManager = ModManager.getInstance();
-
         // Enchantment Modifiers
-        modManager.registerModifier(this, new AquaAffinity());
-        modManager.registerModifier(this, new BaneOfArthropods());
-        modManager.registerModifier(this, new BindingCurse());
-        modManager.registerModifier(this, new BlastProtection());
-        modManager.registerModifier(this, new DepthStrider());
-        modManager.registerModifier(this, new Efficiency());
-        modManager.registerModifier(this, new FeatherFalling());
-        modManager.registerModifier(this, new FireAspect());
-        modManager.registerModifier(this, new FireProtection());
-        modManager.registerModifier(this, new Flame());
-        modManager.registerModifier(this, new Fortune());
-        modManager.registerModifier(this, new FrostWalker());
-        modManager.registerModifier(this, new Infinity());
-        modManager.registerModifier(this, new Knockback());
-        modManager.registerModifier(this, new Looting());
-        modManager.registerModifier(this, new LuckOfTheSea());
-        modManager.registerModifier(this, new Lure());
-        modManager.registerModifier(this, new Mending());
-        modManager.registerModifier(this, new Power());
-        modManager.registerModifier(this, new ProjectileProtection());
-        modManager.registerModifier(this, new Protection());
-        modManager.registerModifier(this, new Punch());
-        modManager.registerModifier(this, new Respiration());
-        modManager.registerModifier(this, new Sharpness());
-        modManager.registerModifier(this, new SilkTouch());
-        modManager.registerModifier(this, new Smite());
-        modManager.registerModifier(this, new Sweeping());
-        modManager.registerModifier(this, new Thorns());
-        modManager.registerModifier(this, new Unbreaking());
-        modManager.registerModifier(this, new VanishingCurse());
+        ModManager.registerModifier(this, new AquaAffinity());
+        ModManager.registerModifier(this, new BaneOfArthropods());
+        ModManager.registerModifier(this, new BindingCurse());
+        ModManager.registerModifier(this, new BlastProtection());
+        ModManager.registerModifier(this, new DepthStrider());
+        ModManager.registerModifier(this, new Efficiency());
+        ModManager.registerModifier(this, new FeatherFalling());
+        ModManager.registerModifier(this, new FireAspect());
+        ModManager.registerModifier(this, new FireProtection());
+        ModManager.registerModifier(this, new Flame());
+        ModManager.registerModifier(this, new Fortune());
+        ModManager.registerModifier(this, new FrostWalker());
+        ModManager.registerModifier(this, new Infinity());
+        ModManager.registerModifier(this, new Knockback());
+        ModManager.registerModifier(this, new Looting());
+        ModManager.registerModifier(this, new LuckOfTheSea());
+        ModManager.registerModifier(this, new Lure());
+        ModManager.registerModifier(this, new Mending());
+        ModManager.registerModifier(this, new Power());
+        ModManager.registerModifier(this, new ProjectileProtection());
+        ModManager.registerModifier(this, new Protection());
+        ModManager.registerModifier(this, new Punch());
+        ModManager.registerModifier(this, new Respiration());
+        ModManager.registerModifier(this, new Sharpness());
+        ModManager.registerModifier(this, new SilkTouch());
+        ModManager.registerModifier(this, new Smite());
+        ModManager.registerModifier(this, new Sweeping());
+        ModManager.registerModifier(this, new Thorns());
+        ModManager.registerModifier(this, new Unbreaking());
+        ModManager.registerModifier(this, new VanishingCurse());
 
         // Custom Modifiers
-        modManager.registerModifier(this, new AutoSmelt(modManager));
-        modManager.registerModifier(this, new Directing(modManager));
-        modManager.registerModifier(this, new Grounding(modManager));
-        //modManager.registerModifier(this, new Hammer(modManager));
-        modManager.registerModifier(this, new Kinetic(modManager));
+        ModManager.registerModifier(this, new AutoSmelt());
+        ModManager.registerModifier(this, new Directing());
+        ModManager.registerModifier(this, new Grounding());
+        //ModManager.registerModifier(this, new Hammer(ModManager));
+        ModManager.registerModifier(this, new Kinetic());
 
         // Potion Modifiers
-        modManager.registerModifier(this, new Poisonous(modManager));
-        modManager.registerModifier(this, new InstantDamage(modManager));
+        ModManager.registerModifier(this, new Poisonous());
+        ModManager.registerModifier(this, new InstantDamage());
 
         // Upgrade Modifiers
-        modManager.registerModifier(this, new IronUpgrade(modManager));
-        modManager.registerModifier(this, new GoldUpgrade(modManager));
-        modManager.registerModifier(this, new DiamondUpgrade(modManager));
+        ModManager.registerModifier(this, new IronUpgrade());
+        ModManager.registerModifier(this, new GoldUpgrade());
+        ModManager.registerModifier(this, new DiamondUpgrade());
     }
 
     private void registerListeners() {
@@ -152,7 +146,10 @@ public class MineTinkerSponge {
         Sponge.getEventManager().registerListeners(this, new FishingListener());
         Sponge.getEventManager().registerListeners(this, new DamageListener());
         Sponge.getEventManager().registerListeners(this, new AnvilListener());
-        Sponge.getEventManager().registerListeners(this, ModManager.getInstance());
+        Sponge.getEventManager().registerListeners(this, new ModManager());
     }
 
+    public InventoryGUIManager getGuiManager() {
+        return guiManager;
+    }
 }

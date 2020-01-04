@@ -25,7 +25,6 @@ import java.util.Optional;
 
 public class InstantDamage extends Modifier {
 
-    private ModManager modManager;
     private static List<ItemType> compatibleTypes;
 
     static {
@@ -85,10 +84,6 @@ public class InstantDamage extends Modifier {
         Sponge.getEventManager().registerListeners(plugin, this);
     }
 
-    public InstantDamage(ModManager modManager) {
-        this.modManager = modManager;
-    }
-
     @Listener
     public void onEntityDamagedByEntity(DamageEntityEvent event) {
         if (!(event.getTargetEntity() instanceof Living)) {
@@ -101,7 +96,7 @@ public class InstantDamage extends Modifier {
             Optional<ItemStack> itemStack = player.get().getItemInHand(HandTypes.MAIN_HAND);
 
             if (itemStack.isPresent()) {
-                if (modManager.itemHasModifier(itemStack.get(), this)) {
+                if (ModManager.itemHasModifier(itemStack.get(), this)) {
                     PotionEffectData potionEffects = event.getTargetEntity().getOrCreate(PotionEffectData.class).get();
                     potionEffects.addElement(PotionEffect.builder().potionType(PotionEffectTypes.INSTANT_DAMAGE).duration(1).amplifier(1).build());
                 }

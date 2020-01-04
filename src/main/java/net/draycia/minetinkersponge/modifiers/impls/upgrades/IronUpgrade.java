@@ -17,8 +17,6 @@ import java.util.Optional;
 
 public class IronUpgrade extends Modifier {
 
-    private ModManager modManager;
-
     private static HashMap<ItemType, ItemType> conversions = new HashMap<>();
 
     static {
@@ -35,10 +33,6 @@ public class IronUpgrade extends Modifier {
     }
 
     private static List<ItemType> compatibleTypes = new ArrayList<>(conversions.keySet());
-
-    public IronUpgrade(ModManager modManager) {
-        this.modManager = modManager;
-    }
 
     @Override
     public String getName() {
@@ -67,7 +61,7 @@ public class IronUpgrade extends Modifier {
 
     @Override
     public ItemStack onModifierApplication(ItemStack itemStack, int level) {
-        modManager.incrementItemModifierSlots(itemStack);
+        ModManager.incrementItemModifierSlots(itemStack);
 
         int desiredLevel = ItemTypeUtils.getMaterialCost(itemStack.getType());
 

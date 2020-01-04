@@ -35,7 +35,6 @@ import java.util.Optional;
 
 public class Directing extends Modifier {
 
-    private ModManager modManager;
     private static List<ItemType> compatibleTypes;
 
     static {
@@ -101,10 +100,6 @@ public class Directing extends Modifier {
         return getDescription("Drops from breaking blocks and killing mobs will instantly be placed in your inventory.");
     }
 
-    public Directing(ModManager modManager) {
-        this.modManager = modManager;
-    }
-
     private ImmutableList<EventContextKey> whitelistedContexts = ImmutableList.<EventContextKey>builder()
             .add(EventContextKeys.BLOCK_HIT)
             .add(EventContextKeys.SPAWN_TYPE)
@@ -124,9 +119,9 @@ public class Directing extends Modifier {
 
             ItemStack itemStack = null;
 
-            if (mainHand.isPresent() && modManager.itemHasModifier(mainHand.get(), this)) {
+            if (mainHand.isPresent() && ModManager.itemHasModifier(mainHand.get(), this)) {
                 itemStack = mainHand.get();
-            } else if (offHand.isPresent() && modManager.itemHasModifier(offHand.get(), this)){
+            } else if (offHand.isPresent() && ModManager.itemHasModifier(offHand.get(), this)){
                 itemStack = offHand.get();
             }
 
@@ -149,7 +144,7 @@ public class Directing extends Modifier {
         if (!Collections.disjoint(context.keySet(), whitelistedContexts)) {
             // Get the item in the player's main hand
             context.get(EventContextKeys.USED_ITEM)
-                    .filter(itemStack -> modManager.itemHasModifier(itemStack, this))
+                    .filter(itemStack -> ModManager.itemHasModifier(itemStack, this))
                     .ifPresent(itemStack -> {
 
                 transferDrops(player, event.getEntities());

@@ -23,7 +23,6 @@ import java.util.Optional;
 
 public class Kinetic extends Modifier {
 
-    private ModManager modManager;
     private float reductionPercentPerLevel = 100.0f;
     private static List<ItemType> compatibleTypes;
 
@@ -95,10 +94,6 @@ public class Kinetic extends Modifier {
         this.reductionPercentPerLevel = modifierNode.getNode("reductionPercentPerLevel").getInt();
     }
 
-    public Kinetic(ModManager modManager) {
-        this.modManager = modManager;
-    }
-
     @Listener
     public void onPlayerDamage(DamageEntityEvent event, @Root DamageSource source) {
         if (!(event.getTargetEntity() instanceof Player)) {
@@ -113,7 +108,7 @@ public class Kinetic extends Modifier {
         }
 
         if (player.getChestplate().isPresent()) {
-            int modifierLevel = modManager.getModifierLevel(player.getChestplate().get(), this);
+            int modifierLevel = ModManager.getModifierLevel(player.getChestplate().get(), this);
 
             if (modifierLevel > 0) {
                 float reductionPercent = modifierLevel * getReductionPercentPerLevel();

@@ -7,7 +7,6 @@ import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.cause.EventContextKey;
 import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.cause.entity.damage.DamageFunction;
 import org.spongepowered.api.event.cause.entity.damage.DamageModifierTypes;
@@ -20,13 +19,10 @@ import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.equipment.EquipmentInventory;
 import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
-import org.spongepowered.api.service.context.Context;
 
 import java.util.Optional;
 
 public class DamageListener {
-
-    private ModManager modManager = ModManager.getInstance();
 
     @Listener
     public void onPlayerDamage(DamageEntityEvent event, @Root DamageSource source) {
@@ -41,7 +37,7 @@ public class DamageListener {
                     .ifPresent(mainHand -> {
 
                 if (mainHand.get(MTKeys.IS_MINETINKER).orElse(false)) {
-                    modManager.addExperience(mainHand, 1);
+                    ModManager.addExperience(mainHand, 1);
                 }
             });
 
@@ -69,12 +65,12 @@ public class DamageListener {
             Optional<ItemStack> mainHand = player.getItemInHand(HandTypes.MAIN_HAND);
 
             if (mainHand.isPresent()) {
-                modManager.addExperience(mainHand.get(), experienceToGive);
+                ModManager.addExperience(mainHand.get(), experienceToGive);
             } else {
                 Optional<ItemStack> offHand = player.getItemInHand(HandTypes.OFF_HAND);
 
                 if (offHand.isPresent()) {
-                    modManager.addExperience(offHand.get(), experienceToGive);
+                    ModManager.addExperience(offHand.get(), experienceToGive);
                 }
             }
 
@@ -90,7 +86,7 @@ public class DamageListener {
                     Boolean isMineTinker = itemStack.get(MTKeys.IS_MINETINKER).orElse(false);
 
                     if (isMineTinker) {
-                        modManager.addExperience(itemStack, 1);
+                        ModManager.addExperience(itemStack, 1);
                         slot.set(itemStack); // This is necessary. I assume somewhere the item is copied.
                     }
 
