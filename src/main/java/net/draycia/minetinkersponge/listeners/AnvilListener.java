@@ -1,5 +1,6 @@
 package net.draycia.minetinkersponge.listeners;
 
+import net.draycia.minetinkersponge.utils.MTConfig;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
@@ -10,8 +11,10 @@ public class AnvilListener {
 
     @Listener
     public void onAnvilClick(InteractBlockEvent.Secondary event, @First Player player) {
-        if (event.getTargetBlock().getState().getType() == BlockTypes.ANVIL) {
-            event.setCancelled(true);
+        if (MTConfig.DISABLE_ANVILS) {
+            if (event.getTargetBlock().getState().getType() == BlockTypes.ANVIL) {
+                event.setCancelled(true);
+            }
         }
     }
 }

@@ -26,6 +26,9 @@ public class MTConfig {
     @Setting(value = "disableEnchantingTables", comment = "Determines if vanilla enchanting tables can be used by players or not.")
     public static boolean DISABLE_ENCHANTING_TABLES = true;
 
+    @Setting(value = "disableAnvils", comment = "Determines if vanilla anvils can be used by players or not.")
+    public static boolean DISABLE_ANVILS = true;
+
     @Setting(value = "preventEnchantedBookUse", comment = "Determines if vanilla enchanted books can be used on items.")
     public static boolean DISABLE_ENCHANTED_BOOKS = true;
 
