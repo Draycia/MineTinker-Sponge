@@ -1,5 +1,6 @@
 package net.draycia.minetinkersponge.managers;
 
+import com.google.inject.Inject;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.MTTranslations;
@@ -13,6 +14,8 @@ import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
+import org.spongepowered.api.config.ConfigDir;
+import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
@@ -33,7 +36,11 @@ public class ConfigManager {
     private ConfigurationNode mainConfig;
     private Logger logger;
 
-    public ConfigManager(Path configDir, Path defaultConfig, ConfigurationLoader<CommentedConfigurationNode> configLoader, Logger logger) {
+    @Inject
+    public ConfigManager(@ConfigDir(sharedRoot = false) Path configDir, @DefaultConfig(sharedRoot = false) Path defaultConfig,
+                         @DefaultConfig(sharedRoot = false) ConfigurationLoader<CommentedConfigurationNode> configLoader,
+                         Logger logger) {
+
         this.configDir = configDir;
         this.defaultConfig = defaultConfig;
         this.configLoader = configLoader;

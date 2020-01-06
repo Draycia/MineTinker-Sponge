@@ -36,33 +36,11 @@ import java.nio.file.Path;
 public class MineTinkerSponge {
 
     @Inject
-    private PluginContainer container;
-
-    @Inject
-    @ConfigDir(sharedRoot = false)
-    private Path configDir;
-
-    @Inject
-    @DefaultConfig(sharedRoot = false)
-    private Path defaultConfig;
-
-    @Inject
-    @DefaultConfig(sharedRoot = false)
-    private ConfigurationLoader<CommentedConfigurationNode> configLoader;
-
-    @Inject
-    private Logger logger;
-
-    @Inject
     private Injector pluginInjector;
 
     private ConfigManager configManager;
     private InventoryGUIManager guiManager = null;
     private CommandManager commandManager;
-
-    public PluginContainer getContainer() {
-        return container;
-    }
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
@@ -70,7 +48,7 @@ public class MineTinkerSponge {
 
         registerModifiers();
 
-        configManager = new ConfigManager(configDir, defaultConfig, configLoader, logger);
+        configManager = pluginInjector.getInstance(ConfigManager.class);
         configManager.reloadConfig();
     }
 

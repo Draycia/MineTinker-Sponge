@@ -5,7 +5,6 @@ import com.mcsimonflash.sponge.teslalibs.inventory.Action;
 import com.mcsimonflash.sponge.teslalibs.inventory.Element;
 import com.mcsimonflash.sponge.teslalibs.inventory.Layout;
 import com.mcsimonflash.sponge.teslalibs.inventory.View;
-import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.MTTranslations;
@@ -22,6 +21,7 @@ import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.ShapelessCraftingRecipe;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.TranslatableText;
 import org.spongepowered.api.text.format.TextColors;
@@ -36,9 +36,7 @@ public class InventoryGUIManager {
     private View view;
 
     @Inject
-    private MineTinkerSponge plugin;
-
-    public InventoryGUIManager() {
+    public InventoryGUIManager(PluginContainer container) {
         Layout.Builder layout = Layout.builder();
 
         int index = 0;
@@ -160,7 +158,7 @@ public class InventoryGUIManager {
 
                 View recipeView = View.builder()
                         .property(InventoryTitle.of(Text.of(MTTranslations.MODIFIER, modifier.getName())))
-                        .build(plugin.getContainer());
+                        .build(container);
 
                 recipeView.define(recipeLayout.build());
 
@@ -177,7 +175,7 @@ public class InventoryGUIManager {
 
         view = View.builder()
                 .property(InventoryTitle.of(Text.of(MTTranslations.MINETINKER_MODIFIERS)))
-                .build(plugin.getContainer());
+                .build(container);
 
         view.define(layout.build());
     }
