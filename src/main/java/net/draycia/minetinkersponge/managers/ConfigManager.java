@@ -1,6 +1,5 @@
 package net.draycia.minetinkersponge.managers;
 
-import com.google.inject.Inject;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.MTTranslations;
@@ -33,8 +32,6 @@ public class ConfigManager {
     private ConfigurationLoader<CommentedConfigurationNode> configLoader;
     private ConfigurationNode mainConfig;
     private Logger logger;
-
-    @Inject ModManager ModManager;
 
     public ConfigManager(Path configDir, Path defaultConfig, ConfigurationLoader<CommentedConfigurationNode> configLoader, Logger logger) {
         this.configDir = configDir;

@@ -10,7 +10,8 @@ import org.spongepowered.api.text.Text;
 
 public class VersionCommand implements CommandExecutor {
 
-    @Inject private MineTinkerSponge plugin;
+    @Inject
+    private MineTinkerSponge plugin;
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) {

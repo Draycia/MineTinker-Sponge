@@ -53,8 +53,12 @@ public class MineTinkerSponge {
     @Inject
     private Logger logger;
 
+    @Inject
+    private Injector pluginInjector;
+
     private ConfigManager configManager;
     private InventoryGUIManager guiManager = null;
+    private CommandManager commandManager;
 
     public PluginContainer getContainer() {
         return container;
@@ -62,23 +66,23 @@ public class MineTinkerSponge {
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
-        SimpleBinderModule module = new SimpleBinderModule(this);
-        Injector injector = module.createInjector();
-        injector.injectMembers(this);
-
         DataRegistrar.registerDataManipulators();
 
         registerModifiers();
 
         configManager = new ConfigManager(configDir, defaultConfig, configLoader, logger);
         configManager.reloadConfig();
+    }
 
-        new CommandManager();
+    @Listener
+    public void onInit(GameInitializationEvent event) {
+        commandManager = pluginInjector.getInstance(CommandManager.class);
+        //commandManager = new CommandManager();
 
         registerListeners();
 
         if (Sponge.getPluginManager().isLoaded("teslalibs")) {
-            guiManager = new InventoryGUIManager();
+            guiManager = pluginInjector.getInstance(InventoryGUIManager.class);
         }
     }
 
@@ -138,15 +142,15 @@ public class MineTinkerSponge {
     }
 
     private void registerListeners() {
-        Sponge.getEventManager().registerListeners(this, new EnchantingTableListener());
-        Sponge.getEventManager().registerListeners(this, new BlockBreakListener());
-        Sponge.getEventManager().registerListeners(this, new InventoryListener());
-        Sponge.getEventManager().registerListeners(this, new InteractListener());
-        Sponge.getEventManager().registerListeners(this, new ItemDropListener());
-        Sponge.getEventManager().registerListeners(this, new FishingListener());
-        Sponge.getEventManager().registerListeners(this, new DamageListener());
-        Sponge.getEventManager().registerListeners(this, new AnvilListener());
-        Sponge.getEventManager().registerListeners(this, new ModManager());
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(EnchantingTableListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(BlockBreakListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(InventoryListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(InteractListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(ItemDropListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(FishingListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(DamageListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(AnvilListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(ModManager.class));
     }
 
     public InventoryGUIManager getGuiManager() {

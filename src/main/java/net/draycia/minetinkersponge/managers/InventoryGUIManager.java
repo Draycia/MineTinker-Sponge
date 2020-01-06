@@ -35,7 +35,8 @@ public class InventoryGUIManager {
 
     private View view;
 
-    @Inject private MineTinkerSponge plugin;
+    @Inject
+    private MineTinkerSponge plugin;
 
     public InventoryGUIManager() {
         Layout.Builder layout = Layout.builder();
