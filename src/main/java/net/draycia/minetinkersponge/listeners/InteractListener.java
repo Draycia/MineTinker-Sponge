@@ -114,6 +114,7 @@ public class InteractListener {
 
                         if (result.wasSuccess()) {
                             mainHandItem.setQuantity(mainHandItem.getQuantity() - 1);
+                            player.setItemInHand(HandTypes.OFF_HAND, result.getItemStack());
                         }
                     });
                 }
