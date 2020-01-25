@@ -36,49 +36,31 @@ import java.nio.file.Path;
 public class MineTinkerSponge {
 
     @Inject
-    private PluginContainer container;
-
-    @Inject
-    @ConfigDir(sharedRoot = false)
-    private Path configDir;
-
-    @Inject
-    @DefaultConfig(sharedRoot = false)
-    private Path defaultConfig;
-
-    @Inject
-    @DefaultConfig(sharedRoot = false)
-    private ConfigurationLoader<CommentedConfigurationNode> configLoader;
-
-    @Inject
-    private Logger logger;
+    private Injector pluginInjector;
 
     private ConfigManager configManager;
     private InventoryGUIManager guiManager = null;
-
-    public PluginContainer getContainer() {
-        return container;
-    }
+    private CommandManager commandManager;
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
-        SimpleBinderModule module = new SimpleBinderModule(this);
-        Injector injector = module.createInjector();
-        injector.injectMembers(this);
-
         DataRegistrar.registerDataManipulators();
 
         registerModifiers();
 
-        configManager = new ConfigManager(configDir, defaultConfig, configLoader, logger);
+        configManager = pluginInjector.getInstance(ConfigManager.class);
         configManager.reloadConfig();
+    }
 
-        new CommandManager();
+    @Listener
+    public void onInit(GameInitializationEvent event) {
+        commandManager = pluginInjector.getInstance(CommandManager.class);
+        //commandManager = new CommandManager();
 
         registerListeners();
 
         if (Sponge.getPluginManager().isLoaded("teslalibs")) {
-            guiManager = new InventoryGUIManager();
+            guiManager = pluginInjector.getInstance(InventoryGUIManager.class);
         }
     }
 
@@ -124,7 +106,7 @@ public class MineTinkerSponge {
         ModManager.registerModifier(this, new AutoSmelt());
         ModManager.registerModifier(this, new Directing());
         ModManager.registerModifier(this, new Grounding());
-        //ModManager.registerModifier(this, new Hammer(ModManager));
+        ModManager.registerModifier(this, new Hammer());
         ModManager.registerModifier(this, new Kinetic());
 
         // Potion Modifiers
@@ -138,15 +120,15 @@ public class MineTinkerSponge {
     }
 
     private void registerListeners() {
-        Sponge.getEventManager().registerListeners(this, new EnchantingTableListener());
-        Sponge.getEventManager().registerListeners(this, new BlockBreakListener());
-        Sponge.getEventManager().registerListeners(this, new InventoryListener());
-        Sponge.getEventManager().registerListeners(this, new InteractListener());
-        Sponge.getEventManager().registerListeners(this, new ItemDropListener());
-        Sponge.getEventManager().registerListeners(this, new FishingListener());
-        Sponge.getEventManager().registerListeners(this, new DamageListener());
-        Sponge.getEventManager().registerListeners(this, new AnvilListener());
-        Sponge.getEventManager().registerListeners(this, new ModManager());
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(EnchantingTableListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(BlockBreakListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(InventoryListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(InteractListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(ItemDropListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(FishingListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(DamageListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(AnvilListener.class));
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(ModManager.class));
     }
 
     public InventoryGUIManager getGuiManager() {

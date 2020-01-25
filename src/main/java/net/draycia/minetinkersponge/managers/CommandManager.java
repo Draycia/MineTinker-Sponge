@@ -1,18 +1,18 @@
 package net.draycia.minetinkersponge.managers;
 
 import com.google.inject.Inject;
-import net.draycia.minetinkersponge.MineTinkerSponge;
+import com.google.inject.Injector;
 import net.draycia.minetinkersponge.commands.*;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
 
 public class CommandManager {
 
-    @Inject private MineTinkerSponge plugin;
-
-    public CommandManager() {
+    @Inject
+    public CommandManager(PluginContainer container, Injector injector) {
         // Command Root
         CommandSpec.Builder mainCommand = CommandSpec.builder();
 
@@ -21,7 +21,7 @@ public class CommandManager {
                 .permission("minetinker.commands.addmodifier")
                 .arguments(GenericArguments.string(Text.of("modifier")),
                         GenericArguments.optional(GenericArguments.integer(Text.of("amount"))))
-                .executor(new AddModifierCommand())
+                .executor(injector.getInstance(AddModifierCommand.class))
                 .build();
 
         mainCommand = mainCommand.child(addModifier, "addmod", "addmodifier");
@@ -29,7 +29,7 @@ public class CommandManager {
         CommandSpec convertItem = CommandSpec.builder()
                 .description(Text.of("Converts the held item."))
                 .permission("minetinker.commands.convertitem")
-                .executor(new ConvertItemCommand())
+                .executor(injector.getInstance(ConvertItemCommand.class))
                 .build();
 
         mainCommand = mainCommand.child(convertItem, "convertitem");
@@ -38,7 +38,7 @@ public class CommandManager {
                 .description(Text.of("Gives a modifier item for the specified modifier."))
                 .permission("minetinker.commands.givemodifieritem")
                 .arguments(GenericArguments.string(Text.of("modifier")))
-                .executor(new GiveModifierItemCommand())
+                .executor(injector.getInstance(GiveModifierItemCommand.class))
                 .build();
 
         mainCommand = mainCommand.child(giveModifierItem, "givemod", "givemodifier");
@@ -46,7 +46,7 @@ public class CommandManager {
         CommandSpec addLevel = CommandSpec.builder()
                 .description(Text.of("Increases the level of the item."))
                 .permission("minetinker.commands.addlevel")
-                .executor(new AddLevelCommand())
+                .executor(injector.getInstance(AddLevelCommand.class))
                 .build();
 
         mainCommand = mainCommand.child(addLevel, "addlevel");
@@ -55,7 +55,7 @@ public class CommandManager {
                 .description(Text.of("Increases the modifier slots of the item."))
                 .permission("minetinker.commands.addslots")
                 .arguments(GenericArguments.optional(GenericArguments.integer(Text.of("amount"))))
-                .executor(new AddSlotsCommand())
+                .executor(injector.getInstance(AddSlotsCommand.class))
                 .build();
 
         mainCommand = mainCommand.child(addSlots, "addslots");
@@ -63,7 +63,7 @@ public class CommandManager {
         CommandSpec version = CommandSpec.builder()
                 .description(Text.of("Gets the version of the plugin"))
                 .permission("minetinker.commands.version")
-                .executor(new VersionCommand())
+                .executor(injector.getInstance(VersionCommand.class))
                 .build();
 
         mainCommand = mainCommand.child(version, "version", "v");
@@ -72,13 +72,13 @@ public class CommandManager {
             CommandSpec modifiers = CommandSpec.builder()
                     .description(Text.of("Shows the modifier GUI"))
                     .permission("minetinker.commands.modifiers")
-                    .executor(new ModifiersCommand())
+                    .executor(injector.getInstance(ModifiersCommand.class))
                     .build();
 
             mainCommand = mainCommand.child(modifiers, "modifiers", "mods");
         }
 
-        Sponge.getCommandManager().register(plugin.getContainer(), mainCommand.build(), "mt", "minetinker");
+        Sponge.getCommandManager().register(container, mainCommand.build(), "mt", "minetinker");
     }
 
 }

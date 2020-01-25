@@ -104,8 +104,6 @@ public class InteractListener {
             return;
         }
 
-        // TODO: Method to ifPresent numerous optionals?
-
         player.getItemInHand(HandTypes.MAIN_HAND).ifPresent(mainHandItem -> {
             player.getItemInHand(HandTypes.OFF_HAND).ifPresent(offHandItem -> {
                 if (offHandItem.get(MTKeys.IS_MINETINKER).orElse(false)) {
@@ -114,6 +112,7 @@ public class InteractListener {
 
                         if (result.wasSuccess()) {
                             mainHandItem.setQuantity(mainHandItem.getQuantity() - 1);
+                            player.setItemInHand(HandTypes.OFF_HAND, result.getItemStack());
                         }
                     });
                 }
