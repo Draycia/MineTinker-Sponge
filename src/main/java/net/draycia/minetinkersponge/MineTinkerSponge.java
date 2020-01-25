@@ -106,7 +106,7 @@ public class MineTinkerSponge {
         ModManager.registerModifier(this, new AutoSmelt());
         ModManager.registerModifier(this, new Directing());
         ModManager.registerModifier(this, new Grounding());
-        //ModManager.registerModifier(this, new Hammer(ModManager));
+        ModManager.registerModifier(this, new Hammer());
         ModManager.registerModifier(this, new Kinetic());
 
         // Potion Modifiers
