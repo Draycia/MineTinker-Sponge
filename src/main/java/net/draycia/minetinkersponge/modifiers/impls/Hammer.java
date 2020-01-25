@@ -145,7 +145,6 @@ public class Hammer extends Modifier {
 
         int level = ModManager.getModifierLevel(itemStack, this);
 
-        // TODO: Variable width and height
         // TODO: Account for which block face the player broke
 
         for (int x = -level - 1; x < level; x++) {

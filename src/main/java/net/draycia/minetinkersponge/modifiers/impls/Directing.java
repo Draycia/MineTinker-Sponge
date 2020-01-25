@@ -39,6 +39,7 @@ public class Directing extends Modifier {
 
     static {
         // TODO: Fishing Rod Support
+        // TODO: Investigate Bow Support
         compatibleTypes = ImmutableList.<ItemType>builder()
                 .addAll(ItemTypeUtils.PICKAXES)
                 .addAll(ItemTypeUtils.AXES)

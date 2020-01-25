@@ -217,7 +217,7 @@ public class ConfigManager {
                 e.printStackTrace();
             }
         } else {
-            // Shapeless recipe
+            // TODO: Shapeless recipe support
         }
 
         modifier.onConfigurationLoad(modifierNode);
