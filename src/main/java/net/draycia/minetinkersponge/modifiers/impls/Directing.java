@@ -111,6 +111,7 @@ public class Directing extends Modifier {
             .add(EventContextKeys.SPAWN_TYPE)
             .build();
 
+    // Bows
     @Listener
     public void onItemDrop(DropItemEvent.Destruct event) {
         EventContext context = event.getContext();
@@ -142,6 +143,7 @@ public class Directing extends Modifier {
         });
     }
 
+    // Melee weapons
     @Listener
     public void onItemDrop(DropItemEvent.Destruct event, @First Player player) {
         EventContext context = event.getContext();
@@ -161,6 +163,7 @@ public class Directing extends Modifier {
         }
     }
 
+    // Fishing poles
     @Listener
     public void onFishingStop(FishingEvent.Stop event) {
         ProjectileSource source = event.getFishHook().getShooter();

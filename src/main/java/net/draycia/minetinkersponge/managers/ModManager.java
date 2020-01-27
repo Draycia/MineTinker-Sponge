@@ -113,6 +113,8 @@ public class ModManager {
         itemStack.offer(MTKeys.ITEM_MODIFIERS, modifiers);
     }
 
+    private static boolean debug = false;
+
     /**
      *
      * @param itemStack The item to apply the modifier to
@@ -121,17 +123,20 @@ public class ModManager {
      * @return A {@link ModifierApplicationResult result} saying if the application was successful and the new item if successful
      */
     public static ModifierApplicationResult applyModifier(ItemStack itemStack, Modifier modifier, boolean ignoreSlots, boolean shouldIgnoreChance, int amount) {
+        if (debug) { System.out.println("Method called!"); }
         // Check if the modifier is compatible with the item
         if (modifier.getCompatibleItems() != null && !modifier.isCompatibleWithItem(itemStack.getType())) {
             return new ModifierApplicationResult(null, MTTranslations.RESULT_INCOMPATIBLE_TOOL);
         }
 
+        if (debug) { System.out.println("Passed item compatibility check."); }
         if (!itemStack.get(MTKeys.IS_MINETINKER).orElse(false)) {
             return new ModifierApplicationResult(null, MTTranslations.RESULT_INCOMPATIBLE_TOOL);
         }
 
         int level = getModifierLevel(itemStack, modifier) + amount;
 
+        if (debug) { System.out.println("Passed item minetinker check."); }
         // Ensure the modifier level doesn't exceed the modifier's level cap
         if (modifier.getMaxLevel() != -1 && level > modifier.getMaxLevel()) {
             return new ModifierApplicationResult(null, MTTranslations.RESULT_LEVEL_CAP);
@@ -143,11 +148,13 @@ public class ModManager {
             totalCost += modifier.getModifierSlotCost(i);
         }
 
+        if (debug) { System.out.println("Checked level cap check."); }
         // Check if the item has enough modifier slots
         if (!ignoreSlots && getItemModifierSlots(itemStack) < totalCost) {
             return new ModifierApplicationResult(null, MTTranslations.RESULT_NOT_ENOUGH_SLOTS);
         }
 
+        if (debug) { System.out.println("Passed slot amount check."); }
         // Check if the item has any modifiers that are incompatible with the one being applied
         for (Modifier appliedModifier : getItemAppliedModifiers(itemStack)) {
             for (Class<? extends Modifier> modClass : modifier.getIncompatibleModifiers()) {
@@ -159,6 +166,7 @@ public class ModManager {
             }
         }
 
+        if (debug) { System.out.println("Passed modifier compatibility check."); }
         if (!shouldIgnoreChance) {
             int randomInt = random.nextInt(100);
             int chance = modifier.getApplicationChance();
@@ -168,6 +176,7 @@ public class ModManager {
             }
         }
 
+        if (debug) { System.out.println("Passed modifier fail chance check."); }
         // If the modifier applies an enchantment to the item, do so
         if (modifier.getAppliedEnchantment() != null) {
             Optional<List<Enchantment>> enchantments = itemStack.get(Keys.ITEM_ENCHANTMENTS);
@@ -176,6 +185,8 @@ public class ModManager {
             enchantmentList.add(Enchantment.builder().type(modifier.getAppliedEnchantment()).level(level).build());
 
             itemStack.offer(Keys.ITEM_ENCHANTMENTS, enchantmentList);
+
+            if (debug) { System.out.println("Adding enchantments!"); }
         }
 
         // Sets the level of the modifier on the item
@@ -184,15 +195,13 @@ public class ModManager {
         // Modifies the item's modifier slots
         if (!ignoreSlots) {
             setItemModifierSlots(itemStack, getItemModifierSlots(itemStack) - amount);
+            if (debug) { System.out.println("Modifying slot count!"); }
         }
 
         // And update its lore
         rewriteItemLore(itemStack);
 
-        // Toss back the result of the item
-        ItemStack newItem = modifier.onModifierApplication(itemStack, level);
-
-        return new ModifierApplicationResult(newItem, "");
+        return new ModifierApplicationResult(modifier.onModifierApplication(itemStack, level), "");
     }
 
     /**
