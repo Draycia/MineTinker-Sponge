@@ -24,19 +24,14 @@ import java.util.Optional;
 public class Kinetic extends Modifier {
 
     private float reductionPercentPerLevel = 100.0f;
-    private static List<ItemType> compatibleTypes;
-
-    static {
-        compatibleTypes = ImmutableList.<ItemType>builder()
-                .add(ItemTypes.ELYTRA)
-                .build();
-    }
+    private static List<ItemType> compatibleTypes = ImmutableList.<ItemType>builder()
+            .add(ItemTypes.ELYTRA)
+            .build();
 
     @Override
     public List<ItemType> getCompatibleItems() {
         return compatibleTypes;
     }
-
 
     @Override
     public String getName() {
