@@ -31,7 +31,6 @@ public class InstantDamage extends Modifier {
     private static List<ItemType> compatibleTypes;
 
     static {
-        // TODO: Bow Support
         compatibleTypes = ImmutableList.<ItemType>builder()
                 .addAll(ItemTypeUtils.SWORDS)
                 .addAll(ItemTypeUtils.AXES)
