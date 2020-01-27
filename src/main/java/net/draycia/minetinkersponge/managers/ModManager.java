@@ -51,10 +51,6 @@ public class ModManager {
 
          modifiers.put(modifier.getKey(), modifier);
 
-         // Allow the modifier to register event listeners etc when successfully registered.
-         // Passes in the plugin instance the method caller supplies.
-         modifier.onModifierRegister(plugin);
-
          return true;
     }
 

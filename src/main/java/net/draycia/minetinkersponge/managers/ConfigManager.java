@@ -1,6 +1,7 @@
 package net.draycia.minetinkersponge.managers;
 
 import com.google.inject.Inject;
+import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.MTTranslations;
@@ -35,16 +36,18 @@ public class ConfigManager {
     private ConfigurationLoader<CommentedConfigurationNode> configLoader;
     private ConfigurationNode mainConfig;
     private Logger logger;
+    private MineTinkerSponge mineTinkerSponge;
 
     @Inject
     public ConfigManager(@ConfigDir(sharedRoot = false) Path configDir, @DefaultConfig(sharedRoot = false) Path defaultConfig,
                          @DefaultConfig(sharedRoot = false) ConfigurationLoader<CommentedConfigurationNode> configLoader,
-                         Logger logger) {
+                         Logger logger, MineTinkerSponge mineTinkerSponge) {
 
         this.configDir = configDir;
         this.defaultConfig = defaultConfig;
         this.configLoader = configLoader;
         this.logger = logger;
+        this.mineTinkerSponge = mineTinkerSponge;
     }
 
     public void reloadConfig() {
@@ -93,12 +96,8 @@ public class ConfigManager {
                 } else {
                     loadModifierConfigValues(modifier, modifierNode);
 
-                    // TODO: Don't even construct the modifier instance if it's disabled
-                    // TODO: Dynamically load in default modifiers and their configs
-                    //    Modifier config names share the modifier's key name
-                    if (!modifierNode.getNode("enabled").getBoolean()) {
-                        ModManager.unregisterModifier(modifier);
-                        Sponge.getEventManager().unregisterListeners(modifier);
+                    if (modifierNode.getNode("enabled").getBoolean()) {
+                        modifier.onModifierRegister(mineTinkerSponge);
                     }
                 }
             }
@@ -176,8 +175,8 @@ public class ConfigManager {
     }
 
     private void loadModifierConfigValues(Modifier modifier, ConfigurationNode modifierNode) {
-        modifier.setName(modifierNode.getNode("name").getString());
         modifier.setEnabled(modifierNode.getNode("enabled").getBoolean());
+        modifier.setName(modifierNode.getNode("name").getString());
         modifier.setMaxLevel(modifierNode.getNode("maxLevel").getInt());
         modifier.setLevelWeight(modifierNode.getNode("levelWeight").getInt());
         modifier.setApplicationChance(modifierNode.getNode("applicationChance").getInt());
@@ -220,7 +219,9 @@ public class ConfigManager {
             // TODO: Shapeless recipe support
         }
 
-        modifier.onConfigurationLoad(modifierNode);
+        if (modifier.isEnabled()) {
+            modifier.onConfigurationLoad(modifierNode);
+        }
     }
 
 }
