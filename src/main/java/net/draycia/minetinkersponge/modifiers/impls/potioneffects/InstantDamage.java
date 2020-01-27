@@ -11,7 +11,10 @@ import org.spongepowered.api.effect.potion.PotionEffect;
 import org.spongepowered.api.effect.potion.PotionEffectTypes;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.cause.EventContextKey;
+import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.entity.DamageEntityEvent;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
@@ -32,6 +35,7 @@ public class InstantDamage extends Modifier {
         compatibleTypes = ImmutableList.<ItemType>builder()
                 .addAll(ItemTypeUtils.SWORDS)
                 .addAll(ItemTypeUtils.AXES)
+                .addAll(ItemTypeUtils.BOWS)
                 .build();
     }
 
@@ -90,16 +94,18 @@ public class InstantDamage extends Modifier {
             return;
         }
 
-        Optional<Player> player = event.getCause().first(Player.class);
+        // I fear no man... But that THING... It scares me.
+        Player player = event.getCause().first(Player.class).orElseGet(() -> event.getContext().get(EventContextKeys.OWNER)
+                        .flatMap(User::getPlayer).orElse(null));
 
-        if (player.isPresent()) {
-            Optional<ItemStack> itemStack = player.get().getItemInHand(HandTypes.MAIN_HAND);
+        if (player != null) {
+            Optional<ItemStack> itemStack = player.getItemInHand(HandTypes.MAIN_HAND);
 
-            if (itemStack.isPresent()) {
-                if (ModManager.itemHasModifier(itemStack.get(), this)) {
-                    PotionEffectData potionEffects = event.getTargetEntity().getOrCreate(PotionEffectData.class).get();
-                    potionEffects.addElement(PotionEffect.builder().potionType(PotionEffectTypes.INSTANT_DAMAGE).duration(1).amplifier(1).build());
-                }
+            if (itemStack.isPresent() && ModManager.itemHasModifier(itemStack.get(), this)) {
+                PotionEffectData potionEffects = event.getTargetEntity().getOrCreate(PotionEffectData.class).get();
+                potionEffects.addElement(PotionEffect.builder().potionType(PotionEffectTypes.INSTANT_DAMAGE).duration(1).amplifier(1).build());
+
+                event.getTargetEntity().offer(potionEffects);
             }
         }
     }
