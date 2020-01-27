@@ -5,13 +5,18 @@ import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.Transaction;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.HandTypes;
+import org.spongepowered.api.data.value.BaseValue;
+import org.spongepowered.api.data.value.mutable.Value;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.Item;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.projectile.source.ProjectileSource;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.action.FishingEvent;
 import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.event.cause.EventContextKey;
 import org.spongepowered.api.event.cause.EventContextKeys;
@@ -21,6 +26,7 @@ import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.inventory.entity.MainPlayerInventory;
 import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
@@ -32,14 +38,13 @@ import org.spongepowered.api.world.World;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Directing extends Modifier {
 
     private static List<ItemType> compatibleTypes;
 
     static {
-        // TODO: Fishing Rod Support
-        // TODO: Investigate Bow Support
         compatibleTypes = ImmutableList.<ItemType>builder()
                 .addAll(ItemTypeUtils.PICKAXES)
                 .addAll(ItemTypeUtils.AXES)
@@ -129,7 +134,7 @@ public class Directing extends Modifier {
             Optional<Player> optionalPlayer = owner.getPlayer();
 
             if (itemStack != null && optionalPlayer.isPresent()) {
-                transferDrops(optionalPlayer.get(), event.getEntities());
+                transferEntityDrops(optionalPlayer.get(), event.getEntities());
 
                 // Cancel the drops
                 event.setCancelled(true);
@@ -148,7 +153,7 @@ public class Directing extends Modifier {
                     .filter(itemStack -> ModManager.itemHasModifier(itemStack, this))
                     .ifPresent(itemStack -> {
 
-                transferDrops(player, event.getEntities());
+                transferEntityDrops(player, event.getEntities());
 
                 // Cancel the drops
                 event.setCancelled(true);
@@ -156,32 +161,56 @@ public class Directing extends Modifier {
         }
     }
 
-    private void transferDrops(Player player, List<Entity> entities) {
-        // Get the player's grid inventory
+    @Listener
+    public void onFishingStop(FishingEvent.Stop event) {
+        ProjectileSource source = event.getFishHook().getShooter();
+
+        if (!(source instanceof Player)) {
+            return;
+        }
+
+        Player player = (Player) source;
+
+        List<ItemStackSnapshot> items = event.getTransactions().stream()
+                .map(Transaction::getFinal)
+                .collect(Collectors.toList());
+
+        if (items.isEmpty()) {
+            return;
+        }
+
+        event.getTransactions().forEach(transaction -> transaction.setValid(false));
+
+        transferItemStacks(player, items);
+    }
+
+    private void transferEntityDrops(Player player, List<Entity> entities) {
+        List<ItemStackSnapshot> items = entities.stream()
+                .filter(entity -> entity instanceof Item)
+                .map(entity -> ((Item)entity).item())
+                .filter(Value::exists)
+                .map(BaseValue::get)
+                .collect(Collectors.toList());
+
+        transferItemStacks(player, items);
+    }
+
+    private void transferItemStacks(Player player, List<ItemStackSnapshot> items) {
         Inventory inventory = player.getInventory()
                 .query(QueryOperationTypes.INVENTORY_TYPE.of(MainPlayerInventory.class));
 
-        // Loop through all entities dropped
-        for (Entity entity : entities) {
-            if (entity instanceof Item) {
-                Item item = (Item) entity;
+        for (ItemStackSnapshot item : items) {
+            ItemStack itemStack = item.createStack();
 
-                // And put each in the player's inventory
-                if (item.item().exists()) {
-                    ItemStack itemToGive = item.item().get().createStack();
+            if (inventory.canFit(itemStack)) {
+                inventory.offer(itemStack);
+            } else {
+                Location<World> location = player.getLocation();
 
-                    if (inventory.canFit(itemToGive)) {
-                        inventory.offer(itemToGive);
-                    } else {
-                        // If the player can't fit the item in their inventory, drop it next to them
-                        Location<World> location = player.getLocation();
+                Entity itemEntity = location.createEntity(EntityTypes.ITEM);
+                itemEntity.offer(Keys.ACTIVE_ITEM, item);
 
-                        Entity itemEntity = location.createEntity(EntityTypes.ITEM);
-                        itemEntity.offer(Keys.ACTIVE_ITEM, item.item().get());
-
-                        location.spawnEntity(itemEntity);
-                    }
-                }
+                location.spawnEntity(itemEntity);
             }
         }
     }
