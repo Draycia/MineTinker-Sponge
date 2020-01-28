@@ -77,6 +77,7 @@ public class MineTinkerSponge {
         ModManager.registerModifier(this, new BlastProtection());
         ModManager.registerModifier(this, new DepthStrider());
         ModManager.registerModifier(this, new Efficiency());
+        ModManager.registerModifier(this, new Ender());
         ModManager.registerModifier(this, new FeatherFalling());
         ModManager.registerModifier(this, new FireAspect());
         ModManager.registerModifier(this, new FireProtection());
@@ -106,7 +107,7 @@ public class MineTinkerSponge {
         ModManager.registerModifier(this, new AutoSmelt());
         ModManager.registerModifier(this, new Directing());
         ModManager.registerModifier(this, new Grounding());
-        ModManager.registerModifier(this, new Hammer());
+        //ModManager.registerModifier(this, new Hammer());
         ModManager.registerModifier(this, new Kinetic());
 
         // Potion Modifiers
