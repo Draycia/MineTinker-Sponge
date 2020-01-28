@@ -120,22 +120,22 @@ public class DragonsBreath extends Modifier {
                 return;
             }
 
-            Optional<ItemStack> itemStack = player.getItemInHand(HandTypes.MAIN_HAND);
+            player.getItemInHand(HandTypes.MAIN_HAND).ifPresent(itemStack -> {
+                if (ModManager.itemHasModifier(itemStack, this)) {
+                    int level = ModManager.getModifierLevel(itemStack, this);
 
-            if (itemStack.isPresent() && ModManager.itemHasModifier(itemStack.get(), this)) {
-                int level = ModManager.getModifierLevel(itemStack.get(), this);
+                    Collection<Entity> entities = entity.getNearbyEntities(level + 1);
 
-                Collection<Entity> entities = entity.getNearbyEntities(level + 1);
-
-                for (Entity target : entities) {
-                    if (target instanceof Monster) {
-                        target.offer(Keys.FIRE_TICKS, 40 * level);
-                        target.getLocation().getExtent().spawnParticles(dragonBreath, target.getLocation().getPosition());
-                    } else if (target instanceof Player) {
-                        // TODO: check if party / PVP
+                    for (Entity target : entities) {
+                        if (target instanceof Monster) {
+                            target.offer(Keys.FIRE_TICKS, 40 * level);
+                            target.getLocation().getExtent().spawnParticles(dragonBreath, target.getLocation().getPosition());
+                        } else if (target instanceof Player) {
+                            // TODO: check if party / PVP
+                        }
                     }
                 }
-            }
+            });
         });
     }
 
