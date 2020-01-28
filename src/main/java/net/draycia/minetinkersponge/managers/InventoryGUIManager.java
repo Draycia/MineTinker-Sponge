@@ -45,6 +45,10 @@ public class InventoryGUIManager {
         for (Map.Entry<String, Modifier> entry : ModManager.getAllModifiers().entrySet()) {
             Modifier modifier = entry.getValue();
 
+            if (!modifier.isEnabled()) {
+                continue;
+            }
+
             // Create the item to display in the GUI
             ItemStack itemStack = ItemStack.of(modifier.getModifierItemType());
 
