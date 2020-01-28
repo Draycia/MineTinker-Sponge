@@ -106,6 +106,7 @@ public class MineTinkerSponge {
         // Custom Modifiers
         ModManager.registerModifier(this, new AutoSmelt());
         ModManager.registerModifier(this, new Directing());
+        ModManager.registerModifier(this, new DragonsBreath());
         ModManager.registerModifier(this, new Grounding());
         //ModManager.registerModifier(this, new Hammer());
         ModManager.registerModifier(this, new Kinetic());
