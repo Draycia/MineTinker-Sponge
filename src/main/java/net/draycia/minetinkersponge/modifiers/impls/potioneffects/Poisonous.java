@@ -100,6 +100,7 @@ public class Poisonous extends Modifier {
         Player player = event.getCause().first(Player.class).orElseGet(() -> event.getContext().get(EventContextKeys.OWNER)
                 .flatMap(User::getPlayer).orElse(null));
 
+        // TODO: give potion effect if melee weapon
         if (player != null) {
             event.getCause().first(TippedArrow.class).ifPresent(arrow -> {
                 player.getItemInHand(HandTypes.MAIN_HAND).ifPresent(itemStack -> {
