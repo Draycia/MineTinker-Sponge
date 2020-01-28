@@ -13,6 +13,7 @@ import org.spongepowered.api.event.cause.entity.damage.DamageModifierTypes;
 import org.spongepowered.api.event.cause.entity.damage.DamageType;
 import org.spongepowered.api.event.cause.entity.damage.DamageTypes;
 import org.spongepowered.api.event.cause.entity.damage.source.DamageSource;
+import org.spongepowered.api.event.cause.entity.damage.source.DamageSources;
 import org.spongepowered.api.event.entity.DamageEntityEvent;
 import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.item.inventory.Inventory;
@@ -27,6 +28,10 @@ public class DamageListener {
     @Listener
     public void onPlayerDamage(DamageEntityEvent event, @Root DamageSource source) {
         if (event.getFinalDamage() <= 0) {
+            return;
+        }
+
+        if (source == DamageSources.FIRE_TICK) {
             return;
         }
 

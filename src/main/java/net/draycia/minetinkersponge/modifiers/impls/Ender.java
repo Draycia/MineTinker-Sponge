@@ -14,6 +14,8 @@ import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.cause.EventContextKeys;
+import org.spongepowered.api.event.cause.entity.damage.source.DamageSource;
+import org.spongepowered.api.event.cause.entity.damage.source.DamageSources;
 import org.spongepowered.api.event.entity.DamageEntityEvent;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
@@ -89,6 +91,12 @@ public class Ender extends Modifier {
     @Listener
     public void onEntityDamagedByEntity(DamageEntityEvent event) {
         if (!(event.getTargetEntity() instanceof Living)) {
+            return;
+        }
+
+        Optional<DamageSource> source = event.getCause().first(DamageSource.class);
+
+        if (source.isPresent() && source.get() == DamageSources.FIRE_TICK) {
             return;
         }
 
