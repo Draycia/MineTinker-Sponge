@@ -4,7 +4,9 @@ import com.google.common.collect.ImmutableList;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.utils.ItemTypeUtils;
+import net.minecraft.entity.projectile.EntityTippedArrow;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.mutable.PotionEffectData;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.effect.potion.PotionEffect;
@@ -12,6 +14,8 @@ import org.spongepowered.api.effect.potion.PotionEffectTypes;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.entity.projectile.arrow.Arrow;
+import org.spongepowered.api.entity.projectile.arrow.TippedArrow;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.entity.DamageEntityEvent;
@@ -97,16 +101,21 @@ public class Poisonous extends Modifier {
                 .flatMap(User::getPlayer).orElse(null));
 
         if (player != null) {
-            Optional<ItemStack> itemStack = player.getItemInHand(HandTypes.MAIN_HAND);
+            event.getCause().first(TippedArrow.class).ifPresent(arrow -> {
+                player.getItemInHand(HandTypes.MAIN_HAND).ifPresent(itemStack -> {
+                    if (ModManager.itemHasModifier(itemStack, this)) {
+                        int level = ModManager.getModifierLevel(itemStack, this);
 
-            if (itemStack.isPresent() && ModManager.itemHasModifier(itemStack.get(), this)) {
-                int level = ModManager.getModifierLevel(itemStack.get(), this);
+                        // TODO: check if arrow is a custom "poison enchanted arrow" and then apply scaling effect
 
-                PotionEffectData potionEffects = event.getTargetEntity().getOrCreate(PotionEffectData.class).get();
-                potionEffects.addElement(PotionEffect.builder().potionType(PotionEffectTypes.POISON).duration(level * 20).amplifier(1).build());
+                        //PotionEffectData potionEffects = event.getTargetEntity().getOrCreate(PotionEffectData.class).get();
+                        //potionEffects.addElement(PotionEffect.builder().potionType(PotionEffectTypes.POISON).duration(level * 20).amplifier(1).build());
 
-                event.getTargetEntity().offer(potionEffects);
-            }
+                        //event.getTargetEntity().offer(potionEffects);
+                    }
+                });
+            });
         }
     }
+
 }
