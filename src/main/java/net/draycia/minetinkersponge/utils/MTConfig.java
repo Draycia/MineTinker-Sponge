@@ -65,9 +65,7 @@ public class MTConfig {
     @Setting(value = "startingItemExperience", comment = "The amount of experience items start out with.")
     public static int STARTING_EXPERIENCE = 0;
 
-    // TODO: Better system to handle default modifiers
     // TODO: Per-Item default modifiers
-    // TODO: Allow user to specify starting level of modifier
     @Setting(value = "startingModifiers", comment = "A list of modifiers that all items start out with.")
     public static HashMap<String, Integer> STARTING_MODIFIERS = new HashMap<>();
 }
