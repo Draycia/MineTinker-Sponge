@@ -5,6 +5,8 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
 
+import java.util.HashMap;
+
 @ConfigSerializable
 public class MTConfig {
 
@@ -53,4 +55,19 @@ public class MTConfig {
 
     @Setting(value = "shieldXpPerBlock", comment = "If shieldXpIsDamageReduced is set to false, determines the amount of XP shields gain for successful blocks.")
     public static int SHIELD_XP_PER_BLOCK = 1;
+
+    @Setting(value = "startingSlotCount", comment = "The amount of modifier slots items start out with.")
+    public static int STARTING_SLOT_COUNT = 1;
+
+    @Setting(value = "startingItemLevel", comment = "The level items start out with.")
+    public static int STARTING_LEVEL = 1;
+
+    @Setting(value = "startingItemExperience", comment = "The amount of experience items start out with.")
+    public static int STARTING_EXPERIENCE = 0;
+
+    // TODO: Better system to handle default modifiers
+    // TODO: Per-Item default modifiers
+    // TODO: Allow user to specify starting level of modifier
+    @Setting(value = "startingModifiers", comment = "A list of modifiers that all items start out with.")
+    public static HashMap<String, Integer> STARTING_MODIFIERS = new HashMap<>();
 }

@@ -223,9 +223,9 @@ public class ModManager {
 
         // Offer the actual data
         itemStack.offer(MTKeys.IS_MINETINKER, true);
-        itemStack.offer(MTKeys.MINETINKER_XP, 0);
-        itemStack.offer(MTKeys.MINETINKER_LEVEL, 1);
-        itemStack.offer(MTKeys.MINETINKER_SLOTS, 1);
+        itemStack.offer(MTKeys.MINETINKER_XP, MTConfig.STARTING_EXPERIENCE);
+        itemStack.offer(MTKeys.MINETINKER_LEVEL, MTConfig.STARTING_LEVEL);
+        itemStack.offer(MTKeys.MINETINKER_SLOTS, MTConfig.STARTING_SLOT_COUNT);
         itemStack.offer(MTKeys.ITEM_MODIFIERS, new HashMap<>());
 
         // Optionally hide enchantments
@@ -240,10 +240,8 @@ public class ModManager {
 
         // Convert vanilla enchantments into modifiers
         if (MTConfig.CONVERT_TRANSFERS_ENCHANTMENTS || canExceedMaxLevel) {
-            Optional<List<Enchantment>> enchantments = itemStack.get(Keys.ITEM_ENCHANTMENTS);
-
-            if (enchantments.isPresent()) {
-                for (Enchantment enchantment : enchantments.get()) {
+            itemStack.get(Keys.ITEM_ENCHANTMENTS).ifPresent(enchantments -> {
+                for (Enchantment enchantment : enchantments) {
                     getFirstModifierByEnchantment(enchantment.getType()).ifPresent(modifier -> {
                         int level;
 
@@ -256,8 +254,15 @@ public class ModManager {
                         applyModifier(itemStack, modifier, true, true, level);
                     });
                 }
-            }
+            });
+
         }
+
+        MTConfig.STARTING_MODIFIERS.forEach((key, level) -> {
+            getModifier(key).ifPresent(mod -> {
+                applyModifier(itemStack, mod, true, true, level);
+            });
+        });
 
         // And update the lore
         rewriteItemLore(itemStack);
