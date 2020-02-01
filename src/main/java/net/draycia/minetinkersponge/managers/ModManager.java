@@ -430,6 +430,10 @@ public class ModManager {
         return true;
     }
 
+    public static void setItemLevel(ItemStack itemStack, int level) {
+        itemStack.offer(MTKeys.MINETINKER_LEVEL, level);
+    }
+
     /**
      *
      * @param itemStack The item to increment the modifier slot amount of

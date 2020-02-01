@@ -3,6 +3,7 @@ package net.draycia.minetinkersponge.managers;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import net.draycia.minetinkersponge.commands.*;
+import org.spongepowered.api.CatalogTypes;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -70,13 +71,26 @@ public class CommandManager {
 
         if (Sponge.getPluginManager().isLoaded("teslalibs")) {
             CommandSpec modifiers = CommandSpec.builder()
-                    .description(Text.of("Shows the modifier GUI"))
+                    .description(Text.of("Shows the modifier GUI."))
                     .permission("minetinker.commands.modifiers")
                     .executor(injector.getInstance(ModifiersCommand.class))
                     .build();
 
             mainCommand = mainCommand.child(modifiers, "modifiers", "mods");
         }
+
+        CommandSpec giveItem = CommandSpec.builder()
+                .description(Text.of("Creates and gives items with the arguments given."))
+                .permission("minetinker.commands.giveitem")
+                .arguments(
+                        GenericArguments.optional(GenericArguments.player(Text.of("player"))),
+                        GenericArguments.catalogedElement(Text.of("item"), CatalogTypes.ITEM_TYPE),
+                        GenericArguments.remainingJoinedStrings(Text.of("modifier"))
+                )
+                .executor(injector.getInstance(GiveItemCommand.class))
+                .build();
+
+        mainCommand = mainCommand.child(giveItem, "giveitem", "givei", "gi");
 
         Sponge.getCommandManager().register(container, mainCommand.build(), "mt", "minetinker");
     }
