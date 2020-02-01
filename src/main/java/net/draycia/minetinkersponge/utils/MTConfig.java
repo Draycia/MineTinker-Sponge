@@ -31,8 +31,8 @@ public class MTConfig {
     @Setting(value = "disableAnvils", comment = "Determines if vanilla anvils can be used by players or not.")
     public static boolean DISABLE_ANVILS = true;
 
-    @Setting(value = "preventEnchantedBookUse", comment = "Determines if vanilla enchanted books can be used on items.")
-    public static boolean DISABLE_ENCHANTED_BOOKS = true;
+    //@Setting(value = "preventEnchantedBookUse", comment = "Determines if vanilla enchanted books can be used on items.")
+    //public static boolean DISABLE_ENCHANTED_BOOKS = true;
 
     @Setting(value = "makeItemsUnbreakable", comment = "Determines if converting items adds the UNBREAKABLE tag.")
     public static boolean MAKE_UNBREAKABLE = true;

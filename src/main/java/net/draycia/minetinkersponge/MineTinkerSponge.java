@@ -7,25 +7,15 @@ import net.draycia.minetinkersponge.listeners.*;
 import net.draycia.minetinkersponge.managers.*;
 import net.draycia.minetinkersponge.modifiers.impls.*;
 import net.draycia.minetinkersponge.modifiers.impls.enchantments.*;
-import net.draycia.minetinkersponge.modifiers.impls.potioneffects.InstantDamage;
-import net.draycia.minetinkersponge.modifiers.impls.potioneffects.Poisonous;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.DiamondUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.GoldUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.IronUpgrade;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
-import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.config.ConfigDir;
-import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.plugin.PluginContainer;
-
-import java.nio.file.Path;
 
 @Plugin(
         id = "minetinker-sponge",
@@ -40,7 +30,6 @@ public class MineTinkerSponge {
 
     private ConfigManager configManager;
     private InventoryGUIManager guiManager = null;
-    private CommandManager commandManager;
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {
@@ -54,7 +43,7 @@ public class MineTinkerSponge {
 
     @Listener
     public void onInit(GameInitializationEvent event) {
-        commandManager = pluginInjector.getInstance(CommandManager.class);
+        pluginInjector.getInstance(CommandManager.class);
         //commandManager = new CommandManager();
 
         registerListeners();
@@ -108,12 +97,8 @@ public class MineTinkerSponge {
         ModManager.registerModifier(this, new Directing());
         ModManager.registerModifier(this, new DragonsBreath());
         ModManager.registerModifier(this, new Grounding());
-        //ModManager.registerModifier(this, new Hammer());
+        //ModManager.registerModifier(this, new Hammer(logger));
         ModManager.registerModifier(this, new Kinetic());
-
-        // Potion Modifiers
-        ModManager.registerModifier(this, new Poisonous());
-        ModManager.registerModifier(this, new InstantDamage());
 
         // Upgrade Modifiers
         ModManager.registerModifier(this, new IronUpgrade());

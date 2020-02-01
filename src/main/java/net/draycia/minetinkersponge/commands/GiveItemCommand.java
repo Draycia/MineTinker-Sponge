@@ -37,7 +37,6 @@ public class GiveItemCommand implements CommandExecutor {
         item.ifPresent(itemType -> {
             ItemStack itemStack = ItemStack.of(itemType);
             ModManager.convertItemStack(itemStack, true);
-            System.out.println(mods.orElse(" "));
 
             for (String modEntry : mods.orElse("").split(" ")) {
                 String[] pieces = modEntry.split(":");

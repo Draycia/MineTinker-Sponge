@@ -33,7 +33,7 @@ public class CommandManager {
                 .executor(injector.getInstance(ConvertItemCommand.class))
                 .build();
 
-        mainCommand = mainCommand.child(convertItem, "convertitem");
+        mainCommand = mainCommand.child(convertItem, "convertitem", "convert");
 
         CommandSpec giveModifierItem = CommandSpec.builder()
                 .description(Text.of("Gives a modifier item for the specified modifier."))
@@ -83,14 +83,14 @@ public class CommandManager {
                 .description(Text.of("Creates and gives items with the arguments given."))
                 .permission("minetinker.commands.giveitem")
                 .arguments(
-                        GenericArguments.optional(GenericArguments.player(Text.of("player"))),
+                        GenericArguments.player(Text.of("player")),
                         GenericArguments.catalogedElement(Text.of("item"), CatalogTypes.ITEM_TYPE),
                         GenericArguments.remainingJoinedStrings(Text.of("modifier"))
                 )
                 .executor(injector.getInstance(GiveItemCommand.class))
                 .build();
 
-        mainCommand = mainCommand.child(giveItem, "giveitem", "givei", "gi");
+        mainCommand = mainCommand.child(giveItem, "giveitem", "givei", "gi", "give");
 
         Sponge.getCommandManager().register(container, mainCommand.build(), "mt", "minetinker");
     }
