@@ -411,6 +411,10 @@ public class ModManager {
      * @param itemStack The item to increment the level of
      */
     public static boolean incrementItemLevel(ItemStack itemStack) {
+        if (!itemStack.get(MTKeys.IS_MINETINKER).orElse(false)) {
+            return false;
+        }
+
         Optional<Integer> level = itemStack.get(MTKeys.MINETINKER_LEVEL);
 
         if (level.isPresent()) {
