@@ -93,12 +93,12 @@ public class ConfigManager {
 
                 if (!modifierFile.exists()) {
                     saveDefaultModifierValues(modifier, modifierNode, modifierLoader);
-                } else {
-                    loadModifierConfigValues(modifier, modifierNode);
+                }
 
-                    if (modifierNode.getNode("enabled").getBoolean()) {
-                        modifier.onModifierRegister(mineTinkerSponge);
-                    }
+                loadModifierConfigValues(modifier, modifierNode);
+
+                if (modifierNode.getNode("enabled").getBoolean()) {
+                    modifier.onModifierRegister(mineTinkerSponge);
                 }
             }
         } catch (IOException exception) {
