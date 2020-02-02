@@ -50,4 +50,28 @@ public class MTTranslations {
 
     @Setting(value = "resultLevelCap")
     public static String RESULT_LEVEL_CAP = "Modifier is already max level!";
+
+    @Setting(value = "failedIncrement")
+    public static String FAILED_INCREMENT = "Failed to increment item level!";
+
+    @Setting(value = "successIncrement")
+    public static String SUCCESS_INCREMENT = "Incremented item level!";
+
+    @Setting(value = "failedAddModifier")
+    public static String FAILED_ADD_MODIFIER = "Failed to add modifier to item!";
+
+    @Setting(value = "successAddModifier")
+    public static String SUCCESS_ADD_MODIFIER = "Added modifier %modifier%!";
+
+    @Setting(value = "addedSlots")
+    public static String ADDED_SLOTS = "Added slots to item!";
+
+    @Setting(value = "convertedItem")
+    public static String CONVERTED_ITEM = "Converted item!";
+
+    @Setting(value = "createdItem")
+    public static String CREATED_ITEM = "Item created!";
+
+    @Setting(value = "giveModifierItem")
+    public static String GIVE_MODIFIER_ITEM = "Modifier item given!";
 }

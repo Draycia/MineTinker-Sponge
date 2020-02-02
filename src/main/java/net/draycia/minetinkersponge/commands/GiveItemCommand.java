@@ -2,6 +2,7 @@ package net.draycia.minetinkersponge.commands;
 
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.utils.MTTranslations;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
@@ -61,7 +62,7 @@ public class GiveItemCommand implements CommandExecutor {
             }
 
             player.getInventory().offer(itemStack);
-            src.sendMessage(Text.of(TextColors.GREEN, "Item created!"));
+            src.sendMessage(Text.of(TextColors.GREEN, MTTranslations.CREATED_ITEM));
         });
 
         return CommandResult.success();

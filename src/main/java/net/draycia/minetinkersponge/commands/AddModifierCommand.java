@@ -2,6 +2,8 @@ package net.draycia.minetinkersponge.commands;
 
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.modifiers.ModifierApplicationResult;
+import net.draycia.minetinkersponge.utils.MTTranslations;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
@@ -27,13 +29,20 @@ public class AddModifierCommand implements CommandExecutor {
             Optional<ItemStack> mainItem = ((Player)src).getItemInHand(HandTypes.MAIN_HAND);
 
             mainItem.flatMap(itemStack -> optionalModifier).ifPresent(modifier -> {
+                ModifierApplicationResult result;
+
                 if (args.getOne("amount").isPresent()) {
-                    ModManager.applyModifier(mainItem.get(), modifier, true, true, (int)args.getOne("amount").get());
+                    result = ModManager.applyModifier(mainItem.get(), modifier, true, true, (int)args.getOne("amount").get());
                 } else {
-                    ModManager.applyModifier(mainItem.get(), modifier, true, true, 1);
+                    result = ModManager.applyModifier(mainItem.get(), modifier, true, true, 1);
                 }
 
-                src.sendMessage(Text.of(TextColors.GREEN, "Added modifier ", modifier.getName(), "!"));
+                if (result.wasSuccess()) {
+                    src.sendMessage(Text.of(TextColors.GREEN, MTTranslations.SUCCESS_ADD_MODIFIER.replace("%modifier%", modifier.getName())));
+                } else {
+                    src.sendMessage(Text.of(TextColors.RED, MTTranslations.FAILED_ADD_MODIFIER));
+                }
+
             });
         });
 
