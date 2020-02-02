@@ -99,6 +99,7 @@ public class MineTinkerSponge {
         ModManager.registerModifier(this, new Grounding());
         //ModManager.registerModifier(this, new Hammer(logger));
         ModManager.registerModifier(this, new Kinetic());
+        ModManager.registerModifier(this, new Lifesteal());
 
         // Upgrade Modifiers
         ModManager.registerModifier(this, new IronUpgrade());
