@@ -15,7 +15,6 @@ public class ItemTypeUtils {
         Pattern regex = Pattern.compile(pattern);
 
         for (ItemType itemType : Sponge.getGame().getRegistry().getAllOf(ItemType.class)) {
-            // TODO: Blacklist in config
             if (MTConfig.BLACKLISTED_ITEM_TYPES.contains(itemType.getId())) {
                 continue;
             }
