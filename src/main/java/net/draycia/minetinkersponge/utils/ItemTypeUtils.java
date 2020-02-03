@@ -16,6 +16,10 @@ public class ItemTypeUtils {
 
         for (ItemType itemType : Sponge.getGame().getRegistry().getAllOf(ItemType.class)) {
             // TODO: Blacklist in config
+            if (MTConfig.BLACKLISTED_ITEM_TYPES.contains(itemType.getId())) {
+                continue;
+            }
+
             // TODO: Allow additional entries to be made in each modifier's config
             if (regex.matcher(itemType.getId().split(":")[1]).find()) {
                 itemTypeList.add(itemType);

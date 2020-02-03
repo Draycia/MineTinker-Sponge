@@ -5,6 +5,7 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @ConfigSerializable
@@ -68,4 +69,7 @@ public class MTConfig {
     // TODO: Per-Item default modifiers
     @Setting(value = "startingModifiers", comment = "A list of modifiers that all items start out with.")
     public static HashMap<String, Integer> STARTING_MODIFIERS = new HashMap<>();
+
+    @Setting(value = "blacklistedItemTypes", comment = "A list of item string IDs that will be ignored by the plugin.")
+    public static ArrayList<String> BLACKLISTED_ITEM_TYPES = new ArrayList<>();
 }
