@@ -90,7 +90,6 @@ public class InventoryGUIManager {
 
             // Show the modifier's compatible items
             lore.add(Text.of(MTTranslations.BLANK_LINE));
-            // TODO: Override compatibility strings in each modifier
             lore.add(Text.of(TextColors.BLUE, MTTranslations.APPLICABLE_ON, TextColors.WHITE, modifier.getCompatibilityString()));
 
             // If the modifier applies an enchantment, say so
