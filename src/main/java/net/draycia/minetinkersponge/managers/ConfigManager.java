@@ -229,7 +229,6 @@ public class ConfigManager {
             }
         } else {
             try {
-                System.out.println("loading shapeless!");
                 List<List<String>> ingredientIds = modifierNode.getNode("shapelessRecipeIngredients").getList(new TypeToken<List<String>>() {});
 
                 ShapelessCraftingRecipe.Builder builder = ShapelessCraftingRecipe.builder();
@@ -238,10 +237,7 @@ public class ConfigManager {
                 for (List<String> ingredients : ingredientIds) {
                     List<ItemType> itemTypes = new ArrayList<>();
 
-                    System.out.println("ingredient");
-
                     for (String ingredient : ingredients) {
-                        System.out.println("ingredient item");
                         Sponge.getGame().getRegistry().getType(ItemType.class, ingredient).ifPresent(itemTypes::add);
                     }
 
