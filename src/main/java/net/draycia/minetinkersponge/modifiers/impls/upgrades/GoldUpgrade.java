@@ -35,6 +35,11 @@ public class GoldUpgrade extends Modifier {
     private static List<ItemType> compatibleTypes = new ArrayList<>(conversions.keySet());
 
     @Override
+    public String getCompatibilityString() {
+        return "All iron tools and armors.";
+    }
+
+    @Override
     public String getName() {
         return getName("Gold Upgrade");
     }

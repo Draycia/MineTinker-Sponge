@@ -21,6 +21,11 @@ public class FrostWalker extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "Boots.";
+    }
+
+    @Override
     public String getName() {
         return getName("Frost Walker");
     }

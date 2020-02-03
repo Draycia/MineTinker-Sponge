@@ -39,6 +39,11 @@ public class FireProtection extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "All armor.";
+    }
+
+    @Override
     public List<Class<? extends Modifier>> getIncompatibleModifiers() {
         return incompatibleTypes;
     }

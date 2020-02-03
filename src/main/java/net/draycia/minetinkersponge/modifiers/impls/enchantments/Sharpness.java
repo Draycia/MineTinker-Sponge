@@ -34,6 +34,11 @@ public class Sharpness extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "Swords.";
+    }
+
+    @Override
     public String getName() {
         return getName("Sharpness");
     }

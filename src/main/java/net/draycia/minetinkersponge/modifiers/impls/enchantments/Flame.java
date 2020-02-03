@@ -21,6 +21,11 @@ public class Flame extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "Bows.";
+    }
+
+    @Override
     public String getName() {
         return getName("Flame");
     }

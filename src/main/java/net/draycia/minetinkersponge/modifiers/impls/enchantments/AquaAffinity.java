@@ -21,6 +21,11 @@ public class AquaAffinity extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "Helmets.";
+    }
+
+    @Override
     public String getName() {
         return getName("Aqua Affinity");
     }

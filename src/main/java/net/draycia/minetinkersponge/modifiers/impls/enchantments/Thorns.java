@@ -33,6 +33,11 @@ public class Thorns extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "All armor.";
+    }
+
+    @Override
     public String getName() {
         return getName("Thorns");
     }

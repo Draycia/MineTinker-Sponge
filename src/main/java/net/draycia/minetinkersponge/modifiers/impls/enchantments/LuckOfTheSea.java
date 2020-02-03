@@ -21,6 +21,11 @@ public class LuckOfTheSea extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "Fishing Rods.";
+    }
+
+    @Override
     public String getName() {
         return getName("Luck of the Sea");
     }

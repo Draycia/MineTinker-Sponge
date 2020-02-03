@@ -38,6 +38,11 @@ public class Lifesteal extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "Swords and Axes.";
+    }
+
+    @Override
     public String getName() {
         return getName("Lifesteal");
     }

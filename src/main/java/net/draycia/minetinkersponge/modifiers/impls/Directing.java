@@ -62,6 +62,11 @@ public class Directing extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "Pickaxes, Axes, Shovels, Hoes, Fishing Rods, Swords, and Bows.";
+    }
+
+    @Override
     public String getName() {
         return getName("Directing");
     }

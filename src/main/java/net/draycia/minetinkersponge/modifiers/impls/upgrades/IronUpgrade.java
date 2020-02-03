@@ -35,6 +35,11 @@ public class IronUpgrade extends Modifier {
     private static List<ItemType> compatibleTypes = new ArrayList<>(conversions.keySet());
 
     @Override
+    public String getCompatibilityString() {
+        return "All wooden tools and leather armors.";
+    }
+
+    @Override
     public String getName() {
         return getName("Iron Upgrade");
     }

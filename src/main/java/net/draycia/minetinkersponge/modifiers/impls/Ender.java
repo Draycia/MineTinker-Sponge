@@ -44,6 +44,11 @@ public class Ender extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "Bows.";
+    }
+
+    @Override
     public String getName() {
         return getName("Ender");
     }
@@ -85,7 +90,7 @@ public class Ender extends Modifier {
 
     @Override
     public String getDescription() {
-        return getDescription("Teleports you behind entities when you shoot them with arrows.");
+        return getDescription("Teleports you behind entities when you damage them with arrows.");
     }
 
     @Listener

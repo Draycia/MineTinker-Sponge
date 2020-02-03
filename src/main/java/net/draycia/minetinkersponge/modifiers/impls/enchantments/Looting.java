@@ -21,6 +21,11 @@ public class Looting extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "Swords.";
+    }
+
+    @Override
     public String getName() {
         return getName("Looting");
     }

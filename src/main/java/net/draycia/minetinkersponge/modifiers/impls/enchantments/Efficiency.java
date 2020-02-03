@@ -32,6 +32,11 @@ public class Efficiency extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "Pickaxes, Axes, and Shovels.";
+    }
+
+    @Override
     public String getName() {
         return getName("Efficiency");
     }

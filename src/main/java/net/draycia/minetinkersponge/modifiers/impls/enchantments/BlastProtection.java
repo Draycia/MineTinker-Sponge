@@ -39,10 +39,14 @@ public class BlastProtection extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "All armor.";
+    }
+
+    @Override
     public List<Class<? extends Modifier>> getIncompatibleModifiers() {
         return incompatibleTypes;
     }
-
 
     @Override
     public String getName() {

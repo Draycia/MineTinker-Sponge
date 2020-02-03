@@ -31,6 +31,10 @@ public class Fortune extends Modifier {
         return compatibleTypes;
     }
 
+    @Override
+    public String getCompatibilityString() {
+        return "Pickaxes, Axes, and Hoes.";
+    }
 
     @Override
     public String getName() {

@@ -21,6 +21,11 @@ public class Infinity extends Modifier {
         return ItemTypeUtils.BOWS;
     }
 
+    @Override
+    public String getCompatibilityString() {
+        return "Bows.";
+    }
+
     private static List<Class<? extends Modifier>> incompatibleTypes = Collections.singletonList(Mending.class);
 
     @Override

@@ -35,6 +35,11 @@ public class DiamondUpgrade extends Modifier {
     private static List<ItemType> compatibleTypes = new ArrayList<>(conversions.keySet());
 
     @Override
+    public String getCompatibilityString() {
+        return "All golden tools and armors.";
+    }
+
+    @Override
     public String getName() {
         return getName("Diamond Upgrade");
     }

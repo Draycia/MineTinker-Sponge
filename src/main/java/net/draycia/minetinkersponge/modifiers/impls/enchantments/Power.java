@@ -21,6 +21,11 @@ public class Power extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "Bows.";
+    }
+
+    @Override
     public String getName() {
         return getName("Power");
     }

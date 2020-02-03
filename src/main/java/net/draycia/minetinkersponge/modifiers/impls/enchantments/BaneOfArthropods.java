@@ -31,6 +31,11 @@ public class BaneOfArthropods extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "Swords and Axes.";
+    }
+
+    @Override
     public List<Class<? extends Modifier>> getIncompatibleModifiers() {
         return incompatibleTypes;
     }

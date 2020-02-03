@@ -48,6 +48,11 @@ public class DragonsBreath extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "Bows, Swords, and Axes.";
+    }
+
+    @Override
     public String getName() {
         return getName("Dragon's Breath");
     }
@@ -89,7 +94,7 @@ public class DragonsBreath extends Modifier {
 
     @Override
     public String getDescription() {
-        return getDescription("If damaged mob is on fire, sets nearby hostile mobs and players on fire.");
+        return getDescription("If damaged mob is on fire, sets nearby hostile mobs on fire.");
     }
 
     private ParticleEffect dragonBreath = ParticleEffect.builder()

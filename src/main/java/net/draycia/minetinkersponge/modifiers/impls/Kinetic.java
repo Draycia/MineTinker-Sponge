@@ -34,6 +34,11 @@ public class Kinetic extends Modifier {
     }
 
     @Override
+    public String getCompatibilityString() {
+        return "Elytras.";
+    }
+
+    @Override
     public String getName() {
         return getName("Kinetic");
     }
