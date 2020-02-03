@@ -39,6 +39,8 @@ public class MineTinkerSponge {
 
         configManager = pluginInjector.getInstance(ConfigManager.class);
         configManager.reloadConfig();
+
+        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(ModManager.class));
     }
 
     @Listener
@@ -116,7 +118,6 @@ public class MineTinkerSponge {
         Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(FishingListener.class));
         Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(DamageListener.class));
         Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(AnvilListener.class));
-        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(ModManager.class));
     }
 
     public InventoryGUIManager getGuiManager() {
