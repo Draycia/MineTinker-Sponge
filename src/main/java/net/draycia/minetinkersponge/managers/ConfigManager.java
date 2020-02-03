@@ -1,5 +1,6 @@
 package net.draycia.minetinkersponge.managers;
 
+import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
 import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.modifiers.Modifier;
@@ -18,16 +19,17 @@ import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.item.ItemType;
+import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
+import org.spongepowered.api.item.recipe.crafting.ShapelessCraftingRecipe;
 import org.spongepowered.api.util.TypeTokens;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ConfigManager {
 
@@ -162,9 +164,19 @@ public class ConfigManager {
 
                 modifierNode.getNode("shapedRecipeIngredients").setValue(itemIds);
                 modifierNode.getNode("recipeIsShaped").setValue(true);
-            } else {
-                // TODO: Implement shapeless recipe storage
+            } else if (recipe instanceof ShapelessCraftingRecipe) {
+                ShapelessCraftingRecipe shapelessRecipe = (ShapelessCraftingRecipe) recipe;
 
+                List<List<String>> ingredients = new ArrayList<>();
+
+                for (Ingredient ingredient : shapelessRecipe.getIngredientPredicates()) {
+                    ingredients.add(ingredient.displayedItems().stream()
+                            .map(ItemStackSnapshot::getType)
+                            .map(ItemType::getName)
+                            .collect(Collectors.toList()));
+                }
+
+                modifierNode.getNode("shapelessRecipeIngredients").setValue(ingredients);
                 modifierNode.getNode("recipeIsShaped").setValue(false);
             }
         });
@@ -216,7 +228,35 @@ public class ConfigManager {
                 e.printStackTrace();
             }
         } else {
-            // TODO: Shapeless recipe support
+            try {
+                System.out.println("loading shapeless!");
+                List<List<String>> ingredientIds = modifierNode.getNode("shapelessRecipeIngredients").getList(new TypeToken<List<String>>() {});
+
+                ShapelessCraftingRecipe.Builder builder = ShapelessCraftingRecipe.builder();
+                ShapelessCraftingRecipe.Builder.ResultStep resultStep = null;
+
+                for (List<String> ingredients : ingredientIds) {
+                    List<ItemType> itemTypes = new ArrayList<>();
+
+                    System.out.println("ingredient");
+
+                    for (String ingredient : ingredients) {
+                        System.out.println("ingredient item");
+                        Sponge.getGame().getRegistry().getType(ItemType.class, ingredient).ifPresent(itemTypes::add);
+                    }
+
+                    resultStep = builder.addIngredient(Ingredient.of(itemTypes.toArray(new ItemType[0])));
+                }
+
+                if (resultStep == null) {
+                    System.out.println("Invalid recipe for modifier " + modifier.getName());
+                    return;
+                }
+
+                modifier.setRecipe(resultStep.result(modifier.getModifierItem()).id(modifier.getKey()).build());
+            } catch (ObjectMappingException e) {
+                e.printStackTrace();
+            }
         }
 
         if (modifier.isEnabled()) {
