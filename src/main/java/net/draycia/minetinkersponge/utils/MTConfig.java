@@ -72,4 +72,7 @@ public class MTConfig {
 
     @Setting(value = "blacklistedItemTypes", comment = "A list of item string IDs that will be ignored by the plugin.")
     public static ArrayList<String> BLACKLISTED_ITEM_TYPES = new ArrayList<>();
+
+    @Setting(value = "fishingGivesXpPerItem", comment = "If true, fishing rods gain XP equivalent to the number of items they fish up.")
+    public static boolean FISHING_XP_PER_ITEM = false;
 }
