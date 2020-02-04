@@ -91,7 +91,7 @@ public class InteractListener {
     }
 
     @Listener
-    public void onModifierApply(InteractBlockEvent.Secondary event, @Root Player player) {
+    public void onModifierApply(InteractBlockEvent.Secondary.MainHand event, @Root Player player) {
         if (event.getTargetBlock().getState().getType() != BlockTypes.BOOKSHELF) {
             event.getContext().get(EventContextKeys.USED_ITEM).ifPresent(item -> {
                 if (item.get(MTKeys.IS_MINETINKER).orElse(false) || item.get(MTKeys.MODIFIER_ID).isPresent()) {
