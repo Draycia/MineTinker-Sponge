@@ -85,7 +85,7 @@ public class CommandManager {
                 .arguments(
                         GenericArguments.player(Text.of("player")),
                         GenericArguments.catalogedElement(Text.of("item"), CatalogTypes.ITEM_TYPE),
-                        GenericArguments.remainingJoinedStrings(Text.of("modifier"))
+                        GenericArguments.optional(GenericArguments.remainingJoinedStrings(Text.of("modifier")))
                 )
                 .executor(injector.getInstance(GiveItemCommand.class))
                 .build();
