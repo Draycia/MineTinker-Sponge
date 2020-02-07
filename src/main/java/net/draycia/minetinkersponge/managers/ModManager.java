@@ -343,7 +343,7 @@ public class ModManager {
 
                 itemLevel += modifier.getLevelWeight() * entry.getValue();
 
-                lore.add(Text.builder().append(Text.of(modifier.getName() + " " + StringUtils.toRomanNumerals(entry.getValue())))
+                lore.add(Text.builder().append(Text.of(modifier.getName(), " ", StringUtils.toRomanNumerals(entry.getValue())))
                         .color(TextColors.GRAY).build());
             }
         }
