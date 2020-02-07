@@ -246,7 +246,7 @@ public class ConfigManager {
                 }
 
                 if (resultStep == null) {
-                    System.out.println("Invalid recipe for modifier " + modifier.getName());
+                    logger.warn("Invalid recipe for modifier " + modifier.getName().toPlain());
                     return;
                 }
 
