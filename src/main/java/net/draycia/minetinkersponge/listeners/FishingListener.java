@@ -8,7 +8,6 @@ import org.spongepowered.api.data.Transaction;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.action.FishingEvent;
-import org.spongepowered.api.event.cause.EventContextKey;
 import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.item.inventory.ItemStack;

@@ -53,17 +53,6 @@ public enum ModManager implements AdditionalCatalogRegistryModule<Modifier> {
         modifiers.put(modifier.getId(), modifier);
     }
 
-    /*public static boolean registerModifier(Object plugin, Modifier modifier) {
-        // Only allow one modifier to have the same key, first come first serve.
-         if (modifiers.containsKey(modifier.getKey())) {
-             return false;
-         }
-
-         modifiers.put(modifier.getKey(), modifier);
-
-         return true;
-    }*/
-
     public void unregisterModifier(Modifier modifier) {
         modifiers.remove(modifier.getId());
     }
