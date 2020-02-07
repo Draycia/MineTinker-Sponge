@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import net.draycia.minetinkersponge.data.DataRegistrar;
 import net.draycia.minetinkersponge.listeners.*;
 import net.draycia.minetinkersponge.managers.*;
+import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.modifiers.impls.*;
 import net.draycia.minetinkersponge.modifiers.impls.enchantments.*;
 import net.draycia.minetinkersponge.modifiers.impls.upgrades.DiamondUpgrade;
@@ -14,8 +15,13 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.item.ItemType;
+import org.spongepowered.api.item.ItemTypes;
+import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
+
+import java.util.List;
 
 @Plugin(
         id = "minetinker-sponge",
@@ -59,7 +65,9 @@ public class MineTinkerSponge {
 
     private void registerModifiers() {
         // Enchantment Modifiers
-        ModManager.registerModifier(this, new AquaAffinity());
+        Sponge.getRegistry().getAllOf(EnchantmentType.class).stream().map(EnchantmentModifier::new).forEach(modifier -> ModManager.registerModifier(this, modifier));
+
+        /*ModManager.registerModifier(this, new AquaAffinity());
         ModManager.registerModifier(this, new BaneOfArthropods());
         ModManager.registerModifier(this, new BindingCurse());
         ModManager.registerModifier(this, new BlastProtection());
@@ -89,7 +97,7 @@ public class MineTinkerSponge {
         ModManager.registerModifier(this, new Sweeping());
         ModManager.registerModifier(this, new Thorns());
         ModManager.registerModifier(this, new Unbreaking());
-        ModManager.registerModifier(this, new VanishingCurse());
+        ModManager.registerModifier(this, new VanishingCurse());*/
 
         // Custom Modifiers
         ModManager.registerModifier(this, new AutoSmelt());
