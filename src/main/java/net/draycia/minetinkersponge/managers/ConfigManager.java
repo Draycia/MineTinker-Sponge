@@ -200,7 +200,7 @@ public class ConfigManager {
         if (modifierItem.isPresent()) {
             modifier.setModifierItemType(modifierItem.get());
         } else {
-            logger.warn("No BlockType found matching input \"" + modifierItemId + "\".");
+            logger.warn("No ItemType found matching input \"" + modifierItemId + "\".");
         }
 
         if (modifierNode.getNode("recipeIsShaped").getBoolean()) {
