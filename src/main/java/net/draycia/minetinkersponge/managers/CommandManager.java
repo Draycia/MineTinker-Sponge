@@ -25,7 +25,7 @@ public class CommandManager {
                 .executor(injector.getInstance(AddModifierCommand.class))
                 .build();
 
-        mainCommand = mainCommand.child(addModifier, "addmod", "addmodifier");
+        mainCommand.child(addModifier, "addmod", "addmodifier");
 
         CommandSpec convertItem = CommandSpec.builder()
                 .description(Text.of("Converts the held item."))
@@ -33,7 +33,7 @@ public class CommandManager {
                 .executor(injector.getInstance(ConvertItemCommand.class))
                 .build();
 
-        mainCommand = mainCommand.child(convertItem, "convertitem", "convert");
+        mainCommand.child(convertItem, "convertitem", "convert");
 
         CommandSpec giveModifierItem = CommandSpec.builder()
                 .description(Text.of("Gives a modifier item for the specified modifier."))
@@ -42,7 +42,7 @@ public class CommandManager {
                 .executor(injector.getInstance(GiveModifierItemCommand.class))
                 .build();
 
-        mainCommand = mainCommand.child(giveModifierItem, "givemod", "givemodifier");
+        mainCommand.child(giveModifierItem, "givemod", "givemodifier");
 
         CommandSpec addLevel = CommandSpec.builder()
                 .description(Text.of("Increases the level of the item."))
@@ -50,7 +50,7 @@ public class CommandManager {
                 .executor(injector.getInstance(AddLevelCommand.class))
                 .build();
 
-        mainCommand = mainCommand.child(addLevel, "addlevel");
+        mainCommand.child(addLevel, "addlevel");
 
         CommandSpec addSlots = CommandSpec.builder()
                 .description(Text.of("Increases the modifier slots of the item."))
@@ -59,7 +59,7 @@ public class CommandManager {
                 .executor(injector.getInstance(AddSlotsCommand.class))
                 .build();
 
-        mainCommand = mainCommand.child(addSlots, "addslots");
+        mainCommand.child(addSlots, "addslots");
 
         CommandSpec version = CommandSpec.builder()
                 .description(Text.of("Gets the version of the plugin"))
@@ -67,7 +67,7 @@ public class CommandManager {
                 .executor(injector.getInstance(VersionCommand.class))
                 .build();
 
-        mainCommand = mainCommand.child(version, "version", "v");
+        mainCommand.child(version, "version", "v");
 
         if (Sponge.getPluginManager().isLoaded("teslalibs")) {
             CommandSpec modifiers = CommandSpec.builder()
@@ -76,7 +76,7 @@ public class CommandManager {
                     .executor(injector.getInstance(ModifiersCommand.class))
                     .build();
 
-            mainCommand = mainCommand.child(modifiers, "modifiers", "mods");
+            mainCommand.child(modifiers, "modifiers", "mods");
         }
 
         CommandSpec giveItem = CommandSpec.builder()
@@ -90,7 +90,7 @@ public class CommandManager {
                 .executor(injector.getInstance(GiveItemCommand.class))
                 .build();
 
-        mainCommand = mainCommand.child(giveItem, "giveitem", "givei", "gi", "give");
+        mainCommand.child(giveItem, "giveitem", "givei", "gi", "give");
 
         Sponge.getCommandManager().register(container, mainCommand.build(), "mt", "minetinker");
     }
