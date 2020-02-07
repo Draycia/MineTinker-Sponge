@@ -5,23 +5,17 @@ import com.google.inject.Injector;
 import net.draycia.minetinkersponge.data.DataRegistrar;
 import net.draycia.minetinkersponge.listeners.*;
 import net.draycia.minetinkersponge.managers.*;
-import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.modifiers.impls.*;
-import net.draycia.minetinkersponge.modifiers.impls.enchantments.*;
-import net.draycia.minetinkersponge.modifiers.impls.upgrades.DiamondUpgrade;
-import net.draycia.minetinkersponge.modifiers.impls.upgrades.GoldUpgrade;
-import net.draycia.minetinkersponge.modifiers.impls.upgrades.IronUpgrade;
+import net.draycia.minetinkersponge.modifiers.impls.DiamondUpgrade;
+import net.draycia.minetinkersponge.modifiers.impls.GoldUpgrade;
+import net.draycia.minetinkersponge.modifiers.impls.IronUpgrade;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.item.ItemType;
-import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
-
-import java.util.List;
 
 @Plugin(
         id = "minetinker-sponge",

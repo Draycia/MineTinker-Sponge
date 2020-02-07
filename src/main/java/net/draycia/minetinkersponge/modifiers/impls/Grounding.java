@@ -19,6 +19,7 @@ import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
+import org.spongepowered.api.text.Text;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,13 +36,13 @@ public class Grounding extends Modifier {
     }
 
     @Override
-    public String getCompatibilityString() {
-        return "Boots.";
+    public Text getCompatibilityString() {
+        return Text.of("Boots.");
     }
 
     @Override
-    public String getName() {
-        return getName("Grounding");
+    public Text getName() {
+        return getName(Text.of("Grounding"));
     }
 
     @Override

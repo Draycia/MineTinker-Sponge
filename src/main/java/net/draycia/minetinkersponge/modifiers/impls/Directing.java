@@ -32,6 +32,7 @@ import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -62,13 +63,13 @@ public class Directing extends Modifier {
     }
 
     @Override
-    public String getCompatibilityString() {
-        return "Pickaxes, Axes, Shovels, Hoes, Fishing Rods, Swords, and Bows.";
+    public Text getCompatibilityString() {
+        return Text.of("Pickaxes, Axes, Shovels, Hoes, Fishing Rods, Swords, and Bows.");
     }
 
     @Override
-    public String getName() {
-        return getName("Directing");
+    public Text getName() {
+        return getName(Text.of("Directing"));
     }
 
     @Override

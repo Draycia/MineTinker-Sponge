@@ -101,7 +101,7 @@ public class InventoryGUIManager {
 
             // Set the lore and display name of the item
             itemStack.offer(Keys.ITEM_LORE, lore);
-            itemStack.offer(Keys.DISPLAY_NAME, Text.of(TextColors.GREEN, modifier.getName()));
+            itemStack.offer(Keys.DISPLAY_NAME, Text.of(TextColors.GREEN, TranslatableText.of(modifier.getName())));
             itemStack.offer(MTKeys.MODIFIER_ID, modifier.getKey());
 
             // If the modifier has a recipe, create a sub-GUI for it
@@ -160,7 +160,7 @@ public class InventoryGUIManager {
                 recipeLayout.border(Element.of(greenPane, goToMain));
 
                 View recipeView = View.builder()
-                        .property(InventoryTitle.of(Text.of(MTTranslations.MODIFIER, modifier.getName())))
+                        .property(InventoryTitle.of(Text.of(MTTranslations.MODIFIER, TranslatableText.of(modifier.getName()))))
                         .build(container);
 
                 recipeView.define(recipeLayout.build());

@@ -44,13 +44,13 @@ public class Ender extends Modifier {
     }
 
     @Override
-    public String getCompatibilityString() {
-        return "Bows.";
+    public Text getCompatibilityString() {
+        return Text.of("Bows.");
     }
 
     @Override
-    public String getName() {
-        return getName("Ender");
+    public Text getName() {
+        return getName(Text.of("Ender"));
     }
 
     @Override

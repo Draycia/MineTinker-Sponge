@@ -23,6 +23,7 @@ import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.ShapelessCraftingRecipe;
+import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.util.TypeTokens;
 
 import java.io.File;
@@ -142,7 +143,7 @@ public class ConfigManager {
     private void saveDefaultModifierValues(Modifier modifier, ConfigurationNode modifierNode,
                                            ConfigurationLoader modifierLoader) throws IOException {
 
-        modifierNode.getNode("name").setValue(modifier.getName());
+        modifierNode.getNode("name").setValue(TextSerializers.FORMATTING_CODE.serialize(modifier.getName()));
         modifierNode.getNode("enabled").setValue(true);
         modifierNode.getNode("maxLevel").setValue(modifier.getMaxLevel());
         modifierNode.getNode("levelWeight").setValue(modifier.getLevelWeight());
@@ -188,7 +189,7 @@ public class ConfigManager {
 
     private void loadModifierConfigValues(Modifier modifier, ConfigurationNode modifierNode) {
         modifier.setEnabled(modifierNode.getNode("enabled").getBoolean());
-        modifier.setName(modifierNode.getNode("name").getString());
+        modifier.setName(TextSerializers.FORMATTING_CODE.deserialize(modifierNode.getNode("name").getString()));
         modifier.setMaxLevel(modifierNode.getNode("maxLevel").getInt());
         modifier.setLevelWeight(modifierNode.getNode("levelWeight").getInt());
         modifier.setApplicationChance(modifierNode.getNode("applicationChance").getInt());

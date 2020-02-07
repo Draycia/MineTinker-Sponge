@@ -1,4 +1,4 @@
-package net.draycia.minetinkersponge.modifiers.impls.upgrades;
+package net.draycia.minetinkersponge.modifiers.impls;
 
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
@@ -9,39 +9,40 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapelessCraftingRecipe;
+import org.spongepowered.api.text.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-public class DiamondUpgrade extends Modifier {
+public class GoldUpgrade extends Modifier {
 
     private static HashMap<ItemType, ItemType> conversions = new HashMap<>();
 
     static {
         // TODO: Mod support?
-        conversions.put(ItemTypes.GOLDEN_SHOVEL, ItemTypes.DIAMOND_SHOVEL);
-        conversions.put(ItemTypes.GOLDEN_AXE, ItemTypes.DIAMOND_AXE);
-        conversions.put(ItemTypes.GOLDEN_HOE, ItemTypes.DIAMOND_HOE);
-        conversions.put(ItemTypes.GOLDEN_PICKAXE, ItemTypes.DIAMOND_PICKAXE);
-        conversions.put(ItemTypes.GOLDEN_SWORD, ItemTypes.DIAMOND_SWORD);
-        conversions.put(ItemTypes.GOLDEN_BOOTS, ItemTypes.DIAMOND_BOOTS);
-        conversions.put(ItemTypes.GOLDEN_LEGGINGS, ItemTypes.DIAMOND_LEGGINGS);
-        conversions.put(ItemTypes.GOLDEN_CHESTPLATE, ItemTypes.DIAMOND_CHESTPLATE);
-        conversions.put(ItemTypes.GOLDEN_HELMET, ItemTypes.DIAMOND_HELMET);
+        conversions.put(ItemTypes.IRON_SHOVEL, ItemTypes.GOLDEN_SHOVEL);
+        conversions.put(ItemTypes.IRON_AXE, ItemTypes.GOLDEN_AXE);
+        conversions.put(ItemTypes.IRON_HOE, ItemTypes.GOLDEN_HOE);
+        conversions.put(ItemTypes.IRON_PICKAXE, ItemTypes.GOLDEN_PICKAXE);
+        conversions.put(ItemTypes.IRON_SWORD, ItemTypes.GOLDEN_SWORD);
+        conversions.put(ItemTypes.IRON_BOOTS, ItemTypes.GOLDEN_BOOTS);
+        conversions.put(ItemTypes.IRON_LEGGINGS, ItemTypes.GOLDEN_LEGGINGS);
+        conversions.put(ItemTypes.IRON_CHESTPLATE, ItemTypes.GOLDEN_CHESTPLATE);
+        conversions.put(ItemTypes.IRON_HELMET, ItemTypes.GOLDEN_HELMET);
     }
 
     private static List<ItemType> compatibleTypes = new ArrayList<>(conversions.keySet());
 
     @Override
-    public String getCompatibilityString() {
-        return "All golden tools and armors.";
+    public Text getCompatibilityString() {
+        return Text.of("All iron tools and armors.");
     }
 
     @Override
-    public String getName() {
-        return getName("Diamond Upgrade");
+    public Text getName() {
+        return getName(Text.of("Gold Upgrade"));
     }
 
     @Override
@@ -56,7 +57,7 @@ public class DiamondUpgrade extends Modifier {
 
     @Override
     public ItemType getModifierItemType() {
-        return getModifierItemType(ItemTypes.DIAMOND);
+        return getModifierItemType(ItemTypes.GOLD_INGOT);
     }
 
     @Override
@@ -82,13 +83,13 @@ public class DiamondUpgrade extends Modifier {
 
     @Override
     public String getDescription() {
-        return getDescription("Upgrades the item type from gold to diamond when max level is reached.");
+        return getDescription("Upgrades the item type from iron to gold when max level is reached.");
     }
 
     @Override
     public Optional<CraftingRecipe> getRecipe() {
         ShapelessCraftingRecipe recipe = ShapelessCraftingRecipe.builder()
-                .addIngredient(Ingredient.of(ItemTypes.DIAMOND))
+                .addIngredient(Ingredient.of(ItemTypes.GOLD_INGOT))
                 .result(getModifierItem())
                 .id(getKey())
                 .build();

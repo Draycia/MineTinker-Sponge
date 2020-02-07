@@ -17,6 +17,7 @@ import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
+import org.spongepowered.api.text.Text;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,13 +35,13 @@ public class Kinetic extends Modifier {
     }
 
     @Override
-    public String getCompatibilityString() {
-        return "Elytras.";
+    public Text getCompatibilityString() {
+        return Text.of("Elytras.");
     }
 
     @Override
-    public String getName() {
-        return getName("Kinetic");
+    public Text getName() {
+        return getName(Text.of("Kinetic"));
     }
 
     @Override

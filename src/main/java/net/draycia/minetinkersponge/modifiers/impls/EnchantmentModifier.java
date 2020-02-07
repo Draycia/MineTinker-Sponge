@@ -1,4 +1,4 @@
-package net.draycia.minetinkersponge.modifiers.impls.enchantments;
+package net.draycia.minetinkersponge.modifiers.impls;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Streams;
@@ -14,6 +14,8 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapelessCraftingRecipe;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.TranslatableText;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,8 +31,8 @@ public class EnchantmentModifier extends Modifier {
     }
 
     @Override
-    public String getName() {
-        return getName(type.getName());
+    public Text getName() {
+        return getName(TranslatableText.of(type.getTranslation()));
     }
 
     @Override
@@ -59,8 +61,8 @@ public class EnchantmentModifier extends Modifier {
     }
 
     @Override
-    public String getCompatibilityString() {
-        return "Anything that can hold the " + type.getName() + " enchantment";
+    public Text getCompatibilityString() {
+        return Text.of("Anything that can hold the ",  TranslatableText.of(type.getTranslation()), " enchantment");
     }
 
     @Override

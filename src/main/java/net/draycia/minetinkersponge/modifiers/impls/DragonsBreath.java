@@ -25,6 +25,7 @@ import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.Direction;
 
 import java.util.Collection;
@@ -45,13 +46,13 @@ public class DragonsBreath extends Modifier {
     }
 
     @Override
-    public String getCompatibilityString() {
-        return "Bows, Swords, and Axes.";
+    public Text getCompatibilityString() {
+        return Text.of("Bows, Swords, and Axes.");
     }
 
     @Override
-    public String getName() {
-        return getName("Dragon's Breath");
+    public Text getName() {
+        return getName(Text.of("Dragon's Breath"));
     }
 
     @Override

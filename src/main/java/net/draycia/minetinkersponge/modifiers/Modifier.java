@@ -21,11 +21,11 @@ public abstract class Modifier {
      *
      * @return The display friendly name of this modifier
      */
-    public abstract String getName();
+    public abstract Text getName();
 
-    private String name = null;
+    private Text name = null;
 
-    protected String getName(String name) {
+    protected Text getName(Text name) {
         if (this.name == null) {
             return name;
         } else {
@@ -33,7 +33,7 @@ public abstract class Modifier {
         }
     }
 
-    public void setName(String name) {
+    public void setName(Text name) {
         this.name = name;
     }
 
@@ -147,7 +147,7 @@ public abstract class Modifier {
      * @return A string able to be used to obtain the modifier in commands and in the API
      */
     public String getKey() {
-        return getName().replace(" ", "-").replace("'", "").toLowerCase();
+        return getName().toPlain().replace(" ", "-").replace("'", "").toLowerCase();
     }
 
     /**
@@ -160,8 +160,8 @@ public abstract class Modifier {
         return getCompatibleItems().contains(itemType);
     }
 
-    public String getCompatibilityString() {
-        return "Everything";
+    public Text getCompatibilityString() {
+        return Text.of("Everything");
     }
 
     /**
@@ -270,7 +270,7 @@ public abstract class Modifier {
         itemStack.offer(itemStack.getOrCreate(ModifierIdentifierData.class).get());
         itemStack.offer(MTKeys.MODIFIER_ID, getKey());
 
-        itemStack.offer(Keys.DISPLAY_NAME, Text.of(getName() + " Modifier"));
+        itemStack.offer(Keys.DISPLAY_NAME, Text.of(getName(), " Modifier"));
 
         return itemStack;
     }

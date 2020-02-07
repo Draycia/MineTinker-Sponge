@@ -24,6 +24,7 @@ import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 import org.spongepowered.api.item.recipe.smelting.SmeltingRecipeRegistry;
 import org.spongepowered.api.item.recipe.smelting.SmeltingResult;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -45,13 +46,13 @@ public class AutoSmelt extends Modifier {
     }
 
     @Override
-    public String getCompatibilityString() {
-        return "Pickaxes, Axes, and Shovels.";
+    public Text getCompatibilityString() {
+        return Text.of("Pickaxes, Axes, and Shovels.");
     }
 
     @Override
-    public String getName() {
-        return getName("Auto-Smelt");
+    public Text getName() {
+        return getName(Text.of("Auto-Smelt"));
     }
 
     @Override
