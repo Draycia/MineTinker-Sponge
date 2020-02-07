@@ -46,7 +46,7 @@ public class MineTinkerSponge {
         configManager = pluginInjector.getInstance(ConfigManager.class);
         configManager.reloadConfig();
 
-        Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(ModManager.class));
+        Sponge.getEventManager().registerListeners(this, ModManager.INSTANCE);
 
         pluginInjector.getInstance(CommandManager.class);
         //commandManager = new CommandManager();
