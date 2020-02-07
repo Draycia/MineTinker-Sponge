@@ -51,7 +51,7 @@ public class DragonsBreath extends Modifier {
     }
 
     @Override
-    public Text getName() {
+    public Text getDisplayName() {
         return getName(Text.of("Dragon's Breath"));
     }
 
@@ -84,7 +84,7 @@ public class DragonsBreath extends Modifier {
                 .where('C', Ingredient.of(ItemTypes.ENDER_EYE))
                 .where('I', Ingredient.of(ItemTypes.DRAGON_BREATH))
                 .result(getModifierItem())
-                .id(getKey())
+                .id(getId())
                 .build();
 
         return Optional.of(getCraftingRecipe(recipe));

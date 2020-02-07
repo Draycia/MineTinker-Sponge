@@ -107,7 +107,7 @@ public class InteractListener {
         player.getItemInHand(HandTypes.MAIN_HAND).ifPresent(mainHandItem -> {
             player.getItemInHand(HandTypes.OFF_HAND).ifPresent(offHandItem -> {
                 if (offHandItem.get(MTKeys.IS_MINETINKER).orElse(false)) {
-                    mainHandItem.get(MTKeys.MODIFIER_ID).flatMap(ModManager::getModifier).ifPresent(modifier -> {
+                    mainHandItem.get(MTKeys.MODIFIER_ID).flatMap(ModManager.INSTANCE::getById).ifPresent(modifier -> {
                         ModifierApplicationResult result = ModManager.applyModifier(offHandItem, modifier, false, false, 1);
 
                         if (result.wasSuccess()) {

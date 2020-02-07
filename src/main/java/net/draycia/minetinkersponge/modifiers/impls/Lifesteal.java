@@ -43,7 +43,7 @@ public class Lifesteal extends Modifier {
     }
 
     @Override
-    public Text getName() {
+    public Text getDisplayName() {
         return getName(Text.of("Lifesteal"));
     }
 
@@ -76,7 +76,7 @@ public class Lifesteal extends Modifier {
                 .where('S', Ingredient.of(ItemTypes.STRING))
                 .where('E', Ingredient.of(ItemTypes.SUGAR))
                 .result(getModifierItem())
-                .id(getKey())
+                .id(getId())
                 .build();
 
         return Optional.of(getCraftingRecipe(recipe));

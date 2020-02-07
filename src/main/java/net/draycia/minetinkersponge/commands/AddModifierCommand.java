@@ -38,7 +38,7 @@ public class AddModifierCommand implements CommandExecutor {
                 }
 
                 if (result.wasSuccess()) {
-                    src.sendMessage(Text.of(TextColors.GREEN, MTTranslations.SUCCESS_ADD_MODIFIER.replace("%modifier%", modifier.getName().toPlain())));
+                    src.sendMessage(Text.of(TextColors.GREEN, MTTranslations.SUCCESS_ADD_MODIFIER.replace("%modifier%", modifier.getName())));
                 } else {
                     src.sendMessage(Text.of(TextColors.RED, MTTranslations.FAILED_ADD_MODIFIER));
                 }

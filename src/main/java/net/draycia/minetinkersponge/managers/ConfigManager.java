@@ -1,6 +1,5 @@
 package net.draycia.minetinkersponge.managers;
 
-import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
 import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.modifiers.Modifier;
@@ -12,24 +11,19 @@ import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
-import org.spongepowered.api.data.DataContainer;
-import org.spongepowered.api.data.DataSerializable;
 import org.spongepowered.api.data.persistence.DataTranslators;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.ShapelessCraftingRecipe;
 import org.spongepowered.api.text.serializer.TextSerializers;
-import org.spongepowered.api.util.TypeTokens;
 
 import java.io.File;
 import java.io.IOException;
@@ -95,7 +89,7 @@ public class ConfigManager {
 
             // Modifier configurations
             for (Modifier modifier : ModManager.getAllModifiers().values()) {
-                File modifierFile = new File(modifierDirectory, modifier.getKey() + ".conf");
+                File modifierFile = new File(modifierDirectory, modifier.getId() + ".conf");
                 ConfigurationLoader<CommentedConfigurationNode> modifierLoader = HoconConfigurationLoader.builder().setFile(modifierFile).build();
                 ConfigurationNode modifierNode = modifierLoader.load();
 
@@ -148,7 +142,7 @@ public class ConfigManager {
     private void saveDefaultModifierValues(Modifier modifier, ConfigurationNode modifierNode,
                                            ConfigurationLoader modifierLoader) throws IOException {
 
-        modifierNode.getNode("name").setValue(TextSerializers.FORMATTING_CODE.serialize(modifier.getName()));
+        modifierNode.getNode("name").setValue(TextSerializers.FORMATTING_CODE.serialize(modifier.getDisplayName()));
         modifierNode.getNode("enabled").setValue(true);
         modifierNode.getNode("maxLevel").setValue(modifier.getMaxLevel());
         modifierNode.getNode("levelWeight").setValue(modifier.getLevelWeight());
@@ -193,7 +187,7 @@ public class ConfigManager {
 
     private void loadModifierConfigValues(Modifier modifier, ConfigurationNode modifierNode) {
         modifier.setEnabled(modifierNode.getNode("enabled").getBoolean());
-        modifier.setName(TextSerializers.FORMATTING_CODE.deserialize(modifierNode.getNode("name").getString()));
+        modifier.setDisplayerName(TextSerializers.FORMATTING_CODE.deserialize(modifierNode.getNode("name").getString()));
         modifier.setMaxLevel(modifierNode.getNode("maxLevel").getInt());
         modifier.setLevelWeight(modifierNode.getNode("levelWeight").getInt());
         modifier.setApplicationChance(modifierNode.getNode("applicationChance").getInt());
@@ -224,7 +218,7 @@ public class ConfigManager {
                 recipeBuilder = ((ShapedCraftingRecipe.Builder.AisleStep) recipeBuilder).where((char) (i + 65), Ingredient.of(itemStacks.get(i)));
             }
 
-            modifier.setRecipe(((ShapedCraftingRecipe.Builder.ResultStep) recipeBuilder).result(modifier.getModifierItem()).id(modifier.getKey()).build());
+            modifier.setRecipe(((ShapedCraftingRecipe.Builder.ResultStep) recipeBuilder).result(modifier.getModifierItem()).id(modifier.getId()).build());
 
         } else {
             List<? extends ConfigurationNode> configurationNodes = modifierNode.getNode("shapelessRecipeIngredients").getChildrenList();
@@ -243,11 +237,11 @@ public class ConfigManager {
             }
 
             if (resultStep == null) {
-                logger.warn("Invalid recipe for modifier " + modifier.getName().toPlain());
+                logger.warn("Invalid recipe for modifier " + modifier.getName());
                 return;
             }
 
-            modifier.setRecipe(resultStep.result(modifier.getModifierItem()).id(modifier.getKey()).build());
+            modifier.setRecipe(resultStep.result(modifier.getModifierItem()).id(modifier.getId()).build());
         }
 
         if (modifier.isEnabled()) {

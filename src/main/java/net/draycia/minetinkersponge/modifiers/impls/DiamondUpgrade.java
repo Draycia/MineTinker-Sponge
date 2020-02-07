@@ -41,7 +41,7 @@ public class DiamondUpgrade extends Modifier {
     }
 
     @Override
-    public Text getName() {
+    public Text getDisplayName() {
         return getName(Text.of("Diamond Upgrade"));
     }
 
@@ -91,7 +91,7 @@ public class DiamondUpgrade extends Modifier {
         ShapelessCraftingRecipe recipe = ShapelessCraftingRecipe.builder()
                 .addIngredient(Ingredient.of(ItemTypes.DIAMOND))
                 .result(getModifierItem())
-                .id(getKey())
+                .id(getId())
                 .build();
 
         return Optional.of(getCraftingRecipe(recipe));

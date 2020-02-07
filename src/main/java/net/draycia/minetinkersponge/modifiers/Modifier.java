@@ -4,6 +4,7 @@ import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.data.impl.ModifierIdentifierData;
 import net.draycia.minetinkersponge.managers.ModManager;
 import ninja.leaping.configurate.ConfigurationNode;
+import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
@@ -15,26 +16,30 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class Modifier {
+public abstract class Modifier implements CatalogType {
+    @Override
+    public String getName() {
+        return getDisplayName().toPlain();
+    }
 
     /**
      *
      * @return The display friendly name of this modifier
      */
-    public abstract Text getName();
+    public abstract Text getDisplayName();
 
-    private Text name = null;
+    private Text displayerName = null;
 
     protected Text getName(Text name) {
-        if (this.name == null) {
+        if (this.displayerName == null) {
             return name;
         } else {
-            return this.name;
+            return this.displayerName;
         }
     }
 
-    public void setName(Text name) {
-        this.name = name;
+    public void setDisplayerName(Text displayerName) {
+        this.displayerName = displayerName;
     }
 
     // Sets if the modifier is enabled/disabled
@@ -146,8 +151,8 @@ public abstract class Modifier {
      *
      * @return A string able to be used to obtain the modifier in commands and in the API
      */
-    public String getKey() {
-        return getName().toPlain().replace(" ", "-").replace("'", "").toLowerCase();
+    public String getId() {
+        return getDisplayName().toPlain().replace(" ", "-").replace("'", "").toLowerCase();
     }
 
     /**
@@ -268,7 +273,7 @@ public abstract class Modifier {
                 .build();
 
         itemStack.offer(itemStack.getOrCreate(ModifierIdentifierData.class).get());
-        itemStack.offer(MTKeys.MODIFIER_ID, getKey());
+        itemStack.offer(MTKeys.MODIFIER_ID, getId());
 
         itemStack.offer(Keys.DISPLAY_NAME, Text.of(getName(), " Modifier"));
 

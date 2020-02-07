@@ -40,7 +40,7 @@ public class Kinetic extends Modifier {
     }
 
     @Override
-    public Text getName() {
+    public Text getDisplayName() {
         return getName(Text.of("Kinetic"));
     }
 
@@ -73,7 +73,7 @@ public class Kinetic extends Modifier {
                 .where('S', Ingredient.of(ItemTypes.STRING))
                 .where('E', Ingredient.of(ItemTypes.ELYTRA))
                 .result(getModifierItem())
-                .id(getKey())
+                .id(getId())
                 .build();
 
         return Optional.of(getCraftingRecipe(recipe));

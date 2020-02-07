@@ -5,11 +5,13 @@ import com.google.inject.Injector;
 import net.draycia.minetinkersponge.data.DataRegistrar;
 import net.draycia.minetinkersponge.listeners.*;
 import net.draycia.minetinkersponge.managers.*;
+import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.modifiers.impls.*;
 import net.draycia.minetinkersponge.modifiers.impls.DiamondUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.GoldUpgrade;
 import net.draycia.minetinkersponge.modifiers.impls.IronUpgrade;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.event.game.GameRegistryEvent;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.*;
 import org.spongepowered.api.event.Listener;
@@ -32,10 +34,14 @@ public class MineTinkerSponge {
     private InventoryGUIManager guiManager = null;
 
     @Listener
+    public void onConstruct(GameConstructionEvent event) {
+        Sponge.getRegistry().registerModule(Modifier.class, ModManager.INSTANCE);
+    }
+
+
+    @Listener
     public void onInit(GameInitializationEvent event) {
         DataRegistrar.registerDataManipulators();
-
-        registerModifiers();
 
         configManager = pluginInjector.getInstance(ConfigManager.class);
         configManager.reloadConfig();
@@ -57,9 +63,10 @@ public class MineTinkerSponge {
         configManager.reloadConfig();
     }
 
-    private void registerModifiers() {
+    @Listener
+    private void registerModifiers(GameRegistryEvent.Register<Modifier> event) {
         // Enchantment Modifiers
-        Sponge.getRegistry().getAllOf(EnchantmentType.class).stream().map(EnchantmentModifier::new).forEach(modifier -> ModManager.registerModifier(this, modifier));
+        Sponge.getRegistry().getAllOf(EnchantmentType.class).stream().map(EnchantmentModifier::new).forEach(event::register);
 
         /*ModManager.registerModifier(this, new AquaAffinity());
         ModManager.registerModifier(this, new BaneOfArthropods());
@@ -94,18 +101,18 @@ public class MineTinkerSponge {
         ModManager.registerModifier(this, new VanishingCurse());*/
 
         // Custom Modifiers
-        ModManager.registerModifier(this, new AutoSmelt());
-        ModManager.registerModifier(this, new Directing());
-        ModManager.registerModifier(this, new DragonsBreath());
-        ModManager.registerModifier(this, new Grounding());
-        //ModManager.registerModifier(this, new Hammer(logger));
-        ModManager.registerModifier(this, new Kinetic());
-        ModManager.registerModifier(this, new Lifesteal());
+        event.register(new AutoSmelt());
+        event.register(new Directing());
+        event.register(new DragonsBreath());
+        event.register(new Grounding());
+        //event.register(new Hammer(logger));
+        event.register(new Kinetic());
+        event.register(new Lifesteal());
 
         // Upgrade Modifiers
-        ModManager.registerModifier(this, new IronUpgrade());
-        ModManager.registerModifier(this, new GoldUpgrade());
-        ModManager.registerModifier(this, new DiamondUpgrade());
+        event.register(new IronUpgrade());
+        event.register(new GoldUpgrade());
+        event.register(new DiamondUpgrade());
     }
 
     private void registerListeners() {

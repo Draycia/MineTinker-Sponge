@@ -18,12 +18,14 @@ import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
+import org.spongepowered.api.registry.AdditionalCatalogRegistryModule;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.*;
 
-public class ModManager {
+public enum ModManager implements AdditionalCatalogRegistryModule<Modifier> {
+    INSTANCE;
 
     private static TreeMap<String, Modifier> modifiers = new TreeMap<>();
     private static Random random = new Random();
@@ -34,16 +36,24 @@ public class ModManager {
 
     @Listener
     public void onRecipeRegisterReady(GameRegistryEvent.Register<CraftingRecipe> event) {
-        modifiers.values().forEach(modifier -> modifier.getRecipe().ifPresent(event::register));
+        modifiers.values().stream().map(Modifier::getRecipe).filter(Optional::isPresent).map(Optional::get).forEach(event::register);
     }
 
     /**
      * Registers the modifier and adds it to MineTinker's internal modifier map
-     * @param plugin The plugin that's registering the modifier
      * @param modifier The modifier instance to register
      * @return If the registration was a success. My return false if a modifier with the key already exists.
      */
-    public static boolean registerModifier(Object plugin, Modifier modifier) {
+    @Override
+    public void registerAdditionalCatalog(Modifier modifier) {
+        if (modifiers.containsKey(modifier.getId())) {
+            return;
+        }
+
+        modifiers.put(modifier.getId(), modifier);
+    }
+
+    /*public static boolean registerModifier(Object plugin, Modifier modifier) {
         // Only allow one modifier to have the same key, first come first serve.
          if (modifiers.containsKey(modifier.getKey())) {
              return false;
@@ -52,10 +62,10 @@ public class ModManager {
          modifiers.put(modifier.getKey(), modifier);
 
          return true;
-    }
+    }*/
 
-    public static void unregisterModifier(Modifier modifier) {
-        modifiers.remove(modifier.getKey());
+    public void unregisterModifier(Modifier modifier) {
+        modifiers.remove(modifier.getId());
     }
 
     /**
@@ -65,6 +75,16 @@ public class ModManager {
      */
     public static Optional<Modifier> getModifier(String key) {
         return Optional.ofNullable(modifiers.get(key));
+    }
+
+    @Override
+    public Optional<Modifier> getById(String id) {
+        return getModifier(id);
+    }
+
+    @Override
+    public Collection<Modifier> getAll() {
+        return modifiers.values();
     }
 
     /**
@@ -96,7 +116,7 @@ public class ModManager {
      */
     public static <T extends ValueContainer> boolean dataHolderHasModifier(T valueContainer, Modifier modifier) {
         return ((Optional<Map<String, Integer>>) valueContainer.get(MTKeys.ITEM_MODIFIERS))
-                .map(map -> map.containsKey(modifier.getKey()))
+                .map(map -> map.containsKey(modifier.getId()))
                 .orElse(false);
     }
 
@@ -108,7 +128,7 @@ public class ModManager {
     public static void removeModifier(ItemStack itemStack, Modifier modifier) {
         Map<String, Integer> modifiers = getItemModifierLevels(itemStack);
 
-        modifiers.remove(modifier.getKey());
+        modifiers.remove(modifier.getId());
 
         itemStack.offer(MTKeys.ITEM_MODIFIERS, modifiers);
     }
@@ -159,7 +179,7 @@ public class ModManager {
         for (Modifier appliedModifier : getItemAppliedModifiers(itemStack)) {
             for (Class<? extends Modifier> modClass : modifier.getIncompatibleModifiers()) {
                 if (appliedModifier.getClass() == modClass) {
-                    String reason = MTTranslations.RESULT_INCOMPATIBLE_MODIFIER.replace("%s", appliedModifier.getName().toPlain());
+                    String reason = MTTranslations.RESULT_INCOMPATIBLE_MODIFIER.replace("%s", appliedModifier.getName());
 
                     return new ModifierApplicationResult(null, reason);
                 }
@@ -290,7 +310,7 @@ public class ModManager {
      * @return The level of the modifier
      */
     public static <T extends ValueContainer> int getModifierLevel(T valueContainer, Modifier modifier) {
-        return getItemModifierLevels(valueContainer).getOrDefault(modifier.getKey(), 0);
+        return getItemModifierLevels(valueContainer).getOrDefault(modifier.getId(), 0);
     }
 
     /**
@@ -301,7 +321,7 @@ public class ModManager {
     public static void setModifierLevel(ItemStack itemStack, Modifier modifier, int amount) {
         Map<String, Integer> itemModifierLevels = getItemModifierLevels(itemStack);
 
-        itemModifierLevels.put(modifier.getKey(), amount);
+        itemModifierLevels.put(modifier.getId(), amount);
 
         itemStack.offer(MTKeys.ITEM_MODIFIERS, itemModifierLevels);
     }

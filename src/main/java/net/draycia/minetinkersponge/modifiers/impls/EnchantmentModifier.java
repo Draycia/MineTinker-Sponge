@@ -1,7 +1,5 @@
 package net.draycia.minetinkersponge.modifiers.impls;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Streams;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import org.spongepowered.api.Sponge;
@@ -32,7 +30,7 @@ public class EnchantmentModifier extends Modifier {
     }
 
     @Override
-    public Text getName() {
+    public Text getDisplayName() {
         return getName(TranslatableText.of(type.getTranslation()));
     }
 
@@ -79,7 +77,7 @@ public class EnchantmentModifier extends Modifier {
         ShapelessCraftingRecipe recipe = ShapelessCraftingRecipe.builder()
                 .addIngredient(Ingredient.builder().with(book).build())
                 .result(getModifierItem())
-                .id(getKey())
+                .id(getId())
                 .build();
 
         return Optional.of(getCraftingRecipe(recipe));

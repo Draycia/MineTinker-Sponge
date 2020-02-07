@@ -41,7 +41,7 @@ public class Grounding extends Modifier {
     }
 
     @Override
-    public Text getName() {
+    public Text getDisplayName() {
         return getName(Text.of("Grounding"));
     }
 
@@ -74,7 +74,7 @@ public class Grounding extends Modifier {
                 .where('C', Ingredient.of(ItemTypes.REDSTONE))
                 .where('I', Ingredient.of(ItemTypes.IRON_BLOCK))
                 .result(getModifierItem())
-                .id(getKey())
+                .id(getId())
                 .build();
 
         return Optional.of(getCraftingRecipe(recipe));

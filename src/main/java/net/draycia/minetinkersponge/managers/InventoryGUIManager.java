@@ -102,7 +102,7 @@ public class InventoryGUIManager {
             // Set the lore and display name of the item
             itemStack.offer(Keys.ITEM_LORE, lore);
             itemStack.offer(Keys.DISPLAY_NAME, Text.of(TextColors.GREEN, TranslatableText.of(modifier.getName())));
-            itemStack.offer(MTKeys.MODIFIER_ID, modifier.getKey());
+            itemStack.offer(MTKeys.MODIFIER_ID, modifier.getId());
 
             // If the modifier has a recipe, create a sub-GUI for it
             if (modifier.getRecipe().isPresent()) {

@@ -41,7 +41,7 @@ public class IronUpgrade extends Modifier {
     }
 
     @Override
-    public Text getName() {
+    public Text getDisplayName() {
         return getName(Text.of("Iron Upgrade"));
     }
 
@@ -91,7 +91,7 @@ public class IronUpgrade extends Modifier {
         ShapelessCraftingRecipe recipe = ShapelessCraftingRecipe.builder()
                 .addIngredient(Ingredient.of(ItemTypes.IRON_INGOT))
                 .result(getModifierItem())
-                .id(getKey())
+                .id(getId())
                 .build();
 
         return Optional.of(getCraftingRecipe(recipe));

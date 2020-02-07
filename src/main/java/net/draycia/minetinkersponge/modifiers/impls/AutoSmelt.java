@@ -51,7 +51,7 @@ public class AutoSmelt extends Modifier {
     }
 
     @Override
-    public Text getName() {
+    public Text getDisplayName() {
         return getName(Text.of("Auto-Smelt"));
     }
 
@@ -84,7 +84,7 @@ public class AutoSmelt extends Modifier {
                 .where('C', Ingredient.of(ItemTypes.COMPASS))
                 .where('I', Ingredient.of(ItemTypes.FURNACE))
                 .result(getModifierItem())
-                .id(getKey())
+                .id(getId())
                 .build();
 
         return Optional.of(getCraftingRecipe(recipe));
