@@ -32,7 +32,7 @@ public class MineTinkerSponge {
     private InventoryGUIManager guiManager = null;
 
     @Listener
-    public void onPreInit(GamePreInitializationEvent event) {
+    public void onInit(GameInitializationEvent event) {
         DataRegistrar.registerDataManipulators();
 
         registerModifiers();
@@ -41,10 +41,7 @@ public class MineTinkerSponge {
         configManager.reloadConfig();
 
         Sponge.getEventManager().registerListeners(this, pluginInjector.getInstance(ModManager.class));
-    }
 
-    @Listener
-    public void onInit(GameInitializationEvent event) {
         pluginInjector.getInstance(CommandManager.class);
         //commandManager = new CommandManager();
 
