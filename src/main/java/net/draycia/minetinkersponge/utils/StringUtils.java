@@ -53,6 +53,10 @@ public class StringUtils {
     }
 
     public static List<Text> splitString(String msg, int lineSize) {
+        return splitString(msg, lineSize, "");
+    }
+
+    public static List<Text> splitString(String msg, int lineSize, String appendWith) {
         if (msg == null) {
             return new ArrayList<>();
         }
@@ -71,7 +75,7 @@ public class StringUtils {
                 line.append(" ");
             } while (index < str.length && line.length() + str[index].length() < lineSize);
 
-            res.add(Text.of(TextColors.WHITE, line.toString().substring(0, line.length() - 1)));
+            res.add(Text.of(TextColors.WHITE, line.toString().substring(0, line.length() - 1), appendWith));
         }
 
         return res;

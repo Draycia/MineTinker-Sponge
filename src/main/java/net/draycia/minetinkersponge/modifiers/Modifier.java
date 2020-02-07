@@ -3,6 +3,7 @@ package net.draycia.minetinkersponge.modifiers;
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.data.impl.ModifierIdentifierData;
 import net.draycia.minetinkersponge.managers.ModManager;
+import net.draycia.minetinkersponge.utils.StringUtils;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.data.key.Keys;
@@ -166,7 +167,7 @@ public abstract class Modifier implements CatalogType {
     }
 
     public Text getCompatibilityString() {
-        return Text.of("Everything");
+        return Text.of(StringUtils.splitString("Everything", 30, "\n"));
     }
 
     /**
