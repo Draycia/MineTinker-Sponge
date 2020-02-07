@@ -447,6 +447,14 @@ public enum ModManager implements AdditionalCatalogRegistryModule<Modifier> {
         itemStack.offer(MTKeys.MINETINKER_LEVEL, level);
     }
 
+    public static int getItemLevel(ItemStack itemStack) {
+        return itemStack.get(MTKeys.MINETINKER_LEVEL).orElse(0);
+    }
+
+    public static void addItemLevel(ItemStack itemStack, int amount) {
+        setItemLevel(itemStack, getItemLevel(itemStack) + amount);
+    }
+
     /**
      *
      * @param itemStack The item to increment the modifier slot amount of

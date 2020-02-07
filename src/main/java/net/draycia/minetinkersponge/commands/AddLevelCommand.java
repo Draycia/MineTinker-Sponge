@@ -20,12 +20,10 @@ public class AddLevelCommand implements CommandExecutor {
         }
 
         ((Player)src).getItemInHand(HandTypes.MAIN_HAND).ifPresent(itemStack -> {
-            if (!ModManager.incrementItemLevel(itemStack)) {
-                src.sendMessage(Text.of(TextColors.RED, MTTranslations.FAILED_INCREMENT));
-            } else {
-                src.sendMessage(Text.of(TextColors.GREEN, MTTranslations.SUCCESS_INCREMENT));
-            }
+            int amount = args.<Integer>getOne("amount").orElse(1);
 
+            ModManager.addItemLevel(itemStack, amount);
+            src.sendMessage(Text.of(TextColors.GREEN, MTTranslations.SUCCESS_INCREMENT));
             ModManager.rewriteItemLore(itemStack);
         });
 

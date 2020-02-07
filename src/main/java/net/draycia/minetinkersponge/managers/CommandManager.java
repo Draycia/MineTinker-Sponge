@@ -47,6 +47,7 @@ public class CommandManager {
         CommandSpec addLevel = CommandSpec.builder()
                 .description(Text.of("Increases the level of the item."))
                 .permission("minetinker.commands.addlevel")
+                .arguments(GenericArguments.optional(GenericArguments.integer(Text.of("amount"))))
                 .executor(injector.getInstance(AddLevelCommand.class))
                 .build();
 
