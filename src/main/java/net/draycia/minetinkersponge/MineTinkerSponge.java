@@ -68,44 +68,11 @@ public class MineTinkerSponge {
         // Enchantment Modifiers
         Sponge.getRegistry().getAllOf(EnchantmentType.class).stream().map(EnchantmentModifier::new).forEach(event::register);
 
-        /*ModManager.registerModifier(this, new AquaAffinity());
-        ModManager.registerModifier(this, new BaneOfArthropods());
-        ModManager.registerModifier(this, new BindingCurse());
-        ModManager.registerModifier(this, new BlastProtection());
-        ModManager.registerModifier(this, new DepthStrider());
-        ModManager.registerModifier(this, new Efficiency());
-        ModManager.registerModifier(this, new Ender());
-        ModManager.registerModifier(this, new FeatherFalling());
-        ModManager.registerModifier(this, new FireAspect());
-        ModManager.registerModifier(this, new FireProtection());
-        ModManager.registerModifier(this, new Flame());
-        ModManager.registerModifier(this, new Fortune());
-        ModManager.registerModifier(this, new FrostWalker());
-        ModManager.registerModifier(this, new Infinity());
-        ModManager.registerModifier(this, new Knockback());
-        ModManager.registerModifier(this, new Looting());
-        ModManager.registerModifier(this, new LuckOfTheSea());
-        ModManager.registerModifier(this, new Lure());
-        ModManager.registerModifier(this, new Mending());
-        ModManager.registerModifier(this, new Power());
-        ModManager.registerModifier(this, new ProjectileProtection());
-        ModManager.registerModifier(this, new Protection());
-        ModManager.registerModifier(this, new Punch());
-        ModManager.registerModifier(this, new Respiration());
-        ModManager.registerModifier(this, new Sharpness());
-        ModManager.registerModifier(this, new SilkTouch());
-        ModManager.registerModifier(this, new Smite());
-        ModManager.registerModifier(this, new Sweeping());
-        ModManager.registerModifier(this, new Thorns());
-        ModManager.registerModifier(this, new Unbreaking());
-        ModManager.registerModifier(this, new VanishingCurse());*/
-
         // Custom Modifiers
         event.register(new AutoSmelt());
         event.register(new Directing());
         event.register(new DragonsBreath());
         event.register(new Grounding());
-        //event.register(new Hammer(logger));
         event.register(new Kinetic());
         event.register(new Lifesteal());
 
