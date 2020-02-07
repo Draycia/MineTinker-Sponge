@@ -18,6 +18,7 @@ import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
+import org.spongepowered.api.data.persistence.DataTranslators;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
@@ -155,11 +156,11 @@ public class ConfigManager {
             if (recipe instanceof ShapedCraftingRecipe) {
                 ShapedCraftingRecipe shapedRecipe = (ShapedCraftingRecipe) recipe;
 
-                List<String> itemIds = new LinkedList<>();
+                List<ConfigurationNode> itemIds = new LinkedList<>();
 
                 for (int y = 0; y < shapedRecipe.getHeight(); y++) {
                     for (int x = 0; x < shapedRecipe.getWidth(); x++) {
-                        itemIds.add(shapedRecipe.getIngredient(x, y).displayedItems().get(0).getType().getId());
+                        itemIds.add(DataTranslators.CONFIGURATION_NODE.translate(shapedRecipe.getIngredient(x, y).displayedItems().get(0).toContainer()));
                     }
                 }
 
@@ -168,12 +169,11 @@ public class ConfigManager {
             } else if (recipe instanceof ShapelessCraftingRecipe) {
                 ShapelessCraftingRecipe shapelessRecipe = (ShapelessCraftingRecipe) recipe;
 
-                List<List<String>> ingredients = new ArrayList<>();
+                List<List<ConfigurationNode>> ingredients = new ArrayList<>();
 
                 for (Ingredient ingredient : shapelessRecipe.getIngredientPredicates()) {
                     ingredients.add(ingredient.displayedItems().stream()
-                            .map(ItemStackSnapshot::getType)
-                            .map(ItemType::getName)
+                            .map(itemStackSnapshot -> DataTranslators.CONFIGURATION_NODE.translate(itemStackSnapshot.toContainer()))
                             .collect(Collectors.toList()));
                 }
 
@@ -204,57 +204,57 @@ public class ConfigManager {
             logger.warn("No ItemType found matching input \"" + modifierItemId + "\".");
         }
 
-        if (modifierNode.getNode("recipeIsShaped").getBoolean()) {
-            try {
-                List<String> ingredientIds = modifierNode.getNode("shapedRecipeIngredients").getList(TypeTokens.STRING_TOKEN);
-
-                ShapedCraftingRecipe.Builder recipeBuilder = ShapedCraftingRecipe.builder();
-
-                recipeBuilder = recipeBuilder.aisle("ABC", "DEF", "GHI");
-
-                for (int i = 0; i < ingredientIds.size(); i++) {
-                    Optional<ItemType> itemType = Sponge.getGame().getRegistry().getType(ItemType.class, ingredientIds.get(i));
-
-                    if (!itemType.isPresent()) {
-                        logger.warn("Invalid item id [" + ingredientIds.get(i) + "], skipping recipe! Please ensure the ID is spelled correctly.");
-                        break;
-                    }
-
-                    recipeBuilder = ((ShapedCraftingRecipe.Builder.AisleStep) recipeBuilder).where((char) (i + 65), Ingredient.of(itemType.get()));
-                }
-
-                modifier.setRecipe(((ShapedCraftingRecipe.Builder.ResultStep) recipeBuilder).result(modifier.getModifierItem()).id(modifier.getKey()).build());
-
-            } catch (ObjectMappingException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                List<List<String>> ingredientIds = modifierNode.getNode("shapelessRecipeIngredients").getList(new TypeToken<List<String>>() {});
-
-                ShapelessCraftingRecipe.Builder builder = ShapelessCraftingRecipe.builder();
-                ShapelessCraftingRecipe.Builder.ResultStep resultStep = null;
-
-                for (List<String> ingredients : ingredientIds) {
-                    List<ItemType> itemTypes = new ArrayList<>();
-
-                    for (String ingredient : ingredients) {
-                        Sponge.getGame().getRegistry().getType(ItemType.class, ingredient).ifPresent(itemTypes::add);
-                    }
-
-                    resultStep = builder.addIngredient(Ingredient.of(itemTypes.toArray(new ItemType[0])));
-                }
-
-                if (resultStep == null) {
-                    logger.warn("Invalid recipe for modifier " + modifier.getName().toPlain());
-                    return;
-                }
-
-                modifier.setRecipe(resultStep.result(modifier.getModifierItem()).id(modifier.getKey()).build());
-            } catch (ObjectMappingException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (modifierNode.getNode("recipeIsShaped").getBoolean()) {
+//            try {
+//                List<String> ingredientIds = modifierNode.getNode("shapedRecipeIngredients").getList(TypeTokens.STRING_TOKEN);
+//
+//                ShapedCraftingRecipe.Builder recipeBuilder = ShapedCraftingRecipe.builder();
+//
+//                recipeBuilder = recipeBuilder.aisle("ABC", "DEF", "GHI");
+//
+//                for (int i = 0; i < ingredientIds.size(); i++) {
+//                    Optional<ItemType> itemType = Sponge.getGame().getRegistry().getType(ItemType.class, ingredientIds.get(i));
+//
+//                    if (!itemType.isPresent()) {
+//                        logger.warn("Invalid item id [" + ingredientIds.get(i) + "], skipping recipe! Please ensure the ID is spelled correctly.");
+//                        break;
+//                    }
+//
+//                    recipeBuilder = ((ShapedCraftingRecipe.Builder.AisleStep) recipeBuilder).where((char) (i + 65), Ingredient.of(itemType.get()));
+//                }
+//
+//                modifier.setRecipe(((ShapedCraftingRecipe.Builder.ResultStep) recipeBuilder).result(modifier.getModifierItem()).id(modifier.getKey()).build());
+//
+//            } catch (ObjectMappingException e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            try {
+//                List<List<String>> ingredientIds = modifierNode.getNode("shapelessRecipeIngredients").getList(new TypeToken<List<String>>() {});
+//
+//                ShapelessCraftingRecipe.Builder builder = ShapelessCraftingRecipe.builder();
+//                ShapelessCraftingRecipe.Builder.ResultStep resultStep = null;
+//
+//                for (List<String> ingredients : ingredientIds) {
+//                    List<ItemType> itemTypes = new ArrayList<>();
+//
+//                    for (String ingredient : ingredients) {
+//                        Sponge.getGame().getRegistry().getType(ItemType.class, ingredient).ifPresent(itemTypes::add);
+//                    }
+//
+//                    resultStep = builder.addIngredient(Ingredient.of(itemTypes.toArray(new ItemType[0])));
+//                }
+//
+//                if (resultStep == null) {
+//                    logger.warn("Invalid recipe for modifier " + modifier.getName().toPlain());
+//                    return;
+//                }
+//
+//                modifier.setRecipe(resultStep.result(modifier.getModifierItem()).id(modifier.getKey()).build());
+//            } catch (ObjectMappingException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         if (modifier.isEnabled()) {
             modifier.onConfigurationLoad(modifierNode);

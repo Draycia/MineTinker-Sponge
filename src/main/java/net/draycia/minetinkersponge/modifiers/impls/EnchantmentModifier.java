@@ -17,6 +17,7 @@ import org.spongepowered.api.item.recipe.crafting.ShapelessCraftingRecipe;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.TranslatableText;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -72,18 +73,14 @@ public class EnchantmentModifier extends Modifier {
 
     @Override
     public Optional<CraftingRecipe> getRecipe() {
+        ItemStack book = ItemStack.builder().itemType(ItemTypes.ENCHANTED_BOOK).build();
+        book.offer(Keys.STORED_ENCHANTMENTS, Collections.singletonList(Enchantment.builder().type(type).level(1).build()));
+
         ShapelessCraftingRecipe recipe = ShapelessCraftingRecipe.builder()
-                .addIngredient(Ingredient.builder().with(ingredient -> {
-                    if(ingredient.getType() == ItemTypes.ENCHANTED_BOOK)
-                        return ingredient.get(Keys.ITEM_ENCHANTMENTS).orElse(Lists.newArrayList()).stream().map(Enchantment::getType).anyMatch(type::equals);
-                    else {
-                        return false;
-                    }
-                }).build())
+                .addIngredient(Ingredient.builder().with(book).build())
                 .result(getModifierItem())
                 .id(getKey())
                 .build();
-
 
         return Optional.of(getCraftingRecipe(recipe));
     }
