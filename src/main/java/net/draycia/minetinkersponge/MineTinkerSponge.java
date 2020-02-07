@@ -64,7 +64,7 @@ public class MineTinkerSponge {
     }
 
     @Listener
-    private void registerModifiers(GameRegistryEvent.Register<Modifier> event) {
+    public void registerModifiers(GameRegistryEvent.Register<Modifier> event) {
         // Enchantment Modifiers
         Sponge.getRegistry().getAllOf(EnchantmentType.class).stream().map(EnchantmentModifier::new).forEach(event::register);
 
