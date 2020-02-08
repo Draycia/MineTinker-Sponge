@@ -150,10 +150,12 @@ public enum ModManager implements AdditionalCatalogRegistryModule<Modifier> {
             return new ModifierApplicationResult(null, MTTranslations.RESULT_LEVEL_CAP);
         }
 
+        int totalSlotsUsed = getTotalSlotsUsed(itemStack);
+
         int totalCost = 0;
 
         for (int i = level; i < amount + level; i++) {
-            totalCost += modifier.getModifierSlotCost(i);
+            totalCost += modifier.getModifierSlotCost(i, totalSlotsUsed);
         }
 
         if (debug) { System.out.println("Checked level cap check."); }
@@ -475,6 +477,20 @@ public enum ModManager implements AdditionalCatalogRegistryModule<Modifier> {
 
     public static void addItemLevel(ItemStack itemStack, int amount) {
         setItemLevel(itemStack, getItemLevel(itemStack) + amount);
+    }
+
+    public static int getTotalSlotsUsed(ItemStack itemStack) {
+        int totalUsed = 0;
+
+        Optional<Map<String, Integer>> modifiers = itemStack.get(MTKeys.ITEM_MODIFIERS);
+
+        if (modifiers.isPresent()) {
+            for (Map.Entry<String, Integer> modifier : modifiers.get().entrySet()) {
+                totalUsed += modifier.getValue();
+            }
+        }
+
+        return totalUsed;
     }
 
     /**

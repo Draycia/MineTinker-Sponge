@@ -14,8 +14,6 @@ import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.block.BlockType;
-import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.data.persistence.DataTranslators;
@@ -153,6 +151,7 @@ public class ConfigManager {
         modifierNode.getNode("applicationChance").setValue(modifier.getApplicationChance());
         modifierNode.getNode("description").setValue(modifier.getDescription());
         modifierNode.getNode("modifierItem").setValue(modifier.getModifierItemType().getId());
+        modifierNode.getNode("slotCostFunction").setValue(modifier.getSlotCostExpression());
 
         modifier.getRecipe().ifPresent(recipe -> {
             if (recipe instanceof ShapedCraftingRecipe) {
@@ -196,6 +195,12 @@ public class ConfigManager {
         modifier.setLevelWeight(modifierNode.getNode("levelWeight").getInt());
         modifier.setApplicationChance(modifierNode.getNode("applicationChance").getInt());
         modifier.setDescription(modifierNode.getNode("description").getString());
+
+        String slotCostFunction = modifierNode.getNode("slotCostFunction").getString();
+
+        if (slotCostFunction != null) {
+            modifier.setSlotCostExpression(slotCostFunction);
+        }
 
         String modifierItemId = modifierNode.getNode("modifierItem").getString();
         Optional<ItemType> modifierItem = Sponge.getGame().getRegistry().getType(ItemType.class, modifierItemId);

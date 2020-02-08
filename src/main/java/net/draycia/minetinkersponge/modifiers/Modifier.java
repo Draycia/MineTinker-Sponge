@@ -5,6 +5,8 @@ import net.draycia.minetinkersponge.data.impl.ModifierIdentifierData;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.utils.StringUtils;
 import ninja.leaping.configurate.ConfigurationNode;
+import org.mariuszgromada.math.mxparser.Expression;
+import org.mariuszgromada.math.mxparser.Function;
 import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.ItemType;
@@ -94,14 +96,27 @@ public abstract class Modifier implements CatalogType {
         this.levelWeight = levelWeight;
     }
 
+    private String expression = "1";
+    private Function slotCostExpression = new Function("determineCost(level, modifierLevelCount) = " + expression);
+
+    public void setSlotCostExpression(String expression) {
+        this.expression = expression;
+        this.slotCostExpression = new Function("determineCost(level, modifierLevelCount) = " + expression);
+    }
+
+    public String getSlotCostExpression() {
+        return expression;
+    }
+
     /**
      * Returns the number of slots the item must have and will be reduced by when the modifier is applied.
      * May return different slot costs depending on the modifier level, may also return the same cost for all levels.
      * @return The number of slots the modifier costs at the given level.
      */
-    public int getModifierSlotCost(int modifierLevel) {
-        return 1;
-        // TODO: Let user specify custom algorithm to determine slot costs?
+    public int getModifierSlotCost(int modifierLevel, int modifierLevelCount) {
+        Expression expression = new Expression("determineCost(" + modifierLevel + ", " + modifierLevelCount + ")", slotCostExpression);
+
+        return ((Double)expression.calculate()).intValue();
     }
 
     /**

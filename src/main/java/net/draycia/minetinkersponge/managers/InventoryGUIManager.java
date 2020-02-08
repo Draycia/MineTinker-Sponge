@@ -66,27 +66,33 @@ public class InventoryGUIManager {
             lore.add(Text.of(MTTranslations.BLANK_LINE));
             lore.add(Text.of(TextColors.GOLD, MTTranslations.MAX_LEVEL, TextColors.WHITE, modifier.getMaxLevel()));
 
-            // Show the modifier slot costs
-            StringBuilder slotCosts = new StringBuilder(Integer.toString(modifier.getModifierSlotCost(1)));
+            if (!modifier.getSlotCostExpression().equals("1")) {
+                lore.add(Text.of(MTTranslations.BLANK_LINE));
+                lore.add(Text.of(TextColors.AQUA, "Slot Cost Expression: ", TextColors.WHITE, modifier.getSlotCostExpression()));
+            } else {
+                // Show the modifier slot costs
+                StringBuilder slotCosts = new StringBuilder(Integer.toString(modifier.getModifierSlotCost(1, 0)));
 
-            if (modifier.getMaxLevel() > 1) {
-                ArrayList<Integer> slots = new ArrayList<>();
+                if (modifier.getMaxLevel() > 1) {
+                    ArrayList<Integer> slots = new ArrayList<>();
 
-                for (int i = 2; i <= modifier.getMaxLevel(); i++) {
-                    slots.add(modifier.getModifierSlotCost(i));
-                }
+                    for (int i = 2; i <= modifier.getMaxLevel(); i++) {
+                        slots.add(modifier.getModifierSlotCost(i, 0));
+                    }
 
-                if (slots.stream().distinct().count() == 1) {
-                    slotCosts.append(MTTranslations.AT_ALL_LEVELS);
-                } else {
-                    for (Integer slotCost : slots) {
-                        slotCosts.append(MTTranslations.SLOT_COST_SEPARATOR).append(slotCost);
+                    if (slots.stream().distinct().count() == 1) {
+                        slotCosts.append(MTTranslations.AT_ALL_LEVELS);
+                    } else {
+                        for (Integer slotCost : slots) {
+                            slotCosts.append(MTTranslations.SLOT_COST_SEPARATOR).append(slotCost);
+                        }
                     }
                 }
+
+                lore.add(Text.of(MTTranslations.BLANK_LINE));
+                lore.add(Text.of(TextColors.GRAY, MTTranslations.REQUIRED_SLOTS, TextColors.WHITE, slotCosts.toString()));
             }
 
-            lore.add(Text.of(MTTranslations.BLANK_LINE));
-            lore.add(Text.of(TextColors.GRAY, MTTranslations.REQUIRED_SLOTS, TextColors.WHITE, slotCosts.toString()));
 
             // Show the modifier's compatible items
             lore.add(Text.of(MTTranslations.BLANK_LINE));

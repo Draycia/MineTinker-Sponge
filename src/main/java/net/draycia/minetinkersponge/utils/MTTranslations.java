@@ -25,7 +25,7 @@ public class MTTranslations {
     public static String APPLICABLE_ON = "Applicable On: ";
 
     @Setting("appliedEnchantments")
-    public static String APPLIED_ENCHANTMENTS = "Applied Enchantments: ";
+    public static String APPLIED_ENCHANTMENTS = "Applied Enchantment: ";
 
     @Setting("returnToModifiers")
     public static String RETURN_TO_MODIFIERS = "Return To Modifiers";
@@ -50,9 +50,6 @@ public class MTTranslations {
 
     @Setting(value = "resultLevelCap")
     public static String RESULT_LEVEL_CAP = "Modifier is already max level!";
-
-    @Setting(value = "failedIncrement")
-    public static String FAILED_INCREMENT = "Failed to increment item level!";
 
     @Setting(value = "successIncrement")
     public static String SUCCESS_INCREMENT = "Incremented item level!";

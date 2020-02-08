@@ -8,11 +8,13 @@ buildscript {
             name = 'sponge'
             url = 'https://repo.spongepowered.org/maven'
         }
+        jcenter()
     }
 
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath 'org.spongepowered:mixingradle:0.5-SNAPSHOT'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.3'
     }
 }
 
@@ -20,6 +22,7 @@ plugins {
     id 'java'
     id 'org.spongepowered.plugin' version '0.8.1'
     id 'net.minecrell.vanillagradle.server' version '2.2-6'
+    id 'com.github.johnrengelman.shadow' version '4.0.3'
 }
 
 apply plugin: 'org.spongepowered.mixin'
@@ -47,6 +50,7 @@ dependencies {
     compile 'org.spongepowered:spongeapi:7.2.0-SNAPSHOT'
     compile 'org.spongepowered:mixin:0.7.11-SNAPSHOT'
     compile 'com.github.SimonFlash.TeslaPowered:TeslaCore:v1.1.6'
+    compile 'org.mariuszgromada.math:MathParser.org-mXparser:4.4.2'
 }
 
 minecraft {
@@ -66,4 +70,14 @@ jar {
             'FMLCorePluginContainsFMLMod': 'true',
             "ForceLoadAsMod": 'true'
     )
+}
+
+reobf {
+    shadowJar {}
+}
+
+shadowJar {
+    dependencies {
+        include(dependency(":MathParser.org-mXparser"))
+    }
 }
