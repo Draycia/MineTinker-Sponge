@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class EnchantmentModifier extends Modifier {
     private EnchantmentType type;
@@ -66,7 +67,10 @@ public class EnchantmentModifier extends Modifier {
 
     @Override
     public List<Class<? extends Modifier>> getIncompatibleModifiers() {
-        return ModManager.getAllModifiers().values().stream().filter(a -> getAppliedEnchantment() != null && !getAppliedEnchantment().isCompatibleWith(type)).map(Modifier::getClass).collect(Collectors.toList());
+        return ModManager.getAllModifiers().values().stream()
+                .filter(a -> !a.equals(this) && a.getAppliedEnchantment() != null && !a.getAppliedEnchantment().isCompatibleWith(type))
+                .map(Modifier::getClass)
+                .collect(Collectors.toList());
     }
 
     @Override

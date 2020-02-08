@@ -24,9 +24,11 @@ public class AddModifierCommand implements CommandExecutor {
             return CommandResult.empty();
         }
 
+        Player player = (Player)src;
+
         args.<String>getOne("modifier").ifPresent(modifierName -> {
             Optional<Modifier> optionalModifier = ModManager.getModifier(modifierName);
-            Optional<ItemStack> mainItem = ((Player)src).getItemInHand(HandTypes.MAIN_HAND);
+            Optional<ItemStack> mainItem = player.getItemInHand(HandTypes.MAIN_HAND);
 
             mainItem.flatMap(itemStack -> optionalModifier).ifPresent(modifier -> {
                 ModifierApplicationResult result;
@@ -38,6 +40,7 @@ public class AddModifierCommand implements CommandExecutor {
                 }
 
                 if (result.wasSuccess()) {
+                    player.setItemInHand(HandTypes.MAIN_HAND, result.getItemStack());
                     src.sendMessage(Text.of(TextColors.GREEN, MTTranslations.SUCCESS_ADD_MODIFIER.replace("%modifier%", modifier.getName())));
                 } else {
                     src.sendMessage(Text.of(TextColors.RED, MTTranslations.FAILED_ADD_MODIFIER));

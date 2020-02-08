@@ -165,7 +165,12 @@ public enum ModManager implements AdditionalCatalogRegistryModule<Modifier> {
 
         if (debug) { System.out.println("Passed slot amount check."); }
         // Check if the item has any modifiers that are incompatible with the one being applied
+
         for (Modifier appliedModifier : getItemAppliedModifiers(itemStack)) {
+            if (modifier.equals(appliedModifier)) {
+                continue;
+            }
+
             for (Class<? extends Modifier> modClass : modifier.getIncompatibleModifiers()) {
                 if (appliedModifier.getClass() == modClass) {
                     String reason = MTTranslations.RESULT_INCOMPATIBLE_MODIFIER.replace("%s", appliedModifier.getName());
@@ -294,12 +299,22 @@ public enum ModManager implements AdditionalCatalogRegistryModule<Modifier> {
 
     /**
      *
-     * @param valueContainer The object implementing {@link ValueContainer} that contains modifiers
+     * @param itemStack The ItemStack that contains modifiers
      * @param modifier The modifier to get the level of
      * @return The level of the modifier
      */
-    public static <T extends ValueContainer> int getModifierLevel(T valueContainer, Modifier modifier) {
-        return getItemModifierLevels(valueContainer).getOrDefault(modifier.getId(), 0);
+    public static int getModifierLevel(ItemStack itemStack, Modifier modifier) {
+        return getItemModifierLevels(itemStack).getOrDefault(modifier.getId(), 0);
+    }
+
+    /**
+     *
+     * @param itemStackSnapshot The ItemStackSnapshot that contains modifiers
+     * @param modifier The modifier to get the level of
+     * @return The level of the modifier
+     */
+    public static int getModifierLevel(ItemStackSnapshot itemStackSnapshot, Modifier modifier) {
+        return getItemModifierLevels(itemStackSnapshot).getOrDefault(modifier.getId(), 0);
     }
 
     /**
@@ -316,11 +331,19 @@ public enum ModManager implements AdditionalCatalogRegistryModule<Modifier> {
     }
 
     /**
-     * @param valueContainer The object implementing {@link ValueContainer} to get the modifier levels of
+     * @param itemStack The ItemStack to get the modifier levels of
      * @return A map containing the key of each modifier and its corresponding level
      */
-    public static <T extends ValueContainer> Map<String, Integer> getItemModifierLevels(T valueContainer) {
-        return (Map<String, Integer>) valueContainer.get(MTKeys.ITEM_MODIFIERS).orElse(new HashMap<>());
+    public static Map<String, Integer> getItemModifierLevels(ItemStack itemStack) {
+        return itemStack.get(MTKeys.ITEM_MODIFIERS).orElse(new HashMap<>());
+    }
+
+    /**
+     * @param itemStackSnapshot The ItemStackSnapshot to get the modifier levels of
+     * @return A map containing the key of each modifier and its corresponding level
+     */
+    public static Map<String, Integer> getItemModifierLevels(ItemStackSnapshot itemStackSnapshot) {
+        return itemStackSnapshot.get(MTKeys.ITEM_MODIFIERS).orElse(new HashMap<>());
     }
 
     public static List<Modifier> getItemAppliedModifiers(ItemStack itemStack) {
