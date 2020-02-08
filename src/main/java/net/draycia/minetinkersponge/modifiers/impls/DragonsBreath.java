@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
+import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.HandTypes;
@@ -25,6 +26,7 @@ import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.item.recipe.crafting.Ingredient;
 import org.spongepowered.api.item.recipe.crafting.ShapedCraftingRecipe;
+import org.spongepowered.api.scoreboard.Team;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.Direction;
 
@@ -39,6 +41,13 @@ public class DragonsBreath extends Modifier {
             .addAll(MineTinkerSponge.getItemTypeUtils().SWORDS)
             .addAll(MineTinkerSponge.getItemTypeUtils().AXES)
             .build();
+
+    private ParticleEffect dragonBreath = ParticleEffect.builder()
+            .type(ParticleTypes.DRAGON_BREATH)
+            .option(ParticleOptions.DIRECTION, Direction.NONE)
+            .build();
+
+    private boolean allowPVP = true;
 
     @Override
     public List<ItemType> getCompatibleItems() {
@@ -95,10 +104,15 @@ public class DragonsBreath extends Modifier {
         return getDescription("If damaged mob is on fire, sets nearby hostile mobs on fire.");
     }
 
-    private ParticleEffect dragonBreath = ParticleEffect.builder()
-            .type(ParticleTypes.DRAGON_BREATH)
-            .option(ParticleOptions.DIRECTION, Direction.NONE)
-            .build();
+    @Override
+    public void onConfigurationSave(ConfigurationNode modifierNode) {
+        modifierNode.getNode("allowPVP").setValue(this.allowPVP);
+    }
+
+    @Override
+    public void onConfigurationLoad(ConfigurationNode modifierNode) {
+        this.allowPVP = modifierNode.getNode("allowPVP").getBoolean();
+    }
 
     @Listener
     public void onEntityDamagedByEntity(DamageEntityEvent event) {
@@ -133,8 +147,26 @@ public class DragonsBreath extends Modifier {
                         if (target instanceof Monster) {
                             target.offer(Keys.FIRE_TICKS, 40 * level);
                             target.getLocation().getExtent().spawnParticles(dragonBreath, target.getLocation().getPosition());
-                        } else if (target instanceof Player) {
-                            // TODO: check if party / PVP
+                        } else if (target instanceof Player && allowPVP) {
+                            if (!player.getLocation().getExtent().getProperties().isPVPEnabled()) {
+                                continue;
+                            }
+
+                            Player targetPlayer = (Player)target;
+
+                            boolean shareTeam = false;
+
+                            for (Team team : player.getScoreboard().getTeams()) {
+                                if (!team.allowFriendlyFire() && targetPlayer.getScoreboard().getTeams().contains(team)) {
+                                    shareTeam = true;
+                                    break;
+                                }
+                            }
+
+                            if (!shareTeam) {
+                                target.offer(Keys.FIRE_TICKS, 40 * level);
+                                target.getLocation().getExtent().spawnParticles(dragonBreath, target.getLocation().getPosition());
+                            }
                         }
                     }
                 }
