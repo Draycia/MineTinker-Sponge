@@ -51,6 +51,8 @@ public class MineTinkerSponge {
 
     @Listener
     public void onInit(GameInitializationEvent event) {
+        configManager.setupModifierConfigs();
+
         Sponge.getEventManager().registerListeners(this, ModManager.INSTANCE);
 
         pluginInjector.getInstance(CommandManager.class);

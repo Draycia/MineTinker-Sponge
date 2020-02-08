@@ -71,7 +71,14 @@ public class ConfigManager {
             }
 
             itemTypeUtils = new ItemTypeUtils();
+        } catch (IOException exception) {
+            logger.warn("Failed to load main configuration!");
+            exception.printStackTrace();
+        }
+    }
 
+    public void setupModifierConfigs() {
+        try {
             File modifierDirectory = configDir.resolve("modifiers").toFile();
 
             if (!modifierDirectory.exists()) {
@@ -113,7 +120,7 @@ public class ConfigManager {
                 }
             }
         } catch (IOException exception) {
-            logger.warn("Failed to load main configuration!");
+            logger.warn("Failed to load modifier configurations!");
             exception.printStackTrace();
         }
     }
