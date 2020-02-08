@@ -119,8 +119,6 @@ public class ConfigManager {
     }
 
     private void saveDefaultConfigValues() throws IOException {
-        mainConfig.getNode("enchantmentConvertBlock").setValue(MTConfig.ENCHANTMENT_CONVERT_BLOCK.getId());
-
         try {
             ObjectMapper.forClass(MTConfig.class).bindToNew().serialize(mainConfig);
         } catch (ObjectMappingException e) {
@@ -131,16 +129,6 @@ public class ConfigManager {
     }
 
     private void loadConfigValues() {
-        String blockName = mainConfig.getNode("enchantmentConvertBlock").getString();
-        Optional<BlockType> convertBlock = Sponge.getGame().getRegistry().getType(BlockType.class, blockName);
-
-        if (convertBlock.isPresent()) {
-            MTConfig.ENCHANTMENT_CONVERT_BLOCK = convertBlock.get();
-        } else {
-            logger.warn("No BlockType found matching input \"" + blockName + "\".");
-            MTConfig.ENCHANTMENT_CONVERT_BLOCK = BlockTypes.BOOKSHELF;
-        }
-
         try {
             ObjectMapper.forClass(MTConfig.class).bindToNew().populate(mainConfig);
         } catch (ObjectMappingException e) {

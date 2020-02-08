@@ -15,7 +15,7 @@ public class MTConfig {
     public static long GLOBAL_MAX_LEVEL = -1;
 
     // The type of block used to convert enchanted books into modifiers
-    @Setting(value = "enchantmentConvertBlock", comment = "The block used to convert enchanted books into modifiers.z")
+    @Setting(value = "enchantmentConvertBlock", comment = "The block used to convert enchanted books into modifiers.")
     public static BlockType ENCHANTMENT_CONVERT_BLOCK = BlockTypes.BOOKSHELF;
 
     @Setting(value = "convertTransfersEnchantments", comment = "Determines if converting items converts enchantments into modifiers.")
