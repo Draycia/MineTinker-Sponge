@@ -209,7 +209,7 @@ public enum ModManager implements AdditionalCatalogRegistryModule<Modifier> {
 
         // Modifies the item's modifier slots
         if (!ignoreSlots) {
-            setItemModifierSlots(itemStack, getItemModifierSlots(itemStack) - amount);
+            setItemModifierSlots(itemStack, getItemModifierSlots(itemStack) - totalCost);
             if (debug) { System.out.println("Modifying slot count!"); }
         }
 
