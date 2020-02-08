@@ -6,7 +6,6 @@ import org.spongepowered.api.item.ItemType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class ItemTypeUtils {
