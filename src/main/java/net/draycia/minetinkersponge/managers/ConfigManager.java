@@ -3,6 +3,7 @@ package net.draycia.minetinkersponge.managers;
 import com.google.inject.Inject;
 import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.modifiers.Modifier;
+import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.MTTranslations;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -40,6 +41,12 @@ public class ConfigManager {
     private Logger logger;
     private MineTinkerSponge mineTinkerSponge;
 
+    private ItemTypeUtils itemTypeUtils;
+
+    public ItemTypeUtils getItemTypeUtils() {
+        return itemTypeUtils;
+    }
+
     @Inject
     public ConfigManager(@ConfigDir(sharedRoot = false) Path configDir, @DefaultConfig(sharedRoot = false) Path defaultConfig,
                          @DefaultConfig(sharedRoot = false) ConfigurationLoader<CommentedConfigurationNode> configLoader,
@@ -62,6 +69,8 @@ public class ConfigManager {
             } else {
                 loadConfigValues();
             }
+
+            itemTypeUtils = new ItemTypeUtils();
 
             File modifierDirectory = configDir.resolve("modifiers").toFile();
 

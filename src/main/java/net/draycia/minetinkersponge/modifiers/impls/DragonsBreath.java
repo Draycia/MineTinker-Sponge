@@ -1,9 +1,9 @@
 package net.draycia.minetinkersponge.modifiers.impls;
 
 import com.google.common.collect.ImmutableList;
+import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
-import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.HandTypes;
@@ -35,9 +35,9 @@ import java.util.Optional;
 public class DragonsBreath extends Modifier {
 
     private List<ItemType> compatibleTypes = ImmutableList.<ItemType>builder()
-            .addAll(ItemTypeUtils.BOWS)
-            .addAll(ItemTypeUtils.SWORDS)
-            .addAll(ItemTypeUtils.AXES)
+            .addAll(MineTinkerSponge.getItemTypeUtils().BOWS)
+            .addAll(MineTinkerSponge.getItemTypeUtils().SWORDS)
+            .addAll(MineTinkerSponge.getItemTypeUtils().AXES)
             .build();
 
     @Override

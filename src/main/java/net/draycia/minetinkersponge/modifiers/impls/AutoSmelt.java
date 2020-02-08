@@ -1,9 +1,9 @@
 package net.draycia.minetinkersponge.modifiers.impls;
 
 import com.google.common.collect.ImmutableList;
+import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
-import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.Entity;
@@ -35,9 +35,9 @@ public class AutoSmelt extends Modifier {
     private SmeltingRecipeRegistry smeltingRegistry = Sponge.getGame().getRegistry().getSmeltingRecipeRegistry();
 
     private List<ItemType> compatibleTypes = ImmutableList.<ItemType>builder()
-                .addAll(ItemTypeUtils.PICKAXES)
-                .addAll(ItemTypeUtils.AXES)
-                .addAll(ItemTypeUtils.SHOVELS)
+                .addAll(MineTinkerSponge.getItemTypeUtils().PICKAXES)
+                .addAll(MineTinkerSponge.getItemTypeUtils().AXES)
+                .addAll(MineTinkerSponge.getItemTypeUtils().SHOVELS)
                 .build();
 
     @Override

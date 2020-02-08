@@ -3,9 +3,9 @@ package net.draycia.minetinkersponge.modifiers.impls;
 import com.flowpowered.math.imaginary.Quaterniond;
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.collect.ImmutableList;
+import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
-import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.HandTypes;
@@ -35,7 +35,7 @@ import java.util.Optional;
 public class Ender extends Modifier {
 
     private List<ItemType> compatibleTypes = ImmutableList.<ItemType>builder()
-            .addAll(ItemTypeUtils.BOWS)
+            .addAll(MineTinkerSponge.getItemTypeUtils().BOWS)
             .build();
 
     @Override

@@ -15,6 +15,7 @@ public class MTConfig {
     public static long GLOBAL_MAX_LEVEL = -1;
 
     // The type of block used to convert enchanted books into modifiers
+    @Setting(value = "enchantmentConvertBlock", comment = "The block used to convert enchanted books into modifiers.z")
     public static BlockType ENCHANTMENT_CONVERT_BLOCK = BlockTypes.BOOKSHELF;
 
     @Setting(value = "convertTransfersEnchantments", comment = "Determines if converting items converts enchantments into modifiers.")
@@ -75,4 +76,7 @@ public class MTConfig {
 
     @Setting(value = "fishingGivesXpPerItem", comment = "If true, fishing rods gain XP equivalent to the number of items they fish up.")
     public static boolean FISHING_XP_PER_ITEM = false;
+
+    @Setting(value = "customItemPatterns", comment = "If you want to add certain items to, say, pickaxes, add entries under pickaxe here!")
+    public static HashMap<String, ArrayList<String>> CUSTOM_ITEM_PATTERNS = new HashMap<>();
 }

@@ -1,9 +1,9 @@
 package net.draycia.minetinkersponge.modifiers.impls;
 
 import com.google.common.collect.ImmutableList;
+import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
-import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.Transaction;
 import org.spongepowered.api.data.key.Keys;
@@ -47,13 +47,13 @@ public class Directing extends Modifier {
 
     static {
         compatibleTypes = ImmutableList.<ItemType>builder()
-                .addAll(ItemTypeUtils.PICKAXES)
-                .addAll(ItemTypeUtils.AXES)
-                .addAll(ItemTypeUtils.SHOVELS)
-                .addAll(ItemTypeUtils.HOES)
-                .addAll(ItemTypeUtils.FISHING_RODS)
-                .addAll(ItemTypeUtils.SWORDS)
-                .addAll(ItemTypeUtils.BOWS)
+                .addAll(MineTinkerSponge.getItemTypeUtils().PICKAXES)
+                .addAll(MineTinkerSponge.getItemTypeUtils().AXES)
+                .addAll(MineTinkerSponge.getItemTypeUtils().SHOVELS)
+                .addAll(MineTinkerSponge.getItemTypeUtils().HOES)
+                .addAll(MineTinkerSponge.getItemTypeUtils().FISHING_RODS)
+                .addAll(MineTinkerSponge.getItemTypeUtils().SWORDS)
+                .addAll(MineTinkerSponge.getItemTypeUtils().BOWS)
                 .build();
     }
 

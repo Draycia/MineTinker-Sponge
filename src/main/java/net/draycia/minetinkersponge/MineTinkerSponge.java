@@ -7,6 +7,7 @@ import net.draycia.minetinkersponge.listeners.*;
 import net.draycia.minetinkersponge.managers.*;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.modifiers.impls.*;
+import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.game.GameRegistryEvent;
 import org.spongepowered.api.event.game.GameReloadEvent;
@@ -30,19 +31,26 @@ public class MineTinkerSponge {
     private ConfigManager configManager;
     private InventoryGUIManager guiManager = null;
 
-    @Listener
-    public void onConstruct(GameConstructionEvent event) {
-        Sponge.getRegistry().registerModule(Modifier.class, ModManager.INSTANCE);
+    private static ItemTypeUtils itemTypeUtils;
+
+    public static ItemTypeUtils getItemTypeUtils() {
+        return itemTypeUtils;
     }
 
-
     @Listener
-    public void onInit(GameInitializationEvent event) {
+    public void onConstruct(GameConstructionEvent event) {
         DataRegistrar.registerDataManipulators();
 
         configManager = pluginInjector.getInstance(ConfigManager.class);
         configManager.reloadConfig();
 
+        itemTypeUtils = configManager.getItemTypeUtils();
+
+        Sponge.getRegistry().registerModule(Modifier.class, ModManager.INSTANCE);
+    }
+
+    @Listener
+    public void onInit(GameInitializationEvent event) {
         Sponge.getEventManager().registerListeners(this, ModManager.INSTANCE);
 
         pluginInjector.getInstance(CommandManager.class);

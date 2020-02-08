@@ -1,10 +1,10 @@
 package net.draycia.minetinkersponge.managers;
 
+import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.data.impl.*;
 import net.draycia.minetinkersponge.modifiers.Modifier;
 import net.draycia.minetinkersponge.modifiers.ModifierApplicationResult;
-import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.MTTranslations;
 import net.draycia.minetinkersponge.utils.StringUtils;
@@ -42,7 +42,6 @@ public enum ModManager implements AdditionalCatalogRegistryModule<Modifier> {
     /**
      * Registers the modifier and adds it to MineTinker's internal modifier map
      * @param modifier The modifier instance to register
-     * @return If the registration was a success. My return false if a modifier with the key already exists.
      */
     @Override
     public void registerAdditionalCatalog(Modifier modifier) {
@@ -224,7 +223,7 @@ public enum ModManager implements AdditionalCatalogRegistryModule<Modifier> {
      */
     public static void convertItemStack(ItemStack itemStack, boolean canExceedMaxLevel) {
         // Check if the item is compatible with the plugin
-        if (!ItemTypeUtils.ALL_TYPES.contains(itemStack.getType())) {
+        if (!MineTinkerSponge.getItemTypeUtils().ALL_TYPES.contains(itemStack.getType())) {
             return;
         }
 

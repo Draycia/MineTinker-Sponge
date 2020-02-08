@@ -1,7 +1,7 @@
 package net.draycia.minetinkersponge.listeners;
 
+import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.managers.ModManager;
-import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.Entity;
@@ -36,7 +36,7 @@ public class ItemDropListener {
 
             Item item = (Item)entity;
 
-            if (!ItemTypeUtils.ALL_TYPES.contains(item.getItemType())) {
+            if (!MineTinkerSponge.getItemTypeUtils().ALL_TYPES.contains(item.getItemType())) {
                 continue;
             }
 

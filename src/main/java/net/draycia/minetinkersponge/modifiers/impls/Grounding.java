@@ -2,9 +2,9 @@ package net.draycia.minetinkersponge.modifiers.impls;
 
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.collect.ImmutableList;
+import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.managers.ModManager;
 import net.draycia.minetinkersponge.modifiers.Modifier;
-import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.Living;
@@ -27,7 +27,7 @@ import java.util.Optional;
 public class Grounding extends Modifier {
 
     private List<ItemType> compatibleTypes = ImmutableList.<ItemType>builder()
-            .addAll(ItemTypeUtils.BOOTS)
+            .addAll(MineTinkerSponge.getItemTypeUtils().BOOTS)
             .build();
 
     @Override

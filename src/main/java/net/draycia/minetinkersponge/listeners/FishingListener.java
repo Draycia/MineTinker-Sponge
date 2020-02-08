@@ -1,8 +1,8 @@
 package net.draycia.minetinkersponge.listeners;
 
+import net.draycia.minetinkersponge.MineTinkerSponge;
 import net.draycia.minetinkersponge.data.MTKeys;
 import net.draycia.minetinkersponge.managers.ModManager;
-import net.draycia.minetinkersponge.utils.ItemTypeUtils;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import org.spongepowered.api.data.Transaction;
 import org.spongepowered.api.entity.living.player.Player;
@@ -24,7 +24,7 @@ public class FishingListener {
         for (Transaction<ItemStackSnapshot> snapshot : event.getTransactions()) {
             ItemStack item = snapshot.getFinal().createStack();
 
-            if (ItemTypeUtils.ALL_TYPES.contains(item.getType())) {
+            if (MineTinkerSponge.getItemTypeUtils().ALL_TYPES.contains(item.getType())) {
                 ModManager.convertItemStack(item, true);
                 snapshot.setCustom(item.createSnapshot());
             }
