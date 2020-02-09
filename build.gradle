@@ -80,4 +80,6 @@ shadowJar {
     dependencies {
         include(dependency(":MathParser.org-mXparser"))
     }
+    
+    classifier = null // Remove "-all" suffix from output file name
 }
