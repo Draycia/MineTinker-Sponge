@@ -8,16 +8,15 @@ import net.draycia.minetinkersponge.modifiers.ModifierApplicationResult;
 import net.draycia.minetinkersponge.utils.MTConfig;
 import net.draycia.minetinkersponge.utils.MTTranslations;
 import net.draycia.minetinkersponge.utils.StringUtils;
+import org.slf4j.Logger;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.value.ValueContainer;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.GameRegistryEvent;
 import org.spongepowered.api.item.enchantment.Enchantment;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
-import org.spongepowered.api.item.recipe.crafting.CraftingRecipe;
 import org.spongepowered.api.registry.AdditionalCatalogRegistryModule;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -34,11 +33,6 @@ public enum ModManager implements AdditionalCatalogRegistryModule<Modifier> {
         return modifiers;
     }
 
-    @Listener
-    public void onRecipeRegisterReady(GameRegistryEvent.Register<CraftingRecipe> event) {
-        modifiers.values().stream().map(Modifier::getRecipe).filter(Optional::isPresent).map(Optional::get).forEach(event::register);
-    }
-
     /**
      * Registers the modifier and adds it to MineTinker's internal modifier map
      * @param modifier The modifier instance to register
@@ -49,7 +43,16 @@ public enum ModManager implements AdditionalCatalogRegistryModule<Modifier> {
             return;
         }
 
+        Logger logger = Sponge.getPluginManager().getPlugin("minetinker-sponge").get().getLogger();
+
+        logger.info("Registering modifier " + modifier.getId());
+
         modifiers.put(modifier.getId(), modifier);
+
+//        modifier.getRecipe().ifPresent(recipe -> {
+//            Sponge.getRegistry().getCraftingRecipeRegistry().register(recipe);
+//            logger.info("Registering recipe for " + modifier.getId());
+//        });
     }
 
     public void unregisterModifier(Modifier modifier) {

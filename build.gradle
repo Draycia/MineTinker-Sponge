@@ -47,7 +47,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.spongepowered:spongeapi:7.2.0-SNAPSHOT'
+    compile 'org.spongepowered:spongeapi:7.2.0'
     compile 'org.spongepowered:mixin:0.7.11-SNAPSHOT'
     compile 'com.github.SimonFlash.TeslaPowered:TeslaCore:v1.1.6'
     compile 'org.mariuszgromada.math:MathParser.org-mXparser:4.4.2'
@@ -80,6 +80,6 @@ shadowJar {
     dependencies {
         include(dependency(":MathParser.org-mXparser"))
     }
-    
+
     classifier = null // Remove "-all" suffix from output file name
 }

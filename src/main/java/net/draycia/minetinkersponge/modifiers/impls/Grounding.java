@@ -109,18 +109,11 @@ public class Grounding extends Modifier {
             }
 
             // Calculate the position and distance between the player and the entity
-            Living target = (Living)entity;
-            Vector3d targetPosition = target.getLocation().getPosition();
-            double distance = playerPosition.distance(targetPosition);
-
-            // Knock the entity back
-            Vector3d velocity = playerPosition.sub(targetPosition).mul(distance / 4).negate();
-            velocity.add(0, 0.25, 0);
-            target.setVelocity(velocity);
+            double distance = MineTinkerSponge.knockbackLiving(playerPosition, (Living)entity, 1);
 
             // Damage the entity
             double damage = ((10 - distance) / 4);
-            target.damage(damage, DamageSource.builder().type(DamageTypes.ATTACK).bypassesArmor().build());
+            entity.damage(damage, DamageSource.builder().type(DamageTypes.ATTACK).bypassesArmor().build());
         }
     }
 

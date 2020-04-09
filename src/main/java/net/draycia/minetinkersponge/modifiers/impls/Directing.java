@@ -190,7 +190,7 @@ public class Directing extends Modifier {
 
         event.getTransactions().forEach(transaction -> transaction.setValid(false));
 
-        transferItemStacks(player, items);
+        MineTinkerSponge.transferItemStacks(player, items);
     }
 
     private void transferEntityDrops(Player player, List<Entity> entities) {
@@ -201,26 +201,6 @@ public class Directing extends Modifier {
                 .map(BaseValue::get)
                 .collect(Collectors.toList());
 
-        transferItemStacks(player, items);
-    }
-
-    private void transferItemStacks(Player player, List<ItemStackSnapshot> items) {
-        Inventory inventory = player.getInventory()
-                .query(QueryOperationTypes.INVENTORY_TYPE.of(MainPlayerInventory.class));
-
-        for (ItemStackSnapshot item : items) {
-            ItemStack itemStack = item.createStack();
-
-            if (inventory.canFit(itemStack)) {
-                inventory.offer(itemStack);
-            } else {
-                Location<World> location = player.getLocation();
-
-                Entity itemEntity = location.createEntity(EntityTypes.ITEM);
-                itemEntity.offer(Keys.ACTIVE_ITEM, item);
-
-                location.spawnEntity(itemEntity);
-            }
-        }
+        MineTinkerSponge.transferItemStacks(player, items);
     }
 }
