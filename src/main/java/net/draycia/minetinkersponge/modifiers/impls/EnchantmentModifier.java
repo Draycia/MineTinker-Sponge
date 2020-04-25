@@ -71,18 +71,4 @@ public class EnchantmentModifier extends Modifier {
                 .map(Modifier::getClass)
                 .collect(Collectors.toList());
     }
-
-    @Override
-    public Optional<CraftingRecipe> getRecipe() {
-        ItemStack book = ItemStack.builder().itemType(ItemTypes.ENCHANTED_BOOK).build();
-        book.offer(Keys.STORED_ENCHANTMENTS, Collections.singletonList(Enchantment.builder().type(type).level(1).build()));
-
-        ShapelessCraftingRecipe recipe = ShapelessCraftingRecipe.builder()
-                .addIngredient(Ingredient.builder().with(book).build())
-                .result(getModifierItem())
-                .id(getId())
-                .build();
-
-        return Optional.of(getCraftingRecipe(recipe));
-    }
 }
